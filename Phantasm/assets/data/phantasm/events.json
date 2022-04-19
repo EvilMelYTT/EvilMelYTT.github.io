@@ -1,0 +1,97 @@
+{
+	"song": {
+		"song": "phantasm",
+		"notes": [],
+		"events": [
+			[
+				36000,
+				[
+					[
+						"Change Character",
+						"0",
+						"fleetway"
+					]
+				]
+			],
+			[
+				60000,
+				[
+					[
+						"Change Character",
+						"0",
+						"sonic"
+					]
+				]
+			],
+			[
+				72000,
+				[
+					[
+						"Change Character",
+						"0",
+						"fleetway"
+					]
+				]
+			],
+			[
+				96000,
+				[
+					[
+						"Change Character",
+						"0",
+						"sonic"
+					]
+				]
+			],
+			[
+				120000,
+				[
+					[
+						"Change Character",
+						"0",
+						"fleetway"
+					]
+				]
+			],
+			[
+				132000,
+				[
+					[
+						"Change Character",
+						"0",
+						"sonic"
+					]
+				]
+			],
+			[
+				144000,
+				[
+					[
+						"Change Character",
+						"0",
+						"fleetway"
+					]
+				]
+			],
+			[
+				168000,
+				[
+					[
+						"Change Character",
+						"0",
+						"sonic"
+					]
+				]
+			]
+		],
+		"bpm": 160,
+		"needsVoices": true,
+		"speed": 2.8,
+		"player1": "sonic",
+		"player2": "gf",
+		"player3": null,
+		"gfVersion": "gf",
+		"stage": "fleet",
+		"validScore": false
+	}
+}
