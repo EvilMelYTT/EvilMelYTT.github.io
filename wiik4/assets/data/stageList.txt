@@ -1,0 +1,9 @@
+stage
+boxKHF
+boxTKO
+boxFC
+boxKH
+boxDM
+boxWU
+swordarena
+volcano
