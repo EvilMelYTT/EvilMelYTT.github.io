@@ -1,0 +1,13 @@
+indices danceLeft 24 pinkie idle/0 1 2 3 4 5 6 7
+indices danceRight 24 pinkie idle/8 9 10 11 12 13 14 15
+prefix singLEFT 24 pinkie left
+prefix singRIGHT 24 pinkie right
+prefix singUP 24 pinkie up
+prefix singDOWN 24 pinkie down
+prefix hello 24 pinkie hello
+prefix howyadoin 24 pinkie howyadoin
+prefix howdy 24 pinkie howdy
+prefix whatsup 24 pinkie whatsup
+prefix duck 24 pinkie duck
+prefix fall 24 pinkie fall
+prefix lookback 24 pinkie lookback
