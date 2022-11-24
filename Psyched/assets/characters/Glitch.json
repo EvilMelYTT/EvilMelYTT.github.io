@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"offsets": [
+				825,
+				110
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Idle"
+		},
+		{
+			"offsets": [
+				830,
+				111
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Up"
+		},
+		{
+			"offsets": [
+				1030,
+				134
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Right"
+		},
+		{
+			"offsets": [
+				830,
+				108
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Left"
+		},
+		{
+			"offsets": [
+				1020,
+				130
+			],
+			"loop": true,
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Down"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/HogScorched/Glitch",
+	"position": [
+		100,
+		-150
+	],
+	"healthicon": "scorched2",
+	"flip_x": false,
+	"healthbar_colors": [
+		23,
+		30,
+		74
+	],
+	"camera_position": [
+		-1600,
+		-750
+	],
+	"sing_duration": 6.1,
+	"scale": 2
+}
