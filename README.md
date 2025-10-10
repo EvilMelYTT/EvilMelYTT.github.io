@@ -3,10 +3,14 @@
 ---
 
 ## Main Projects
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
+<h2 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerV9Beta">PikaNetwork Color Picker V9(Beta)</a></h2>
+<small>Color Picker and Rename Index for <a href="https://pika-network.net">PikaNetwork</a>'s OpLifesteal and by extension its over gamemodes with /rename</small>
+</div>
 
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
-<h2 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerV8">PikaNetwork Color Picker V8</a></h2>
-<small>Color Picker and Rename Index for <a href="https://pika-network.net">PikaNetwork</a>'s OpLifesteal and by extension its over gamemodes with /rename</small>
+<h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerV8">PikaNetwork Color Picker V8</a></h3>
+<small>Ditto but like, a finished version</small>
 </div>
 
 ---
