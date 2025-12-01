@@ -1,0 +1,1917 @@
+[
+  {
+    "page": 1,
+    "titles": {
+      "main": "Main Inventory - Page 1/4",
+      "hotbar": "Categories - Page 1/4"
+    },
+    "items": [
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&d&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛ ꜱʜᴏᴘ",
+        "lore": [
+          "&fPurchase powerful&f enchantments.",
+          "&fAccess unique&f custom effects.",
+          "&fYour Experience: &b121,869",
+          "&d&lFeatures:",
+          "&d▪ &7Custom special enchants",
+          "&d▪ &7Exp based pricing",
+          "&e► Click to open enchanter"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 0
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 1
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&fCurrently viewing: &fAll enchants",
+        "lore": [
+          "&e► Click to view &fArmor&e enchants"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 5
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&e&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fView all&f enchantments.",
+          "&fExplore abilities&f and rarities&f.",
+          "&e&lFeatures:",
+          "&e▪ &7Browse all available enchants",
+          "&e▪ &7Sort by item type",
+          "&e▪ &7See detailed descriptions",
+          "&e► Click to view"
+        ],
+        "icon": "minecraft:book",
+        "slot": 9
+      },
+      {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:lime_stained_glass_pane",
+        "slot": 10
+      },
+      {
+        "id": "minecraft:diamond_hoe",
+        "count": 1,
+        "name_raw": "&a&lSprees",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eTools",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fAfter breaking 100 blocks",
+          "&fgain Haste 3 for 20s"
+        ],
+        "icon": "minecraft:diamond_hoe",
+        "slot": 12
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "&a&lLifebloom",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eArmor Chest",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fWhen health is lower than 10 Heart",
+          "&frecieve Regeneration VI and Resistance V for 3 seconds"
+        ],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 13
+      },
+      {
+        "id": "minecraft:netherite_boots",
+        "count": 1,
+        "name_raw": "&a&lTemposwift",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eArmor Feet",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fWhen down to 30% health,",
+          "&fplayer will receive Speed III for 5 seconds"
+        ],
+        "icon": "minecraft:netherite_boots",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lOverloaded",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f5% chance to fire a overloaded rocket fuse that deal 150%",
+          "&fdamage to everything and also self damage the user"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 15
+      },
+      {
+        "id": "minecraft:diamond_hoe",
+        "count": 1,
+        "name_raw": "&a&lMystical Touch",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eTools",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fGain Speed I and Haste I for",
+          "&f5s after breaking an ore."
+        ],
+        "icon": "minecraft:diamond_hoe",
+        "slot": 16
+      },
+      {
+        "id": "minecraft:diamond_chestplate",
+        "count": 1,
+        "name_raw": "&a&lɪᴛᴇᴍ ʀᴇᴘᴀɪʀᴇʀ",
+        "lore": [
+          "&fRepair damaged&f equipment.",
+          "&fSave valuable&f enchanted items.",
+          "&a&lFeatures:",
+          "&a▪ &7Completely fixes damaged items",
+          "&a▪ &7Experience-based cost, works",
+          "&a▪ &7on weapons, tools &7armor",
+          "&e► Click to open repairer"
+        ],
+        "icon": "minecraft:diamond_chestplate",
+        "slot": 18
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 19
+      },
+      {
+        "id": "minecraft:trident",
+        "count": 1,
+        "name_raw": "&a&lHeatwaves",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eTrident",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fTrident yields Fire Resistance",
+          "&fwhile held. Applies Fire",
+          "&ffor 7 seconds to hit enemies"
+        ],
+        "icon": "minecraft:trident",
+        "slot": 21
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lMiniatures Stomper",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f5% damage increase against Endermite",
+          "&fSilverfish and Vex"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 22
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lTitanfall",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f10% damage increase against Iron",
+          "&fGolem, Ghast, Warden and Ravager"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 23
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "&a&lAegis",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eArmor Chest",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f1% chance to dodge incoming damage"
+        ],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 24
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lBloodlust",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f10% chance to restore half a heart",
+          "&fwhen landing a critical hit"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 25
+      },
+      {
+        "id": "minecraft:iron_ingot",
+        "count": 1,
+        "name_raw": "&6&lɪᴛᴇᴍ ᴛɪɴᴋᴇʀᴇʀ",
+        "lore": [
+          "&fRecycle unwanted&f equipment",
+          "&fConvert items into experience&f.",
+          "&6&lFeatures:",
+          "&6▪ &7Get XP from enchanted items",
+          "&6▪ &7Better items give more rewards",
+          "&e► Click to open tinkerer"
+        ],
+        "icon": "minecraft:iron_ingot",
+        "slot": 27
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 28
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lFrenzified",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fAfter hitting a shot with an arrow, receive Speed I for 5 seconds",
+          "&f+2 seconds per level and Speed II at maximum level"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 30
+      },
+      {
+        "id": "minecraft:netherite_leggings",
+        "count": 1,
+        "name_raw": "&a&lCrystallization",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eArmor Legs",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&fReduce damage against End Crystal explosion",
+          "&fand Respawn Anchor explosion by 70%",
+          "&fwhile blocking it with a shield"
+        ],
+        "icon": "minecraft:netherite_leggings",
+        "slot": 31
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lMilitia",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fA 0.5% chance to drop the item which a player is holding"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 32
+      },
+      {
+        "id": "minecraft:netherite_helmet",
+        "count": 1,
+        "name_raw": "&a&lPurification",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eArmor Head",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fAll negative effects will no longer work",
+          "&fon player, but reduce armor point by 50%"
+        ],
+        "icon": "minecraft:netherite_helmet",
+        "slot": 33
+      },
+      {
+        "id": "minecraft:netherite_boots",
+        "count": 1,
+        "name_raw": "&a&lBinding",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eArmor Feet",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f5% chance for mobs and players who hit the player",
+          "&fto receive Slowness 3 for 0.5 seconds"
+        ],
+        "icon": "minecraft:netherite_boots",
+        "slot": 34
+      },
+      {
+        "id": "minecraft:purple_dye",
+        "count": 1,
+        "name_raw": "&d&lɪᴛᴇᴍ ᴄᴏᴍʙɪɴᴇʀ",
+        "lore": [
+          "&fMerge items with the same enchantment",
+          "&fCreate higher level gear efficiently",
+          "&d&lFeatures:",
+          "&d▪ &7Combine identical enchantments",
+          "&d▪ &7Upgrade equipment tiers",
+          "&d▪ &7Preserve item durability",
+          "&d▪ &7Cost based on enchant level",
+          "&e► Click to open combiner"
+        ],
+        "icon": "minecraft:purple_dye",
+        "slot": 36
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 37
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&b&lʙᴏᴏꜱᴛᴇʀꜱ",
+        "lore": [
+          "&fBoosters upon activation increases",
+          "&fyour multiplier on diffrent kind of",
+          "&fthings, making them extremely valuable!",
+          "&fTotal Boosters Owned: &d6",
+          "&b&lFeatures:",
+          "&b▪ &7Current active Boosters",
+          "&b▪ &7Your Boosters",
+          "&b▪ &7Boosters shop",
+          "&e► Click to open boosters"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 45
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 46
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&6&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fHere you will find &eall&f enchants",
+          "&fthat you can get by opening an",
+          "&denchantment book&f.",
+          "&fEnchantment Books &fcan be purchased",
+          "&fby using &bexperience&f. You can gain exp",
+          "&fthrough &fmining &for killing&f mobs.",
+          "&fYou can purchase enchantment books",
+          "&fby using &d/enchanter&f.",
+          "&e► Click to buy a book"
+        ],
+        "icon": "minecraft:book",
+        "slot": 49
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&e&lSort Enchantments",
+        "lore": [
+          "Currently Viewing: Default Order",
+          "&e&lClick to sort by &f&lAlphabetical &e&lOrder"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 50
+      },
+      {
+        "id": "minecraft:gold_ingot",
+        "count": 1,
+        "name_raw": "&6&lɢᴏʟᴅ ꜱʜᴏᴘ",
+        "lore": [
+          "&fSpend &6Gold &for &fIron &fto buy",
+          "&fpowerful &cexclusive items&f and perks.",
+          "&ePurchase Gold from:",
+          "&b&nstore.pika-network.net",
+          "&fHere you can find, and buy:",
+          "&6▪ &cRanks&f, &dCrate Keys&f, &eClasses",
+          "&6▪ &bPasses&f and more!",
+          "&e► Click to open goldshop"
+        ],
+        "icon": "minecraft:gold_ingot",
+        "slot": 51
+      },
+      {
+        "id": "minecraft:arrow",
+        "count": 1,
+        "name_raw": "&a&lNext Page &a&l▶",
+        "lore": [],
+        "icon": "minecraft:arrow",
+        "slot": 52
+      },
+      {
+        "id": "minecraft:compass",
+        "count": 1,
+        "name_raw": "&e&lꜱᴡɪᴛᴄʜ ᴍᴇɴᴜꜱ",
+        "lore": [
+          "&e&lFeatures:",
+          "&e▪ &aEnchanter Menu",
+          "&e▪ &7Cosmetics Menu",
+          "&e▪ &7Games Menu",
+          "&e▪ &7Leveling Menu",
+          "&e▪ &7Loadout Menu",
+          "&e▪ &7Shop Menu",
+          "&e▪ &7Teams Menu",
+          "&e▪ &7Gold Shop Menu",
+          "&e► Left click to open next menu",
+          "&e► Right click to open previous menu"
+        ],
+        "icon": "minecraft:compass",
+        "slot": 53
+      },
+      {
+        "id": "minecraft:netherite_sword",
+        "count": 1,
+        "name_raw": "<gradient:#BC16FE:#FFFF00>Absolute Solver",
+        "lore": [],
+        "icon": "minecraft:netherite_sword",
+        "slot": 81
+      },
+      {
+        "id": "minecraft:netherite_pickaxe",
+        "count": 1,
+        "name_raw": "<gradient:#FF4FAD:#71043E>Katagiri",
+        "lore": [],
+        "icon": "minecraft:netherite_pickaxe",
+        "slot": 82
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#7885B5>Abyss Chestplate",
+        "lore": [],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 83
+      },
+      {
+        "id": "minecraft:netherite_shovel",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#837CA6>Abyss Shovel",
+        "lore": [
+          "<gradient:#2557EF:#837CA6>Item Ability: Replace",
+          "&8▪ &fReplant crops in a 3x3 radius",
+          "&fwith each crop break."
+        ],
+        "icon": "minecraft:netherite_shovel",
+        "slot": 84
+      },
+      {
+        "id": "minecraft:wooden_pickaxe",
+        "count": 1,
+        "name_raw": "&6&lSpawner Wrench",
+        "lore": [
+          "&7Use this wrench to break",
+          "&7a spawner. This wrench will",
+          "&7break after usage."
+        ],
+        "icon": "minecraft:wooden_pickaxe",
+        "slot": 89
+      }
+    ]
+  },
+  {
+    "page": 2,
+    "titles": {
+      "main": "Main Inventory - Page 2/4",
+      "hotbar": "Categories - Page 2/4"
+    },
+    "items": [
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&d&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛ ꜱʜᴏᴘ",
+        "lore": [
+          "&fPurchase powerful&f enchantments.",
+          "&fAccess unique&f custom effects.",
+          "&fYour Experience: &b121,869",
+          "&d&lFeatures:",
+          "&d▪ &7Custom special enchants",
+          "&d▪ &7Exp based pricing",
+          "&e► Click to open enchanter"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 0
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 1
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&fCurrently viewing: &fAll enchants",
+        "lore": [
+          "&e► Click to view &fArmor&e enchants"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 5
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&e&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fView all&f enchantments.",
+          "&fExplore abilities&f and rarities&f.",
+          "&e&lFeatures:",
+          "&e▪ &7Browse all available enchants",
+          "&e▪ &7Sort by item type",
+          "&e▪ &7See detailed descriptions",
+          "&e► Click to view"
+        ],
+        "icon": "minecraft:book",
+        "slot": 9
+      },
+      {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:lime_stained_glass_pane",
+        "slot": 10
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lInquisitive",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e4",
+          "&fDescription:",
+          "&f50% more experience from mobs per level"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 12
+      },
+      {
+        "id": "minecraft:netherite_helmet",
+        "count": 1,
+        "name_raw": "&a&lRejuvenate",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eArmor Head",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&fHealing increased by 10%",
+          "&fIncreased by 5% per level"
+        ],
+        "icon": "minecraft:netherite_helmet",
+        "slot": 13
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lDevourer",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f1 heart less damage to mobs and players",
+          "&fHeals the player 1 heart instead",
+          "&f5% trigger chance",
+          "&f+2.5% trigger chance per level"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lDepth Crusher",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f10% damage increase against Aquatic Hostiles"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 15
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lBash",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f20% bonus damage on first hit",
+          "&fEnters infinite cooldown after first hit",
+          "&fCooldown resets after 5 seconds out of combat"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 16
+      },
+      {
+        "id": "minecraft:diamond_chestplate",
+        "count": 1,
+        "name_raw": "&a&lɪᴛᴇᴍ ʀᴇᴘᴀɪʀᴇʀ",
+        "lore": [
+          "&fRepair damaged&f equipment.",
+          "&fSave valuable&f enchanted items.",
+          "&a&lFeatures:",
+          "&a▪ &7Completely fixes damaged items",
+          "&a▪ &7Experience-based cost, works",
+          "&a▪ &7on weapons, tools &7armor",
+          "&e► Click to open repairer"
+        ],
+        "icon": "minecraft:diamond_chestplate",
+        "slot": 18
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 19
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lExplosion",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fWhen an arrow lands it will cause an explosion"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 21
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lScavenger",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fSteal 5% of enemy balance on kill"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 22
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lButchering",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f5% damage increase against passive mobs"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 23
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lHydro Aspect",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f5% damage increase against Enderman",
+          "&fBlaze, and Magma Cube"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 24
+      },
+      {
+        "id": "minecraft:trident",
+        "count": 1,
+        "name_raw": "&a&lIcetide",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eTrident",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fTrident yields Dolphin's Grace",
+          "&fwhile held. Applies Slowness",
+          "&ffor 10 seconds to hit enemies"
+        ],
+        "icon": "minecraft:trident",
+        "slot": 25
+      },
+      {
+        "id": "minecraft:iron_ingot",
+        "count": 1,
+        "name_raw": "&6&lɪᴛᴇᴍ ᴛɪɴᴋᴇʀᴇʀ",
+        "lore": [
+          "&fRecycle unwanted&f equipment",
+          "&fConvert items into experience&f.",
+          "&6&lFeatures:",
+          "&6▪ &7Get XP from enchanted items",
+          "&6▪ &7Better items give more rewards",
+          "&e► Click to open tinkerer"
+        ],
+        "icon": "minecraft:iron_ingot",
+        "slot": 27
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 28
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lExecution",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f10% damage increase against Vindicator",
+          "&fPillager, Evoker, Ravager and Vex"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 30
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lVenom",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f5% chance to give Poison II for 3s"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 31
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lArmor Crunch",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fDeal 20% less damage",
+          "&fReduce armor durability by",
+          "&fup to 3 extra points every hit"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 32
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lProwless",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fArrow fired from bow will now home into mobs and players, with a homing range of 5 blocks"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 33
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lHeart Stealer",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fAfter killing a player, instead",
+          "&fof adding 1 Heart, add 2 Hearts instead"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 34
+      },
+      {
+        "id": "minecraft:purple_dye",
+        "count": 1,
+        "name_raw": "&d&lɪᴛᴇᴍ ᴄᴏᴍʙɪɴᴇʀ",
+        "lore": [
+          "&fMerge items with the same enchantment",
+          "&fCreate higher level gear efficiently",
+          "&d&lFeatures:",
+          "&d▪ &7Combine identical enchantments",
+          "&d▪ &7Upgrade equipment tiers",
+          "&d▪ &7Preserve item durability",
+          "&d▪ &7Cost based on enchant level",
+          "&e► Click to open combiner"
+        ],
+        "icon": "minecraft:purple_dye",
+        "slot": 36
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 37
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&b&lʙᴏᴏꜱᴛᴇʀꜱ",
+        "lore": [
+          "&fBoosters upon activation increases",
+          "&fyour multiplier on diffrent kind of",
+          "&fthings, making them extremely valuable!",
+          "&fTotal Boosters Owned: &d6",
+          "&b&lFeatures:",
+          "&b▪ &7Current active Boosters",
+          "&b▪ &7Your Boosters",
+          "&b▪ &7Boosters shop",
+          "&e► Click to open boosters"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 45
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 46
+      },
+      {
+        "id": "minecraft:arrow",
+        "count": 1,
+        "name_raw": "&a◀ &a&lPrevious Page",
+        "lore": [],
+        "icon": "minecraft:arrow",
+        "slot": 48
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&6&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fHere you will find &eall&f enchants",
+          "&fthat you can get by opening an",
+          "&denchantment book&f.",
+          "&fEnchantment Books &fcan be purchased",
+          "&fby using &bexperience&f. You can gain exp",
+          "&fthrough &fmining &for killing&f mobs.",
+          "&fYou can purchase enchantment books",
+          "&fby using &d/enchanter&f.",
+          "&e► Click to buy a book"
+        ],
+        "icon": "minecraft:book",
+        "slot": 49
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&e&lSort Enchantments",
+        "lore": [
+          "Currently Viewing: Default Order",
+          "&e&lClick to sort by &f&lAlphabetical &e&lOrder"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 50
+      },
+      {
+        "id": "minecraft:gold_ingot",
+        "count": 1,
+        "name_raw": "&6&lɢᴏʟᴅ ꜱʜᴏᴘ",
+        "lore": [
+          "&fSpend &6Gold &for &fIron &fto buy",
+          "&fpowerful &cexclusive items&f and perks.",
+          "&ePurchase Gold from:",
+          "&b&nstore.pika-network.net",
+          "&fHere you can find, and buy:",
+          "&6▪ &cRanks&f, &dCrate Keys&f, &eClasses",
+          "&6▪ &bPasses&f and more!",
+          "&e► Click to open goldshop"
+        ],
+        "icon": "minecraft:gold_ingot",
+        "slot": 51
+      },
+      {
+        "id": "minecraft:arrow",
+        "count": 1,
+        "name_raw": "&a&lNext Page &a&l▶",
+        "lore": [],
+        "icon": "minecraft:arrow",
+        "slot": 52
+      },
+      {
+        "id": "minecraft:compass",
+        "count": 1,
+        "name_raw": "&e&lꜱᴡɪᴛᴄʜ ᴍᴇɴᴜꜱ",
+        "lore": [
+          "&e&lFeatures:",
+          "&e▪ &aEnchanter Menu",
+          "&e▪ &7Cosmetics Menu",
+          "&e▪ &7Games Menu",
+          "&e▪ &7Leveling Menu",
+          "&e▪ &7Loadout Menu",
+          "&e▪ &7Shop Menu",
+          "&e▪ &7Teams Menu",
+          "&e▪ &7Gold Shop Menu",
+          "&e► Left click to open next menu",
+          "&e► Right click to open previous menu"
+        ],
+        "icon": "minecraft:compass",
+        "slot": 53
+      },
+      {
+        "id": "minecraft:netherite_sword",
+        "count": 1,
+        "name_raw": "<gradient:#BC16FE:#FFFF00>Absolute Solver",
+        "lore": [],
+        "icon": "minecraft:netherite_sword",
+        "slot": 81
+      },
+      {
+        "id": "minecraft:netherite_pickaxe",
+        "count": 1,
+        "name_raw": "<gradient:#FF4FAD:#71043E>Katagiri",
+        "lore": [],
+        "icon": "minecraft:netherite_pickaxe",
+        "slot": 82
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#7885B5>Abyss Chestplate",
+        "lore": [],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 83
+      },
+      {
+        "id": "minecraft:netherite_shovel",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#837CA6>Abyss Shovel",
+        "lore": [
+          "<gradient:#2557EF:#837CA6>Item Ability: Replace",
+          "&8▪ &fReplant crops in a 3x3 radius",
+          "&fwith each crop break."
+        ],
+        "icon": "minecraft:netherite_shovel",
+        "slot": 84
+      },
+      {
+        "id": "minecraft:wooden_pickaxe",
+        "count": 1,
+        "name_raw": "&6&lSpawner Wrench",
+        "lore": [
+          "&7Use this wrench to break",
+          "&7a spawner. This wrench will",
+          "&7break after usage."
+        ],
+        "icon": "minecraft:wooden_pickaxe",
+        "slot": 89
+      }
+    ]
+  },
+  {
+    "page": 3,
+    "titles": {
+      "main": "Main Inventory - Page 3/4",
+      "hotbar": "Categories - Page 3/4"
+    },
+    "items": [
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&d&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛ ꜱʜᴏᴘ",
+        "lore": [
+          "&fPurchase powerful&f enchantments.",
+          "&fAccess unique&f custom effects.",
+          "&fYour Experience: &b121,869",
+          "&d&lFeatures:",
+          "&d▪ &7Custom special enchants",
+          "&d▪ &7Exp based pricing",
+          "&e► Click to open enchanter"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 0
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 1
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&fCurrently viewing: &fAll enchants",
+        "lore": [
+          "&e► Click to view &fArmor&e enchants"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 5
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&e&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fView all&f enchantments.",
+          "&fExplore abilities&f and rarities&f.",
+          "&e&lFeatures:",
+          "&e▪ &7Browse all available enchants",
+          "&e▪ &7Sort by item type",
+          "&e▪ &7See detailed descriptions",
+          "&e► Click to view"
+        ],
+        "icon": "minecraft:book",
+        "slot": 9
+      },
+      {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:lime_stained_glass_pane",
+        "slot": 10
+      },
+      {
+        "id": "minecraft:netherite_boots",
+        "count": 1,
+        "name_raw": "&a&lFeatherlight",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eArmor Feet",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fImmune to fall damage"
+        ],
+        "icon": "minecraft:netherite_boots",
+        "slot": 12
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lStrafe",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fBow charges 2x faster"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 13
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lAerohunts",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f5% damage increase against",
+          "&fFlying/Floating mobs"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lDisarmor",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fA 0.5% chance to disarmor 1 of the armor piece of the player"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 15
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lRepelation",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fRight-Click the sword to transfer all the debuff into the sword",
+          "&fhit will apply all the debuffs onto the mob or player"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 16
+      },
+      {
+        "id": "minecraft:diamond_chestplate",
+        "count": 1,
+        "name_raw": "&a&lɪᴛᴇᴍ ʀᴇᴘᴀɪʀᴇʀ",
+        "lore": [
+          "&fRepair damaged&f equipment.",
+          "&fSave valuable&f enchanted items.",
+          "&a&lFeatures:",
+          "&a▪ &7Completely fixes damaged items",
+          "&a▪ &7Experience-based cost, works",
+          "&a▪ &7on weapons, tools &7armor",
+          "&e► Click to open repairer"
+        ],
+        "icon": "minecraft:diamond_chestplate",
+        "slot": 18
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 19
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lWhirlwind",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fArrow fired becomes one with",
+          "&fthe wind, arrow fired will not",
+          "&fbe affected by gravity",
+          "&fbut will have a fixed range of 60 blocks"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 21
+      },
+      {
+        "id": "minecraft:diamond_hoe",
+        "count": 1,
+        "name_raw": "&a&lMoltens Touch",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eTools",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fAutosmelt mined ore into smelted variant"
+        ],
+        "icon": "minecraft:diamond_hoe",
+        "slot": 22
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lClusterbomb",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&fAt max charge, fire 2 more arrows.",
+          "&f+1 arrow per level"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 23
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lCleave",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f15% less damage",
+          "&f+2 block increased range",
+          "&fAOE like Sweeping Edge"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 24
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lEnraged",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f20% damage increase",
+          "&fIncrease reloading time by",
+          "&f40% post hit (Mining Fatigue",
+          "&f 2 for the duration)"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 25
+      },
+      {
+        "id": "minecraft:iron_ingot",
+        "count": 1,
+        "name_raw": "&6&lɪᴛᴇᴍ ᴛɪɴᴋᴇʀᴇʀ",
+        "lore": [
+          "&fRecycle unwanted&f equipment",
+          "&fConvert items into experience&f.",
+          "&6&lFeatures:",
+          "&6▪ &7Get XP from enchanted items",
+          "&6▪ &7Better items give more rewards",
+          "&e► Click to open tinkerer"
+        ],
+        "icon": "minecraft:iron_ingot",
+        "slot": 27
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 28
+      },
+      {
+        "id": "minecraft:diamond_hoe",
+        "count": 1,
+        "name_raw": "&a&lChopper",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eTools",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f25% chance to drop double logs"
+        ],
+        "icon": "minecraft:diamond_hoe",
+        "slot": 30
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lUppercut",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f10% more damage on critical hit",
+          "&fKnocks mobs and players upward"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 31
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lStormhailer",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fStrike lightning on attacked enemies"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 32
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lMeltdown",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fWhen landing a critical hit, 5% chance to",
+          "&fcause an explosion that damages everyone nearby"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 33
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lQuelling",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&f10% damage increase against Piglin",
+          "&fPiglin Brute, and Hoglin"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 34
+      },
+      {
+        "id": "minecraft:purple_dye",
+        "count": 1,
+        "name_raw": "&d&lɪᴛᴇᴍ ᴄᴏᴍʙɪɴᴇʀ",
+        "lore": [
+          "&fMerge items with the same enchantment",
+          "&fCreate higher level gear efficiently",
+          "&d&lFeatures:",
+          "&d▪ &7Combine identical enchantments",
+          "&d▪ &7Upgrade equipment tiers",
+          "&d▪ &7Preserve item durability",
+          "&d▪ &7Cost based on enchant level",
+          "&e► Click to open combiner"
+        ],
+        "icon": "minecraft:purple_dye",
+        "slot": 36
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 37
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&b&lʙᴏᴏꜱᴛᴇʀꜱ",
+        "lore": [
+          "&fBoosters upon activation increases",
+          "&fyour multiplier on diffrent kind of",
+          "&fthings, making them extremely valuable!",
+          "&fTotal Boosters Owned: &d6",
+          "&b&lFeatures:",
+          "&b▪ &7Current active Boosters",
+          "&b▪ &7Your Boosters",
+          "&b▪ &7Boosters shop",
+          "&e► Click to open boosters"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 45
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 46
+      },
+      {
+        "id": "minecraft:arrow",
+        "count": 1,
+        "name_raw": "&a◀ &a&lPrevious Page",
+        "lore": [],
+        "icon": "minecraft:arrow",
+        "slot": 48
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&6&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fHere you will find &eall&f enchants",
+          "&fthat you can get by opening an",
+          "&denchantment book&f.",
+          "&fEnchantment Books &fcan be purchased",
+          "&fby using &bexperience&f. You can gain exp",
+          "&fthrough &fmining &for killing&f mobs.",
+          "&fYou can purchase enchantment books",
+          "&fby using &d/enchanter&f.",
+          "&e► Click to buy a book"
+        ],
+        "icon": "minecraft:book",
+        "slot": 49
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&e&lSort Enchantments",
+        "lore": [
+          "Currently Viewing: Default Order",
+          "&e&lClick to sort by &f&lAlphabetical &e&lOrder"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 50
+      },
+      {
+        "id": "minecraft:gold_ingot",
+        "count": 1,
+        "name_raw": "&6&lɢᴏʟᴅ ꜱʜᴏᴘ",
+        "lore": [
+          "&fSpend &6Gold &for &fIron &fto buy",
+          "&fpowerful &cexclusive items&f and perks.",
+          "&ePurchase Gold from:",
+          "&b&nstore.pika-network.net",
+          "&fHere you can find, and buy:",
+          "&6▪ &cRanks&f, &dCrate Keys&f, &eClasses",
+          "&6▪ &bPasses&f and more!",
+          "&e► Click to open goldshop"
+        ],
+        "icon": "minecraft:gold_ingot",
+        "slot": 51
+      },
+      {
+        "id": "minecraft:arrow",
+        "count": 1,
+        "name_raw": "&a&lNext Page &a&l▶",
+        "lore": [],
+        "icon": "minecraft:arrow",
+        "slot": 52
+      },
+      {
+        "id": "minecraft:compass",
+        "count": 1,
+        "name_raw": "&e&lꜱᴡɪᴛᴄʜ ᴍᴇɴᴜꜱ",
+        "lore": [
+          "&e&lFeatures:",
+          "&e▪ &aEnchanter Menu",
+          "&e▪ &7Cosmetics Menu",
+          "&e▪ &7Games Menu",
+          "&e▪ &7Leveling Menu",
+          "&e▪ &7Loadout Menu",
+          "&e▪ &7Shop Menu",
+          "&e▪ &7Teams Menu",
+          "&e▪ &7Gold Shop Menu",
+          "&e► Left click to open next menu",
+          "&e► Right click to open previous menu"
+        ],
+        "icon": "minecraft:compass",
+        "slot": 53
+      },
+      {
+        "id": "minecraft:netherite_sword",
+        "count": 1,
+        "name_raw": "<gradient:#BC16FE:#FFFF00>Absolute Solver",
+        "lore": [],
+        "icon": "minecraft:netherite_sword",
+        "slot": 81
+      },
+      {
+        "id": "minecraft:netherite_pickaxe",
+        "count": 1,
+        "name_raw": "<gradient:#FF4FAD:#71043E>Katagiri",
+        "lore": [],
+        "icon": "minecraft:netherite_pickaxe",
+        "slot": 82
+      },
+      {
+        "id": "minecraft:netherite_shovel",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#837CA6>Abyss Shovel",
+        "lore": [
+          "<gradient:#2557EF:#837CA6>Item Ability: Replace",
+          "&8▪ &fReplant crops in a 3x3 radius",
+          "&fwith each crop break."
+        ],
+        "icon": "minecraft:netherite_shovel",
+        "slot": 83
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#7885B5>Abyss Chestplate",
+        "lore": [],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 84
+      },
+      {
+        "id": "minecraft:wooden_pickaxe",
+        "count": 1,
+        "name_raw": "&6&lSpawner Wrench",
+        "lore": [
+          "&7Use this wrench to break",
+          "&7a spawner. This wrench will",
+          "&7break after usage."
+        ],
+        "icon": "minecraft:wooden_pickaxe",
+        "slot": 89
+      }
+    ]
+  },
+  {
+    "page": 4,
+    "titles": {
+      "main": "Main Inventory - Page 4/4",
+      "hotbar": "Categories - Page 4/4"
+    },
+    "items": [
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&d&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛ ꜱʜᴏᴘ",
+        "lore": [
+          "&fPurchase powerful&f enchantments.",
+          "&fAccess unique&f custom effects.",
+          "&fYour Experience: &b121,869",
+          "&d&lFeatures:",
+          "&d▪ &7Custom special enchants",
+          "&d▪ &7Exp based pricing",
+          "&e► Click to open enchanter"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 0
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 1
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&fCurrently viewing: &fAll enchants",
+        "lore": [
+          "&e► Click to view &fArmor&e enchants"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 5
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&e&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fView all&f enchantments.",
+          "&fExplore abilities&f and rarities&f.",
+          "&e&lFeatures:",
+          "&e▪ &7Browse all available enchants",
+          "&e▪ &7Sort by item type",
+          "&e▪ &7See detailed descriptions",
+          "&e► Click to view"
+        ],
+        "icon": "minecraft:book",
+        "slot": 9
+      },
+      {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:lime_stained_glass_pane",
+        "slot": 10
+      },
+      {
+        "id": "minecraft:diamond_sword",
+        "count": 1,
+        "name_raw": "&a&lCrimson",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eWeapon",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fDeals extra damage based",
+          "&fon missing health, up to 30%"
+        ],
+        "icon": "minecraft:diamond_sword",
+        "slot": 12
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "&a&lReflection",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eArmor Chest",
+          "&a▪ &7Max level: &e3",
+          "&fDescription:",
+          "&fReduce incoming damage by 100%",
+          "&fReflect 20% of the damage back to the",
+          "&fmobs or players with a 10% trigger chance",
+          "&f+5% damage to Reflection and +2.5% trigger chance per level"
+        ],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 13
+      },
+      {
+        "id": "minecraft:crossbow",
+        "count": 1,
+        "name_raw": "&a&lGlacial",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eCrossbow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&f60% chance to freeze mobs and players",
+          "&fwith Slowness IV for 2 seconds"
+        ],
+        "icon": "minecraft:crossbow",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:bow",
+        "count": 1,
+        "name_raw": "&a&lInitiator",
+        "lore": [
+          "&fCommon Refined &fEnchantment",
+          "&a▪ &7Type: &eBow",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fFirst arrow shot that hit a mob",
+          "&for player will have +60% damage,",
+          "&fthen enter infinite cooldown",
+          "&fLeaving combat for 7 seconds",
+          "&fwill reset cooldown of Initiator"
+        ],
+        "icon": "minecraft:bow",
+        "slot": 15
+      },
+      {
+        "id": "minecraft:netherite_helmet",
+        "count": 1,
+        "name_raw": "&a&lSatiety",
+        "lore": [
+          "&fCommon Arcane &fEnchantment",
+          "&a▪ &7Type: &eArmor Head",
+          "&a▪ &7Max level: &e1",
+          "&fDescription:",
+          "&fNo longer lose hunger"
+        ],
+        "icon": "minecraft:netherite_helmet",
+        "slot": 16
+      },
+      {
+        "id": "minecraft:diamond_chestplate",
+        "count": 1,
+        "name_raw": "&a&lɪᴛᴇᴍ ʀᴇᴘᴀɪʀᴇʀ",
+        "lore": [
+          "&fRepair damaged&f equipment.",
+          "&fSave valuable&f enchanted items.",
+          "&a&lFeatures:",
+          "&a▪ &7Completely fixes damaged items",
+          "&a▪ &7Experience-based cost, works",
+          "&a▪ &7on weapons, tools &7armor",
+          "&e► Click to open repairer"
+        ],
+        "icon": "minecraft:diamond_chestplate",
+        "slot": 18
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 19
+      },
+      {
+        "id": "minecraft:iron_ingot",
+        "count": 1,
+        "name_raw": "&6&lɪᴛᴇᴍ ᴛɪɴᴋᴇʀᴇʀ",
+        "lore": [
+          "&fRecycle unwanted&f equipment",
+          "&fConvert items into experience&f.",
+          "&6&lFeatures:",
+          "&6▪ &7Get XP from enchanted items",
+          "&6▪ &7Better items give more rewards",
+          "&e► Click to open tinkerer"
+        ],
+        "icon": "minecraft:iron_ingot",
+        "slot": 27
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 28
+      },
+      {
+        "id": "minecraft:purple_dye",
+        "count": 1,
+        "name_raw": "&d&lɪᴛᴇᴍ ᴄᴏᴍʙɪɴᴇʀ",
+        "lore": [
+          "&fMerge items with the same enchantment",
+          "&fCreate higher level gear efficiently",
+          "&d&lFeatures:",
+          "&d▪ &7Combine identical enchantments",
+          "&d▪ &7Upgrade equipment tiers",
+          "&d▪ &7Preserve item durability",
+          "&d▪ &7Cost based on enchant level",
+          "&e► Click to open combiner"
+        ],
+        "icon": "minecraft:purple_dye",
+        "slot": 36
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 37
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&b&lʙᴏᴏꜱᴛᴇʀꜱ",
+        "lore": [
+          "&fBoosters upon activation increases",
+          "&fyour multiplier on diffrent kind of",
+          "&fthings, making them extremely valuable!",
+          "&fTotal Boosters Owned: &d6",
+          "&b&lFeatures:",
+          "&b▪ &7Current active Boosters",
+          "&b▪ &7Your Boosters",
+          "&b▪ &7Boosters shop",
+          "&e► Click to open boosters"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 45
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 46
+      },
+      {
+        "id": "minecraft:arrow",
+        "count": 1,
+        "name_raw": "&a◀ &a&lPrevious Page",
+        "lore": [],
+        "icon": "minecraft:arrow",
+        "slot": 48
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&6&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fHere you will find &eall&f enchants",
+          "&fthat you can get by opening an",
+          "&denchantment book&f.",
+          "&fEnchantment Books &fcan be purchased",
+          "&fby using &bexperience&f. You can gain exp",
+          "&fthrough &fmining &for killing&f mobs.",
+          "&fYou can purchase enchantment books",
+          "&fby using &d/enchanter&f.",
+          "&e► Click to buy a book"
+        ],
+        "icon": "minecraft:book",
+        "slot": 49
+      },
+      {
+        "id": "minecraft:comparator",
+        "count": 1,
+        "name_raw": "&e&lSort Enchantments",
+        "lore": [
+          "Currently Viewing: Default Order",
+          "&e&lClick to sort by &f&lAlphabetical &e&lOrder"
+        ],
+        "icon": "minecraft:comparator",
+        "slot": 50
+      },
+      {
+        "id": "minecraft:gold_ingot",
+        "count": 1,
+        "name_raw": "&6&lɢᴏʟᴅ ꜱʜᴏᴘ",
+        "lore": [
+          "&fSpend &6Gold &for &fIron &fto buy",
+          "&fpowerful &cexclusive items&f and perks.",
+          "&ePurchase Gold from:",
+          "&b&nstore.pika-network.net",
+          "&fHere you can find, and buy:",
+          "&6▪ &cRanks&f, &dCrate Keys&f, &eClasses",
+          "&6▪ &bPasses&f and more!",
+          "&e► Click to open goldshop"
+        ],
+        "icon": "minecraft:gold_ingot",
+        "slot": 51
+      },
+      {
+        "id": "minecraft:compass",
+        "count": 1,
+        "name_raw": "&e&lꜱᴡɪᴛᴄʜ ᴍᴇɴᴜꜱ",
+        "lore": [
+          "&e&lFeatures:",
+          "&e▪ &aEnchanter Menu",
+          "&e▪ &7Cosmetics Menu",
+          "&e▪ &7Games Menu",
+          "&e▪ &7Leveling Menu",
+          "&e▪ &7Loadout Menu",
+          "&e▪ &7Shop Menu",
+          "&e▪ &7Teams Menu",
+          "&e▪ &7Gold Shop Menu",
+          "&e► Left click to open next menu",
+          "&e► Right click to open previous menu"
+        ],
+        "icon": "minecraft:compass",
+        "slot": 53
+      },
+      {
+        "id": "minecraft:netherite_sword",
+        "count": 1,
+        "name_raw": "<gradient:#BC16FE:#FFFF00>Absolute Solver",
+        "lore": [],
+        "icon": "minecraft:netherite_sword",
+        "slot": 81
+      },
+      {
+        "id": "minecraft:netherite_pickaxe",
+        "count": 1,
+        "name_raw": "<gradient:#FF4FAD:#71043E>Katagiri",
+        "lore": [],
+        "icon": "minecraft:netherite_pickaxe",
+        "slot": 82
+      },
+      {
+        "id": "minecraft:netherite_chestplate",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#7885B5>Abyss Chestplate",
+        "lore": [],
+        "icon": "minecraft:netherite_chestplate",
+        "slot": 83
+      },
+      {
+        "id": "minecraft:netherite_shovel",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#837CA6>Abyss Shovel",
+        "lore": [
+          "<gradient:#2557EF:#837CA6>Item Ability: Replace",
+          "&8▪ &fReplant crops in a 3x3 radius",
+          "&fwith each crop break."
+        ],
+        "icon": "minecraft:netherite_shovel",
+        "slot": 84
+      },
+      {
+        "id": "minecraft:wooden_pickaxe",
+        "count": 1,
+        "name_raw": "&6&lSpawner Wrench",
+        "lore": [
+          "&7Use this wrench to break",
+          "&7a spawner. This wrench will",
+          "&7break after usage."
+        ],
+        "icon": "minecraft:wooden_pickaxe",
+        "slot": 89
+      }
+    ]
+  }
+]

@@ -1,0 +1,705 @@
+{
+  "enchantments": [
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lHydro Aspect",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f5% damage increase against Enderman",
+        "&fBlaze, and Magma Cube"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lStrafe",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fBow charges 2x faster"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lAegis",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eArmor Chest",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f1% chance to dodge incoming damage"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lInquisitive",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e4",
+        "&fDescription:",
+        "&f50% more experience from mobs per level"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lExecution",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f10% damage increase against Vindicator",
+        "&fPillager, Evoker, Ravager and Vex"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lMystical Touch",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eTools",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fGain Speed I and Haste I for",
+        "&f5s after breaking an ore."
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lAerohunts",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f5% damage increase against",
+        "&fFlying/Floating mobs"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lTemposwift",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eArmor Feet",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fWhen down to 30% health,",
+        "&fplayer will receive Speed III for 5 seconds"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lMiniatures Stomper",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f5% damage increase against Endermite",
+        "&fSilverfish and Vex"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lScavenger",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fSteal 5% of enemy balance on kill"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lBash",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f20% bonus damage on first hit",
+        "&fEnters infinite cooldown after first hit",
+        "&fCooldown resets after 5 seconds out of combat"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lMoltens Touch",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eTools",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fAutosmelt mined ore into smelted variant"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lEnraged",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f20% damage increase",
+        "&fIncrease reloading time by",
+        "&f40% post hit (Mining Fatigue",
+        "&f 2 for the duration)"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lBloodlust",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f10% chance to restore half a heart",
+        "&fwhen landing a critical hit"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lMilitia",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fA 0.5% chance to drop the item which a player is holding"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lCrimson",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fDeals extra damage based",
+        "&fon missing health, up to 30%"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lChopper",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eTools",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f25% chance to drop double logs"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lUppercut",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f10% more damage on critical hit",
+        "&fKnocks mobs and players upward"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lProwless",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fArrow fired from bow will now home into mobs and players, with a homing range of 5 blocks"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lRepelation",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fRight-Click the sword to transfer all the debuff into the sword",
+        "&fhit will apply all the debuffs onto the mob or player"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lFrenzified",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fAfter hitting a shot with an arrow, receive Speed I for 5 seconds",
+        "&f+2 seconds per level and Speed II at maximum level"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lOverloaded",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f5% chance to fire a overloaded rocket fuse that deal 150%",
+        "&fdamage to everything and also self damage the user"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lVenom",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f5% chance to give Poison II for 3s"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lExplosion",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fWhen an arrow lands it will cause an explosion"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lGlacial",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eCrossbow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f60% chance to freeze mobs and players",
+        "&fwith Slowness IV for 2 seconds"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lClusterbomb",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&fAt max charge, fire 2 more arrows.",
+        "&f+1 arrow per level"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lQuelling",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f10% damage increase against Piglin",
+        "&fPiglin Brute, and Hoglin"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lArmor Crunch",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fDeal 20% less damage",
+        "&fReduce armor durability by",
+        "&fup to 3 extra points every hit"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lTitanfall",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f10% damage increase against Iron",
+        "&fGolem, Ghast, Warden and Ravager"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lIcetide",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eTrident",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fTrident yields Dolphin's Grace",
+        "&fwhile held. Applies Slowness",
+        "&ffor 10 seconds to hit enemies"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lSatiety",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eArmor Head",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fNo longer lose hunger"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lButchering",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f5% damage increase against passive mobs"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lDisarmor",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fA 0.5% chance to disarmor 1 of the armor piece of the player"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lHeatwaves",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eTrident",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fTrident yields Fire Resistance",
+        "&fwhile held. Applies Fire",
+        "&ffor 7 seconds to hit enemies"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lStormhailer",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fStrike lightning on attacked enemies"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lWhirlwind",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fArrow fired becomes one with",
+        "&fthe wind, arrow fired will not",
+        "&fbe affected by gravity",
+        "&fbut will have a fixed range of 60 blocks"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lHeart Stealer",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fAfter killing a player, instead",
+        "&fof adding 1 Heart, add 2 Hearts instead"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lPurification",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eArmor Head",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fAll negative effects will no longer work",
+        "&fon player, but reduce armor point by 50%"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lDepth Crusher",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f10% damage increase against Aquatic Hostiles"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lSprees",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eTools",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fAfter breaking 100 blocks",
+        "&fgain Haste 3 for 20s"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lCleave",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&f15% less damage",
+        "&f+2 block increased range",
+        "&fAOE like Sweeping Edge"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lMeltdown",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fWhen landing a critical hit, 5% chance to",
+        "&fcause an explosion that damages everyone nearby"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lBinding",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eArmor Feet",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f5% chance for mobs and players who hit the player",
+        "&fto receive Slowness 3 for 0.5 seconds"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lRejuvenate",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eArmor Head",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&fHealing increased by 10%",
+        "&fIncreased by 5% per level"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lCrystallization",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eArmor Legs",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&fReduce damage against End Crystal explosion",
+        "&fand Respawn Anchor explosion by 70%",
+        "&fwhile blocking it with a shield"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lDevourer",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eWeapon",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&f1 heart less damage to mobs and players",
+        "&fHeals the player 1 heart instead",
+        "&f5% trigger chance",
+        "&f+2.5% trigger chance per level"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lInitiator",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eBow",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fFirst arrow shot that hit a mob",
+        "&for player will have +60% damage,",
+        "&fthen enter infinite cooldown",
+        "&fLeaving combat for 7 seconds",
+        "&fwill reset cooldown of Initiator"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lReflection",
+      "lore": [
+        "&fCommon Refined &fEnchantment",
+        "&a▪ &7Type: &eArmor Chest",
+        "&a▪ &7Max level: &e3",
+        "&fDescription:",
+        "&fReduce incoming damage by 100%",
+        "&fReflect 20% of the damage back to the",
+        "&fmobs or players with a 10% trigger chance",
+        "&f+5% damage to Reflection and +2.5% trigger chance per level"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lFeatherlight",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eArmor Feet",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fImmune to fall damage"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    },
+    {
+      "id": "minecraft:enchanted_book",
+      "name_raw": "&a&lLifebloom",
+      "lore": [
+        "&fCommon Arcane &fEnchantment",
+        "&a▪ &7Type: &eArmor Chest",
+        "&a▪ &7Max level: &e1",
+        "&fDescription:",
+        "&fWhen health is lower than 10 Heart",
+        "&frecieve Regeneration VI and Resistance V for 3 seconds"
+      ],
+      "icon": "minecraft:enchanted_book",
+      "count": 1
+    }
+  ]
+}

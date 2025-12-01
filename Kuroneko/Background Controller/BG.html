@@ -1,0 +1,16 @@
+<div id="bg-settings">
+    <button id="bg-settings-btn">⚙️</button>
+    <div id="bg-settings-menu" class="hidden">
+        <label for="bg-select">Background:</label>
+        <select id="bg-select">
+            <option value="none">None</option>
+            <option value="preset">Preset Image</option>
+            <option value="custom">Custom URL</option>
+        </select>
+
+        <input type="text" id="bg-custom-url" placeholder="Enter image URL and press Enter" style="display:none;">
+
+        <label for="bg-brightness">Brightness:</label>
+        <input type="range" id="bg-brightness" min="0" max="1" step="0.01" value="1">
+    </div>
+</div>

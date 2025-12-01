@@ -1,0 +1,114 @@
+.watermark {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    height: 65px;
+    width: 350px;
+    background: url('https://assets.ppy.sh/user-profile-covers/9938020/c53c8d330ea57b8428ba877ac664601e692ac519e717836e62e5be7a17582a7c.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+}
+.watermark-left {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    height: 65px;
+    width: 262px;
+    background: url('https://i.ibb.co/sdkCDzFD/q9pok1limzv71.jpg');
+    background-size: cover;
+    background-position: center -70px;
+    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    z-index: 1000;
+}
+
+.watermark-left-text {
+    background: rgba(0, 0, 0, 0.7);     padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.watermark-text {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+#bottom-bar {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+    z-index: 1000;
+    height: 65px;
+}
+
+.watermark, .watermark-left {
+    height: 65px;
+    display: flex;
+    align-items: center;
+}
+
+#scroller-container {
+    flex: 1;
+    height: 65px;
+    margin: 0 10px;
+    overflow: hidden;
+    position: relative;
+    border-radius: 5px;
+    background: #111;
+    border: 2px solid #555; 
+}
+
+
+#scroller-track {
+    display: flex;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#scroller-track img {
+    height: 100%;
+    margin-right: 5px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+#scroller-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-family: monospace;
+    font-size: 14px;
+    background: rgba(0,0,0,0.5);
+    z-index:10;
+}

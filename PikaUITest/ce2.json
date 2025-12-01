@@ -1,0 +1,173 @@
+[
+  {
+    "page": 1,
+    "titles": {
+      "main": "Main Inventory - Page 1/9",
+      "hotbar": "Categories - Page 1/9"
+    },
+    "items": [
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 12
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 13
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 21
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 22
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 23
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 30
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 31
+      },
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&l&dClick here to reveal enchantment",
+        "lore": [
+          "&7This &dMagcial Book&7 contains",
+          "&71 &9Arcane Enchantment&7. Are you",
+          "&7ready to see what's inside?",
+          "&eClick here to reveal enchantment"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 32
+      },
+      {
+        "id": "minecraft:barrier",
+        "count": 1,
+        "name_raw": "&c&lɢᴏ ᴀɢᴀɪɴ?",
+        "lore": [
+          "&6&l If so, &4ɢᴏᴏᴅ ʟᴜᴄᴋ"
+        ],
+        "icon": "minecraft:barrier",
+        "slot": 45
+      },
+      {
+        "id": "minecraft:compass",
+        "count": 1,
+        "name_raw": "&c&lᴅᴏɴᴇ ɢᴀᴍʙʟɪɴɢ?",
+        "lore": [
+          "&l&4ᴜɴꜰᴏʀᴛᴜɴᴀᴛᴇ",
+          "&e▪ &aBack to Custom Enchantments"
+        ],
+        "icon": "minecraft:compass",
+        "slot": 53
+      }
+    ]
+  },
+  {
+    "page": 2,
+    "titles": {
+      "main": "Main Inventory - Page 2/4",
+      "hotbar": "Categories - Page 2/4"
+    },
+    "items": []
+  },
+  {
+    "page": 3,
+    "titles": {
+      "main": "Main Inventory - Page 3/4",
+      "hotbar": "Categories - Page 3/4"
+    },
+    "items": []
+  },
+  {
+    "page": 4,
+    "titles": {
+      "main": "Main Inventory - Page 4/4",
+      "hotbar": "Categories - Page 4/4"
+    },
+    "items": []
+  }
+]

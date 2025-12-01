@@ -1,0 +1,63 @@
+/* Minecraft-style font + pixel rendering */
+body {
+    background: #2b2b2b;
+    font-family: Arial, sans-serif;
+    color: #eee;
+    image-rendering: pixelated;
+}
+
+/* Item icon styling */
+.mcui-item {
+    width: 32px;
+    height: 32px;
+    position: relative;
+}
+
+.mcui-item img {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+}
+
+/* Tooltip */
+.mcui-tooltip {
+    position: absolute;
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid #555;
+    padding: 6px 10px;
+    color: white;
+    font-size: 14px;
+    pointer-events: none;
+    display: none;
+    white-space: pre;
+    z-index: 9999;
+}
+
+const leftText = document.getElementById('wm-left-text');
+const leftTip = document.getElementById('wm-left-tip');
+
+leftText.addEventListener('mouseenter', () => {
+    leftTip.style.display = 'block';
+    leftTip.innerHTML =
+        "<span style='color:#ffa500;font-weight:bold;'>Notourconcern</span>\n" +
+        "<span style='color:#ffffff;'>Balance:</span> <span style='color:#00ff00;'>$170.422 Million</span>\n" +
+        "<span style='color:#ffffff;'>Exp:</span> <span style='color:#00b7ff;'>122,261 ✤</span>\n" +
+        "<span style='color:#ffffff;'>Kills:</span> <span style='color:#00ff00;'>2</span>\n" +
+        "<span style='color:#ffffff;'>Deaths:</span> <span style='color:#ff3b3b;'>0</span>\n" +
+        "<span style='color:#ffffff;'>Hearts:</span> <span style='color:#ff3b3b;'>36 ❤</span>\n" +
+        "<span style='color:#ffffff;'>Level:</span> <span style='color:#b060ff;'>︱ ⌈ 267 ⌉ ︱</span>\n" +
+        "<span style='color:#ffa500;font-weight:bold;'>Team</span>\n" +
+        "<span style='color:#ffffff;'>Team:</span> <span style='color:#ffffff;'>KOTH</span>";
+});
+
+leftText.addEventListener('mouseleave', () => {
+    leftTip.style.display = 'none';
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (leftTip.style.display === 'block') {
+        leftTip.style.left = (e.pageX + 15) + 'px';
+        leftTip.style.top = (e.pageY + 15) + 'px';
+    }
+});
+z

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MCUI Inventory Demo</title>
+    <link rel="stylesheet" href="css/mcui.css">
+    <link rel="stylesheet" href="css/inventory.css">
+</head>
+<body>
+
+<h1>Legit just the entire enchanter menu</h1>
+
+<div id="inventory"></div>
+
+<div id="bottom-bar">
+    <div class="watermark-left">
+        <span class="watermark-left-text" id="wm-left-text">Notourconcern</span>
+        <div class="mcui-tooltip" id="wm-left-tip"></div>
+    </div>
+
+    <div id="scroller-container">
+        <div id="scroller-track"></div>
+        <div id="scroller-loading">Loading all images ᓚᘏᗢ 0%</div>
+    </div>
+
+    <div class="watermark">
+        <span class="watermark-text">@EvilMel</span>
+    </div>
+</div>
+<div id="bg-settings">
+    <button id="bg-settings-btn">⚙️</button>
+    <div id="bg-settings-menu" class="hidden">
+        <label for="bg-select">Background:</label>
+        <select id="bg-select">
+            <option value="none">None</option>
+            <option value="preset">Preset Image</option>
+            <option value="custom">Custom URL</option>
+        </select>
+
+        <input type="text" id="bg-custom-url" placeholder="Enter image URL and press Enter" style="display:none;">
+
+        <label for="bg-brightness">Brightness:</label>
+        <input type="range" id="bg-brightness" min="0" max="1" step="0.01" value="1">
+    </div>
+</div>
+<script src="js/mcui.js"></script>
+<script src="js/inventory.js"></script>
+
+</body>
+</html>

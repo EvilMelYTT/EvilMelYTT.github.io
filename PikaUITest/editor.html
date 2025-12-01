@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Minecraft Inventory Editor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #FFD700;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #ccc;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .editor-panel {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 10px;
+            border: 3px solid #444;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .inventory-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .inventory-section {
+            text-align: center;
+        }
+
+        .inventory-section h2 {
+            color: #FFD700;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 64px);
+            grid-template-rows: repeat(6, 64px);
+            gap: 3px;
+            background: #8B8B8B;
+            padding: 12px;
+            border: 4px solid #373737;
+            border-radius: 6px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+
+.hotbar-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 64px);
+    grid-template-rows: 64px;
+    gap: 3px;
+    background: #8B8B8B;
+    padding: 12px;
+    border: 4px solid #373737;
+    border-radius: 6px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+}
+        .slot {
+            width: 64px;
+            height: 64px;
+            background: #8B8B8B;
+            border: 3px solid #373737;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .slot:hover {
+            background: #9B9B9B;
+            border-color: #484848;
+            transform: scale(1.08);
+        }
+
+        .slot.selected {
+            border-color: #FFD700;
+            border-width: 4px;
+            background: #A0A0A0;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .slot.hotbar {
+            background: #7B7B7B;
+        }
+
+        .slot.empty {
+            background: #8B8B8B;
+        }
+
+        .slot-number {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.8);
+            background: rgba(0,0,0,0.5);
+            padding: 1px 4px;
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        .item-icon {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+        }
+
+        .item-icon img {
+            max-width: 52px;
+            max-height: 52px;
+            image-rendering: pixelated;
+        }
+
+        .panel-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #444;
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #FFD700;
+            font-size: 1.1em;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #555;
+            border-radius: 6px;
+            background: #1a1a1a;
+            color: white;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #FFD700;
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #45a049, #4CAF50);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #1976D2, #2196F3);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+            transform: translateY(-2px);
+        }
+
+        .page-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #373737;
+            border-radius: 8px;
+        }
+
+        .page-controls span {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #FFD700;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .lore-line {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .lore-line input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .lore-line button {
+            padding: 8px 12px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            flex: 0 0 auto;
+        }
+
+        .tooltip-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #373737;
+            border-radius: 6px;
+            min-height: 100px;
+            font-family: 'Minecraft', 'Courier New', monospace;
+            line-height: 1.4;
+        }
+
+        .mcui-tooltip {
+            position: fixed;
+            background: rgba(0, 0, 0, 0.95);
+            border: 3px solid #373737;
+            border-radius: 6px;
+            padding: 12px;
+            color: white;
+            font-size: 14px;
+            z-index: 10000;
+            max-width: 350px;
+            pointer-events: none;
+            font-family: 'Minecraft', 'Courier New', monospace;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            display: none;
+            line-height: 1.4;
+        }
+
+        .debug-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #333;
+            border-radius: 6px;
+            font-size: 12px;
+            max-height: 120px;
+            overflow-y: auto;
+            border-left: 4px solid #FFD700;
+        }
+
+        h1, h2, h3 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #FFD700;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #FFD700;
+            font-size: 1.4em;
+            border-bottom: 2px solid #FFD700;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛠️ Minecraft Inventory Editor</h1>
+        <p>Design and export custom Minecraft inventory layouts</p>
+    </div>
+    
+    <div class="container">
+        <!-- Editor Panel -->
+        <div class="editor-panel">
+            <div class="panel-section">
+                <div class="page-controls">
+                    <button onclick="changePage(-1)" class="btn-secondary">◀ Previous</button>
+                    <span>Page <span id="current-page">1</span>/4</span>
+                    <button onclick="changePage(1)" class="btn-secondary">Next ▶</button>
+                </div>
+
+                <h3>📝 Item Editor</h3>
+                <div class="form-group">
+                    <label>Selected Slot: <span id="current-slot" style="color: #FFD700;">None</span></label>
+                </div>
+            </div>
+<div class="form-group">
+    <label for="inventory-name">🏷️ Main Inventory Title:</label>
+    <input type="text" id="inventory-name" placeholder="Custom Enchants Menu" oninput="updateInventoryTitles()">
+    <div class="help-text">Title for the main 9×6 inventory</div>
+</div>
+
+<div class="form-group">
+    <label for="hotbar-name">🏷️ Hotbar Inventory Title:</label>
+    <input type="text" id="hotbar-name" placeholder="Enchantment Categories" oninput="updateInventoryTitles()">
+    <div class="help-text">Title for the 9×4 category inventory below</div>
+</div>
+            <div class="panel-section">
+                <div class="form-group">
+                    <label for="item-id">🔧 Item ID</label>
+                    <input type="text" id="item-id" placeholder="minecraft:stone" oninput="updateTooltipPreview()">
+                    <div class="help-text">Enter Minecraft item ID like: minecraft:diamond_sword, minecraft:enchanted_book</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="item-name">🏷️ Display Name</label>
+                    <input type="text" id="item-name" placeholder="&a&lAwesome Item" oninput="updateTooltipPreview()">
+                    <div class="help-text">
+                        <strong>Color Codes:</strong> &0⚫ &1🔵 &2🟢 &3🔷 &4🔴 &5🟣 &6🟠 &7⚪ &8🔘 &9🔵 &a🟢 &b🔷 &c🔴 &d🟣 &e🟡 &f⚪<br>
+                        <strong>Formatting:</strong> &l<b>Bold</b> &m<s>Strike</s> &n<u>Underline</u> &o<i>Italic</i> &rReset<br>
+                        <strong>Gradients:</strong> &lt;gradient:#FF5555:#55FFFF&gt;Rainbow Text&lt;/gradient&gt;
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>📖 Lore Lines</label>
+                    <div id="lore-lines"></div>
+                    <button type="button" onclick="addLoreLine()" class="btn-secondary" style="margin-top: 10px; width: 100%;">
+                        ➕ Add Lore Line
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="form-group">
+                    <label>👁️ Tooltip Preview</label>
+                    <div class="tooltip-preview" id="tooltip-preview">
+                        👆 Select a slot and start editing to see your tooltip preview here!
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button onclick="saveItem()" class="btn-primary">💾 Save Item</button>
+                    <button onclick="clearItem()" class="btn-danger">🗑️ Clear Slot</button>
+                </div>
+            </div>
+
+                <div class="button-group">
+                    <button onclick="copyItem()" class="btn-secondary">📋 Copy Item</button>
+                    <button onclick="pasteItem()" class="btn-secondary">📄 Paste Item</button>
+                </div>
+            <div class="panel-section">
+                <h3>📁 Data Management</h3>
+                <div class="button-group">
+                    <button onclick="exportJSON()" class="btn-secondary">📤 Export JSON</button>
+                    <button onclick="importJSON()" class="btn-secondary">📥 Import JSON</button>
+                </div>
+
+                <div class="debug-info" id="debug-info">
+                    ✅ Editor ready! Click any inventory slot to start editing.
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Display -->
+        <div class="inventory-panel">
+            <div class="inventory-section">
+                <h2>🎒 Main Inventory (9×6)</h2>
+                <div class="inventory-grid" id="inventory-grid">
+                    <!-- Main inventory slots 0-53 will be generated here -->
+                </div>
+            </div>
+            
+           <div class="inventory-section">
+    <h2 id="hotbar-title-display">Enchantment Categories</h2>
+    <div class="hotbar-grid" id="hotbar-grid"></div>
+</div>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" style="display: none;" accept=".json">
+
+    <!-- MCUI Tooltip -->
+    <div class="mcui-tooltip" id="mcui-tooltip"></div>
+
+    <script>
+        // ===== SIMPLE STATE MANAGEMENT =====
+        let currentPage = 1;
+        let pages = {};
+        let selectedSlot = null;
+        const TOTAL_SLOTS = 54;
+        const HOTBAR_SLOTS = 36;
+
+        // ===== INITIALIZATION =====
+        function init() {
+            console.log('🚀 Initializing Minecraft Inventory Editor');
+            createEmptyPages();
+            renderAllGrids();
+            loadFromStorage();
+            setupDragAndDrop(); // Add this line
+            updateDebugInfo('Editor ready! Click any slot to start editing. Drag items to move them.');
+        }
+
+        function createEmptyPages() {
+            pages = {};
+            for (let page = 1; page <= 4; page++) {
+                pages[page] = {
+                    page: page,
+                    items: createEmptyItemArray()
+                };
+            }
+        }
+
+        function createEmptyItemArray() {
+            const items = [];
+            for (let i = 0; i < TOTAL_SLOTS + HOTBAR_SLOTS; i++) {
+                items.push({
+                    id: '',
+                    count: 1,
+                    name_raw: '',
+                    lore: [],
+                    icon: '',
+                    slot: i
+                });
+            }
+            return items;
+        }
+
+        // ===== GRID RENDERING =====
+        function renderAllGrids() {
+            renderInventoryGrid();
+            renderHotbarGrid();
+            updateDisplay();
+        }
+
+        function renderInventoryGrid() {
+            const grid = document.getElementById('inventory-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < TOTAL_SLOTS; i++) {
+                const slot = createSlot(i, false);
+                grid.appendChild(slot);
+            }
+        }
+
+        function renderHotbarGrid() {
+            const grid = document.getElementById('hotbar-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < HOTBAR_SLOTS; i++) {
+                const slotIndex = TOTAL_SLOTS + i;
+                const slot = createSlot(slotIndex, true);
+                grid.appendChild(slot);
+            }
+        }
+
+        function createSlot(slotIndex, isHotbar) {
+            const slot = document.createElement('div');
+            slot.className = `slot ${isHotbar ? 'hotbar' : ''} empty`;
+            slot.dataset.slot = slotIndex;
+            slot.draggable = true;
+
+            
+            // Slot number
+            const number = document.createElement('div');
+            number.className = 'slot-number';
+            number.textContent = slotIndex;
+            slot.appendChild(number);
+            
+            // Item icon container
+            const icon = document.createElement('div');
+            icon.className = 'item-icon';
+            slot.appendChild(icon);
+            
+            // Event listeners
+            slot.addEventListener('click', () => selectSlot(slotIndex));
+            slot.addEventListener('mouseenter', (e) => showTooltip(e, slotIndex));
+            slot.addEventListener('mouseleave', hideTooltip);
+            slot.addEventListener('mousemove', (e) => updateTooltipPosition(e));
+            
+            return slot;
+        }
+        // ===== COPY/PASTE =====
+        let copiedItem = null;
+
+        function copyItem() {
+            if (selectedSlot === null) {
+                alert('❌ Please select a slot first!');
+                return;
+            }
+            
+            const item = getItem(selectedSlot);
+            if (!item || !item.id) {
+                alert('❌ No item in selected slot to copy!');
+                return;
+            }
+            
+            copiedItem = {...item};
+            updateDebugInfo(`📋 Copied item from slot ${selectedSlot}`);
+        }
+
+        function pasteItem() {
+            if (selectedSlot === null) {
+                alert('❌ Please select a slot first!');
+                return;
+            }
+            
+            if (!copiedItem) {
+                alert('❌ No item copied! Use "Copy Item" first.');
+                return;
+            }
+            
+            // Create a copy of the item with the new slot number
+            const newItem = {
+                ...copiedItem,
+                slot: selectedSlot
+            };
+            
+            pages[currentPage].items[selectedSlot] = newItem;
+            updateDisplay();
+            saveToStorage();
+            updateDebugInfo(`📄 Pasted item to slot ${selectedSlot}`);
+        }
+        // ===== SIMPLE DRAG AND DROP =====
+        function setupDragAndDrop() {
+            let draggedSlotIndex = null;
+
+            document.addEventListener('dragstart', function(e) {
+                const slot = e.target.closest('.slot');
+                if (slot) {
+                    draggedSlotIndex = parseInt(slot.dataset.slot);
+                    const item = getItem(draggedSlotIndex);
+                    if (item && item.id) {
+                        e.dataTransfer.setData('text/plain', draggedSlotIndex);
+                    } else {
+                        e.preventDefault();
+                        draggedSlotIndex = null;
+                    }
+                }
+            });
+
+            document.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('drop', function(e) {
+                e.preventDefault();
+                const targetSlot = e.target.closest('.slot');
+                
+                if (targetSlot && draggedSlotIndex !== null) {
+                    const targetSlotIndex = parseInt(targetSlot.dataset.slot);
+                    
+                    if (targetSlotIndex !== draggedSlotIndex) {
+                        // Swap the items
+                        const draggedItem = getItem(draggedSlotIndex);
+                        const targetItem = getItem(targetSlotIndex);
+                        
+                        pages[currentPage].items[targetSlotIndex] = {...draggedItem, slot: targetSlotIndex};
+                        pages[currentPage].items[draggedSlotIndex] = targetItem && targetItem.id 
+                            ? {...targetItem, slot: draggedSlotIndex}
+                            : {id: '', count: 1, name_raw: '', lore: [], icon: '', slot: draggedSlotIndex};
+                        
+                        // Update display for both slots
+                        updateDisplay();
+                        saveToStorage();
+                        updateDebugInfo(`✅ Moved item from slot ${draggedSlotIndex} to slot ${targetSlotIndex}`);
+                    }
+                }
+                
+                draggedSlotIndex = null;
+            });
+        }
+        // ===== SLOT MANAGEMENT =====
+        function selectSlot(slotIndex) {
+            // Deselect previous slot
+            if (selectedSlot !== null) {
+                const prevSlot = document.querySelector(`[data-slot="${selectedSlot}"]`);
+                if (prevSlot) {
+                    prevSlot.classList.remove('selected');
+                    prevSlot.classList.add('empty');
+                }
+            }
+            // Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // Only process if we're not typing in an input field
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        return;
+    }
+    
+    // Delete/Backspace - Clear slot
+    if ((e.key === 'Delete' || e.key === 'Backspace') && selectedSlot !== null) {
+        e.preventDefault();
+        clearItem();
+    }
+    
+    // C - Copy item
+    if (e.key === 'c' && selectedSlot !== null) {
+        e.preventDefault();
+        copyItem();
+    }
+    
+    // V - Paste item  
+    if (e.key === 'v' && selectedSlot !== null) {
+        e.preventDefault();
+        pasteItem();
+    }
+});
+            // Select new slot
+            selectedSlot = slotIndex;
+            const newSlot = document.querySelector(`[data-slot="${slotIndex}"]`);
+            if (newSlot) {
+                newSlot.classList.add('selected');
+                newSlot.classList.remove('empty');
+            }
+            
+            document.getElementById('current-slot').textContent = slotIndex;
+            loadItemIntoForm(slotIndex);
+            updateDebugInfo(`Selected slot ${slotIndex} on page ${currentPage}`);
+        }
+
+        function loadItemIntoForm(slotIndex) {
+            const item = getItem(slotIndex);
+            
+            // Clear form
+            document.getElementById('item-id').value = item.id || '';
+            document.getElementById('item-name').value = item.name_raw || '';
+            
+            // Load lore lines
+            const loreContainer = document.getElementById('lore-lines');
+            loreContainer.innerHTML = '';
+            
+            if (item.lore && Array.isArray(item.lore)) {
+                item.lore.forEach(line => {
+                    if (line && typeof line === 'string') {
+                        addLoreLine(line);
+                    }
+                });
+            }
+            
+            updateTooltipPreview();
+        }
+
+        function saveItem() {
+            if (selectedSlot === null) {
+                alert('❌ Please select a slot first!');
+                return;
+            }
+            
+            const itemId = document.getElementById('item-id').value.trim();
+            if (!itemId) {
+                alert('❌ Item ID is required!');
+                return;
+            }
+            
+            const itemName = document.getElementById('item-name').value.trim();
+            const loreLines = getLoreLines();
+            
+            const item = {
+                id: itemId,
+                count: 1,
+                name_raw: itemName,
+                lore: loreLines,
+                icon: itemId,
+                slot: selectedSlot
+            };
+            
+            pages[currentPage].items[selectedSlot] = item;
+            updateDisplay();
+            saveToStorage();
+            
+            // Update slot appearance
+            const slot = document.querySelector(`[data-slot="${selectedSlot}"]`);
+            if (slot) {
+                slot.classList.remove('empty');
+            }
+            
+            updateDebugInfo(`✅ Saved "${itemId}" in slot ${selectedSlot}`);
+        }
+
+        function clearItem() {
+            if (selectedSlot === null) {
+                alert('❌ Please select a slot first!');
+                return;
+            }
+            
+            pages[currentPage].items[selectedSlot] = {
+                id: '',
+                count: 1,
+                name_raw: '',
+                lore: [],
+                icon: '',
+                slot: selectedSlot
+            };
+            
+            loadItemIntoForm(selectedSlot);
+            updateDisplay();
+            saveToStorage();
+            
+            // Update slot appearance
+            const slot = document.querySelector(`[data-slot="${selectedSlot}"]`);
+            if (slot) {
+                slot.classList.add('empty');
+            }
+            
+            updateDebugInfo(`🗑️ Cleared slot ${selectedSlot}`);
+        }
+
+        // ===== LORE MANAGEMENT =====
+        function addLoreLine(initialValue = '') {
+            const container = document.getElementById('lore-lines');
+            const lineDiv = document.createElement('div');
+            lineDiv.className = 'lore-line';
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.placeholder = '&7Enter lore text...';
+            input.value = initialValue;
+            input.oninput = updateTooltipPreview;
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = '×';
+            removeBtn.title = 'Remove this lore line';
+            removeBtn.onclick = () => {
+                lineDiv.remove();
+                updateTooltipPreview();
+            };
+            
+            lineDiv.appendChild(input);
+            lineDiv.appendChild(removeBtn);
+            container.appendChild(lineDiv);
+            updateTooltipPreview();
+        }
+
+        function getLoreLines() {
+            const inputs = document.querySelectorAll('#lore-lines input');
+            const lines = [];
+            inputs.forEach(input => {
+                if (input.value.trim()) {
+                    lines.push(input.value.trim());
+                }
+            });
+            return lines;
+        }
+
+        // ===== TOOLTIP SYSTEM =====
+        function showTooltip(event, slotIndex) {
+            const item = getItem(slotIndex);
+            if (!item || !item.id) return;
+            
+            const tooltip = document.getElementById('mcui-tooltip');
+            tooltip.innerHTML = formatTooltip(item);
+            tooltip.style.display = 'block';
+            updateTooltipPosition(event);
+        }
+
+        function hideTooltip() {
+            document.getElementById('mcui-tooltip').style.display = 'none';
+        }
+
+        function updateTooltipPosition(event) {
+            const tooltip = document.getElementById('mcui-tooltip');
+            if (tooltip.style.display === 'block') {
+                tooltip.style.left = (event.clientX + 20) + 'px';
+                tooltip.style.top = (event.clientY + 20) + 'px';
+            }
+        }
+
+        function formatTooltip(item) {
+            let html = '';
+            
+            // Name - handle empty objects gracefully
+            if (item.name_raw) {
+                if (typeof item.name_raw === 'string') {
+                    html += formatText(item.name_raw) + '<br>';
+                } else if (Array.isArray(item.name_raw) && item.name_raw.length > 0) {
+                    // Convert on-the-fly if we still have objects
+                    const nameText = convertTextComponentsToCodes(item.name_raw);
+                    html += formatText(nameText) + '<br>';
+                }
+            } else if (item.id) {
+                html += formatText('&f' + item.id.replace('minecraft:', '')) + '<br>';
+            }
+            
+            // Lore
+            if (item.lore && item.lore.length > 0) {
+                html += '<br>';
+                item.lore.forEach(line => {
+                    if (line && typeof line === 'string') {
+                        html += formatText(line) + '<br>';
+                    } else if (Array.isArray(line) && line.length > 0) {
+                        // Convert on-the-fly if we still have objects
+                        const lineText = convertTextComponentsToCodes(line);
+                        html += formatText(lineText) + '<br>';
+                    }
+                });
+            }
+            
+            return html || 'Empty Slot';
+        }
+
+        function formatText(text) {
+            if (typeof text !== 'string') return '';
+            
+            // Handle gradients
+            text = text.replace(/<gradient:(#[0-9A-Fa-f]{6}):(#[0-9A-Fa-f]{6})>(.*?)<\/gradient>/g, 
+                (match, start, end, content) => {
+                    let result = '';
+                    for (let i = 0; i < content.length; i++) {
+                        const t = i / (content.length - 1 || 1);
+                        const color = interpolateColor(start, end, t);
+                        result += `<span style="color:${color}">${content[i]}</span>`;
+                    }
+                    return result;
+                });
+            
+            // Handle & codes
+            const colors = {
+                '0':'#000000','1':'#0000AA','2':'#00AA00','3':'#00AAAA','4':'#AA0000','5':'#AA00AA',
+                '6':'#FFAA00','7':'#AAAAAA','8':'#555555','9':'#5555FF','a':'#55FF55','b':'#55FFFF',
+                'c':'#FF5555','d':'#FF55FF','e':'#FFFF55','f':'#FFFFFF'
+            };
+            
+            text = text.replace(/&/g, '§');
+            let output = '';
+            let currentColor = '#FFFFFF';
+            let bold = false, italic = false, underlined = false, strikethrough = false;
+            
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] === '§' && i + 1 < text.length) {
+                    const code = text[++i].toLowerCase();
+                    switch (code) {
+                        case 'l': bold = true; break;
+                        case 'o': italic = true; break;
+                        case 'n': underlined = true; break;
+                        case 'm': strikethrough = true; break;
+                        case 'r': 
+                            bold = italic = underlined = strikethrough = false;
+                            currentColor = '#FFFFFF';
+                            break;
+                        default:
+                            if (colors[code]) {
+                                currentColor = colors[code];
+                                bold = italic = underlined = strikethrough = false;
+                            }
+                    }
+                } else {
+                    let style = `color:${currentColor};`;
+                    if (bold) style += 'font-weight:bold;';
+                    if (italic) style += 'font-style:italic;';
+                    if (underlined) style += 'text-decoration:underline;';
+                    if (strikethrough) style += 'text-decoration:line-through;';
+                    output += `<span style="${style}">${text[i]}</span>`;
+                }
+            }
+            
+            return output;
+        }
+
+        function interpolateColor(color1, color2, factor) {
+            const r1 = parseInt(color1.slice(1, 3), 16);
+            const g1 = parseInt(color1.slice(3, 5), 16);
+            const b1 = parseInt(color1.slice(5, 7), 16);
+            
+            const r2 = parseInt(color2.slice(1, 3), 16);
+            const g2 = parseInt(color2.slice(3, 5), 16);
+            const b2 = parseInt(color2.slice(5, 7), 16);
+            
+            const r = Math.round(r1 + (r2 - r1) * factor);
+            const g = Math.round(g1 + (g2 - g1) * factor);
+            const b = Math.round(b1 + (b2 - b1) * factor);
+            
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+
+        function updateTooltipPreview() {
+            const itemId = document.getElementById('item-id').value.trim();
+            const itemName = document.getElementById('item-name').value.trim();
+            const loreLines = getLoreLines();
+            
+            const previewItem = {
+                id: itemId,
+                name_raw: itemName,
+                lore: loreLines
+            };
+            
+            const preview = document.getElementById('tooltip-preview');
+            preview.innerHTML = formatTooltip(previewItem) || 
+                '👆 Edit the fields above to see your tooltip preview here!';
+        }
+
+        // ===== IMAGE HANDLING =====
+        function updateDisplay() {
+            const items = pages[currentPage].items;
+            console.log('Updating display for page', currentPage, 'items:', items);
+            
+            items.forEach((item, index) => {
+                const slot = document.querySelector(`[data-slot="${index}"]`);
+                if (!slot) return;
+                
+                const icon = slot.querySelector('.item-icon');
+                icon.innerHTML = '';
+                
+                if (item && item.id) {
+                    console.log(`Rendering item in slot ${index}:`, item.id);
+                    slot.classList.remove('empty');
+                    const img = document.createElement('img');
+                    img.src = getItemImageUrl(item.id);
+                    img.alt = item.id;
+                    img.style.width = '52px';
+                    img.style.height = '52px';
+                    img.style.objectFit = 'contain';
+                    img.onerror = () => {
+                        // Show placeholder if image fails to load
+                        icon.innerHTML = '❓';
+                        icon.style.fontSize = '20px';
+                        icon.style.color = '#FFF';
+                    };
+                    icon.appendChild(img);
+                } else {
+                    slot.classList.add('empty');
+                }
+            });
+        }
+function getItemImageUrl(itemId) {
+    const cleanId = itemId.replace('minecraft:', '');
+    const base = 'https://assets.mcasset.cloud/1.21.10/assets/minecraft/textures/';
+    
+    // Handle special cases
+    if (cleanId.includes('stained_glass_pane')) {
+        const color = cleanId.split('_')[0] || 'gray';
+        return `${base}block/${color}_stained_glass.png`;
+    }
+    if (cleanId.includes('glass_pane')) {
+        return `${base}block/glass.png`;
+    }
+    if (cleanId.includes('stained_glass')) {
+        const color = cleanId.split('_')[0] || 'gray';
+        return `${base}block/${color}_stained_glass.png`;
+    }
+    if (cleanId.includes('glass')) {
+        return `${base}block/glass.png`;
+    }
+    if (cleanId === 'compass') {
+        return `${base}item/compass_19.png`;
+    }
+    if (cleanId === "crossbow") {
+        return `${base}item/crossbow_standby.png`;
+    }
+    
+    // Block items that need block/ path
+    const blockItems = [
+        'anvil', 'crafting_table', 'furnace', 'enchanting_table', 'chest', 
+        'ender_chest', 'shulker_box', 'barrel', 'smithing_table', 'loom',
+        'stonecutter', 'grindstone', 'cartography_table', 'lectern', 'bell'
+    ];
+    
+    if (blockItems.includes(cleanId)) {
+        return `${base}block/${cleanId}.png`;
+    }
+    
+    // Default to item texture
+    return `${base}item/${cleanId}.png`;
+}
+        // ===== PAGE MANAGEMENT =====
+        function changePage(delta) {
+            const newPage = currentPage + delta;
+            if (newPage >= 1 && newPage <= 4) {
+                currentPage = newPage;
+                document.getElementById('current-page').textContent = currentPage;
+                selectedSlot = null;
+                document.getElementById('current-slot').textContent = 'None';
+                renderAllGrids();
+                updateDebugInfo(`📄 Switched to page ${currentPage}`);
+            }
+        }
+
+        // ===== DATA MANAGEMENT =====
+        function getItem(slotIndex) {
+            return pages[currentPage].items[slotIndex] || {
+                id: '', name_raw: '', lore: [], count: 1, icon: '', slot: slotIndex
+            };
+        }
+
+function exportJSON() {
+    const exportData = [];
+    for (let page = 1; page <= 4; page++) {
+        // Export ALL pages, even empty ones
+        exportData.push({
+            page: page,
+            titles: pages[page].titles || {
+                main: `Main Inventory - Page ${page}/4`,
+                hotbar: `Categories - Page ${page}/4`
+            },
+            items: pages[page].items.filter(item => item && item.id)
+        });
+    }
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const blob = new Blob([dataStr], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary file input to trigger save as dialog
+    const a = document.createElement('a');
+    a.href = url;
+    
+    // Get current date for default filename
+    const date = new Date();
+    const dateString = date.toISOString().split('T')[0];
+    a.download = `minecraft-inventory-${dateString}.json`;
+    
+    // Trigger click with a small delay to ensure URL is ready
+    setTimeout(() => {
+        a.click();
+        URL.revokeObjectURL(url);
+    }, 100);
+    
+    updateDebugInfo(`✅ Exported all 4 pages - Save As dialog opened`);
+}
+        function importJSON() {
+            document.getElementById('file-input').click();
+        }
+
+        document.getElementById('file-input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    importData(data);
+                } catch (error) {
+                    alert('❌ Error importing file: ' + error.message);
+                    updateDebugInfo('❌ Import failed: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+function importData(data) {
+    if (!Array.isArray(data)) {
+        throw new Error('Invalid file format - expected array of pages');
+    }
+    
+    console.log('Importing data:', data);
+    
+    // Reset to empty pages but keep the structure
+    createEmptyPages();
+    
+    data.forEach(pageData => {
+        const pageNum = pageData.page;
+        console.log(`Processing page ${pageNum}:`, pageData);
+        
+        // Import titles if they exist
+        if (pageData.titles) {
+            pages[pageNum].titles = pageData.titles;
+        }
+        
+        if (pageNum >= 1 && pageNum <= 4 && pageData.items && Array.isArray(pageData.items)) {
+            pageData.items.forEach((item, index) => {
+                if (item && item.id) {
+                    // Use the item's slot if provided, otherwise use array index
+                    const slotIndex = item.slot !== undefined ? parseInt(item.slot) : index;
+                    
+                    console.log(`Importing item to slot ${slotIndex}:`, item);
+                    
+                    if (slotIndex >= 0 && slotIndex < pages[pageNum].items.length) {
+                        // Convert to simple format - handle both string and object formats
+                        let name_raw = '';
+                        
+                        // Handle name conversion
+                        if (typeof item.name_raw === 'string') {
+                            name_raw = item.name_raw;
+                        } else if (item.name_raw && Array.isArray(item.name_raw)) {
+                            // Convert array of text components to string with & codes
+                            name_raw = convertTextComponentsToCodes(item.name_raw);
+                        } else if (item.name && typeof item.name === 'string') {
+                            name_raw = item.name;
+                        } else if (item.name && Array.isArray(item.name)) {
+                            name_raw = convertTextComponentsToCodes(item.name);
+                        }
+                        
+                        // Handle lore conversion
+                        let lore = [];
+                        if (Array.isArray(item.lore)) {
+                            lore = item.lore.map(line => {
+                                if (typeof line === 'string') {
+                                    return line;
+                                } else if (Array.isArray(line)) {
+                                    return convertTextComponentsToCodes(line);
+                                } else if (typeof line === 'object' && line !== null) {
+                                    // Handle single object format
+                                    return convertTextComponentToCodes(line);
+                                }
+                                return String(line);
+                            });
+                        }
+                        
+                        const simpleItem = {
+                            id: String(item.id),
+                            count: item.count || 1,
+                            name_raw: name_raw,
+                            lore: lore,
+                            icon: item.icon || item.id,
+                            slot: slotIndex
+                        };
+                        
+                        console.log(`Setting item in page ${pageNum}, slot ${slotIndex}:`, simpleItem);
+                        pages[pageNum].items[slotIndex] = simpleItem;
+                    } else {
+                        console.warn(`Invalid slot index ${slotIndex} for item:`, item);
+                    }
+                }
+            });
+        }
+    });
+    
+    currentPage = 1;
+    document.getElementById('current-page').textContent = currentPage;
+    renderAllGrids();
+    saveToStorage();
+    
+    // Force update display to show imported items
+    updateDisplay();
+    
+    updateDebugInfo(`✅ Imported ${data.length} pages successfully - items should be visible now`);
+}
+
+// Add these helper functions for text conversion
+function convertTextComponentsToCodes(components) {
+    if (!Array.isArray(components)) return '';
+    
+    return components.map(component => {
+        if (typeof component === 'string') {
+            return component;
+        } else if (typeof component === 'object' && component !== null) {
+            return convertTextComponentToCodes(component);
+        }
+        return String(component);
+    }).join('');
+}
+
+function convertTextComponentToCodes(component) {
+    if (!component || typeof component !== 'object') return '';
+    
+    let result = '';
+    
+    // Handle text property
+    const text = component.text || '';
+    
+    // Add color codes
+    if (component.color) {
+        const colorMap = {
+            'black': '&0', 'dark_blue': '&1', 'dark_green': '&2', 'dark_aqua': '&3',
+            'dark_red': '&4', 'dark_purple': '&5', 'gold': '&6', 'gray': '&7',
+            'dark_gray': '&8', 'blue': '&9', 'green': '&a', 'aqua': '&b',
+            'red': '&c', 'light_purple': '&d', 'yellow': '&e', 'white': '&f'
+        };
+        
+        if (component.color.startsWith('#')) {
+            // For hex colors, create gradient format
+            result += `<gradient:${component.color}:${component.color}>${text}</gradient>`;
+        } else {
+            result += (colorMap[component.color] || '') + text;
+        }
+    } else {
+        result += text;
+    }
+    
+    // Add formatting
+    if (component.bold) result = '&l' + result;
+    if (component.italic) result = '&o' + result;
+    if (component.underlined) result = '&n' + result;
+    if (component.strikethrough) result = '&m' + result;
+    
+    // Handle extra components (like with)
+    if (component.extra && Array.isArray(component.extra)) {
+        result += convertTextComponentsToCodes(component.extra);
+    }
+    
+    return result;
+}
+
+// Also update the inventory titles function to handle imported titles
+function loadInventoryTitles() {
+    for (let page = 1; page <= 4; page++) {
+        if (pages[page].titles) {
+            if (pages[page].titles.main) {
+                document.getElementById('inventory-name').value = pages[page].titles.main;
+            }
+            if (pages[page].titles.hotbar) {
+                document.getElementById('hotbar-name').value = pages[page].titles.hotbar;
+            }
+        }
+    }
+    updateInventoryTitles();
+}
+
+// Make sure to call loadInventoryTitles in your init function
+function init() {
+    console.log('🚀 Initializing Minecraft Inventory Editor');
+    createEmptyPages();
+    renderAllGrids();
+    loadFromStorage();
+    setupDragAndDrop();
+    loadInventoryTitles(); // Add this line
+    updateDebugInfo('Editor ready! Click any slot to start editing. Drag items to move them.');
+}function updateInventoryTitles() {
+    const mainTitle = document.getElementById('inventory-name').value;
+    const hotbarTitle = document.getElementById('hotbar-name').value;
+    
+    // Update the display titles
+    document.querySelector('.inventory-section h2').textContent = mainTitle || 'Main Inventory (9×6)';
+    document.getElementById('hotbar-title-display').textContent = hotbarTitle || 'Categories';
+    
+    // Save titles to current page
+    if (pages[currentPage]) {
+        if (!pages[currentPage].titles) {
+            pages[currentPage].titles = {};
+        }
+        pages[currentPage].titles.main = mainTitle;
+        pages[currentPage].titles.hotbar = hotbarTitle;
+        saveToStorage();
+    }
+}
+// ===== STORAGE =====
+        function saveToStorage() {
+            try {
+                localStorage.setItem('mc-inventory-editor', JSON.stringify({
+                    pages: pages,
+                    currentPage: currentPage
+                }));
+            } catch (error) {
+                console.warn('Failed to save to storage:', error);
+            }
+        }
+
+        function loadFromStorage() {
+            try {
+                const saved = localStorage.getItem('mc-inventory-editor');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    pages = data.pages || pages;
+                    currentPage = data.currentPage || currentPage;
+                    document.getElementById('current-page').textContent = currentPage;
+                    renderAllGrids();
+                    loadInventoryTitles();
+                    updateDebugInfo('📂 Loaded data from browser storage');
+                }
+            } catch (error) {
+                console.warn('Failed to load from storage:', error);
+            }
+        }
+
+        // ===== UTILITIES =====
+        function updateDebugInfo(message) {
+            document.getElementById('debug-info').textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        }
+
+        // ===== INITIALIZE =====
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
