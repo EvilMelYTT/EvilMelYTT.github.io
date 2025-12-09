@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MC Rename Converter</title>
+<style>
+body { font-family: sans-serif; max-width:900px; margin:30px auto; padding:10px; }
+textarea { width:100%; min-height:120px; font-family: monospace; font-size:14px; margin-bottom:10px; }
+button { padding:6px 12px; margin:5px 5px 5px 0; cursor:pointer; }
+.preview { border:1px solid #ccc; padding:10px; min-height:60px; white-space:pre-wrap; font-family:sans-serif; }
+</style>
+</head>
+<body>
+<h2>Minecraft Color Converter</h2>
+
+<textarea id="input"></textarea>
+
+<button onclick="runConvert('A')">Convert → EssentialsX</button>
+<button onclick="runConvert('B')">Convert → &x format</button>
+<button onclick="runConvert('C')">Convert → C1 (no duplicate &x)</button>
+<button onclick="copyOutput()">Copy Output</button>
+
+<textarea id="output" readonly></textarea>
+
+<div class="preview" id="preview"></div>
+
+<script>
+/* Extracts a 6-digit hex color from any supported format */
+function extractHex(s) {
+    let m1 = s.match(/^&#([0-9a-fA-F]{6})/);
+    if (m1) return m1[1];
+    let m2 = s.match(/^#([0-9a-fA-F]{6})/);
+    if (m2) return m2[1];
+    let m3 = s.match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+    if (m3) return m3.slice(1).join('');
+    return null;
+}
+
+/* Converts hex string into EssentialsX hex */
+function toEssX(hex) {
+    return '&#' + hex.toLowerCase();
+}
+
+/* Converts hex string into &x&R&R&G&G&B&B format */
+function toX(hex) {
+    hex = hex.toLowerCase();
+    return `&x&${hex[0]}&${hex[1]}&${hex[2]}&${hex[3]}&${hex[4]}&${hex[5]}`;
+}
+
+/* Main conversion routine */
+function convert(input, mode) {
+    let out = "";
+    let i = 0;
+    while (i < input.length) {
+        let slice = input.slice(i);
+
+        let mHash = slice.match(/^#([0-9a-fA-F]{6})/);
+        if (mHash) {
+            let hex = mHash[1];
+            if (mode === 'A') out += toEssX(hex);
+            if (mode === 'B' || mode === 'C') out += toX(hex);
+            i += 7;
+            continue;
+        }
+
+        let mEss = slice.match(/^&#([0-9a-fA-F]{6})/);
+        if (mEss) {
+            let hex = mEss[1];
+            if (mode === 'A') out += toEssX(hex);
+            if (mode === 'B' || mode === 'C') out += toX(hex);
+            i += 8;
+            continue;
+        }
+
+        let mX = slice.match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+        if (mX) {
+            let hex = mX.slice(1).join('');
+            if (mode === 'A') out += toEssX(hex);
+            if (mode === 'B' || mode === 'C') out += toX(hex);
+            i += mX[0].length;
+            continue;
+        }
+
+        out += input[i];
+        i++;
+    }
+    return out;
+}
+
+/* Runs conversion and updates preview */
+function runConvert(mode) {
+    let inp = document.getElementById("input").value;
+    let conv = convert(inp, mode);
+    document.getElementById("output").value = conv;
+    updatePreview(conv);
+}
+
+/* Basic preview renderer */
+function updatePreview(t) {
+    let html = "";
+    let i = 0;
+    let color = null;
+    let bold=false, italic=false, under=false, strike=false;
+
+    function openSpan() {
+        let styles = "";
+        if (color) styles += `color:${color};`;
+        if (bold) styles += "font-weight:bold;";
+        if (italic) styles += "font-style:italic;";
+        if (under && strike) styles += "text-decoration:underline line-through;";
+        else if (under) styles += "text-decoration:underline;";
+        else if (strike) styles += "text-decoration:line-through;";
+        return `<span style="${styles}">`;
+    }
+
+    let spanOpen = openSpan();
+
+    while (i < t.length) {
+        if (t[i] === '&') {
+            let hex = t.slice(i).match(/^&#([0-9a-fA-F]{6})/);
+            if (hex) {
+                color = "#" + hex[1];
+                html += "</span>";
+                spanOpen = openSpan();
+                html += spanOpen;
+                i += 8;
+                continue;
+            }
+            let mX = t.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+            if (mX) {
+                color = "#" + mX.slice(1).join('');
+                html += "</span>";
+                spanOpen = openSpan();
+                html += spanOpen;
+                i += mX[0].length;
+                continue;
+            }
+            let code = t[i+1] ? t[i+1].toLowerCase() : "";
+            if (code === 'l') bold = true;
+            if (code === 'o') italic = true;
+            if (code === 'n') under = true;
+            if (code === 'm') strike = true;
+            if (code === 'r') { color=null; bold=italic=under=strike=false; }
+            html += "</span>";
+            spanOpen = openSpan();
+            html += spanOpen;
+            i += 2;
+            continue;
+        }
+        html += t[i];
+        i++;
+    }
+
+    html += "</span>";
+    document.getElementById("preview").innerHTML = html;
+}
+
+/* Allows copying results */
+function copyOutput() {
+    navigator.clipboard.writeText(document.getElementById("output").value);
+}
+</script>
+</body>
+</html>
