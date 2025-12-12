@@ -2,30 +2,269 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>MC Rename Converter</title>
+<title>Pikanetwork Rename Converter</title>
 <style>
-body { font-family: sans-serif; max-width:900px; margin:30px auto; padding:10px; }
-textarea { width:100%; min-height:120px; font-family: monospace; font-size:14px; margin-bottom:10px; }
-button { padding:6px 12px; margin:5px 5px 5px 0; cursor:pointer; }
-.preview { border:1px solid #ccc; padding:10px; min-height:60px; white-space:pre-wrap; font-family:sans-serif; }
+body {
+  font-family: 'Minecraft', 'Jellee', 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif;
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, #f7f3f0, #f7f3f0);
+  color: #333;
+  transition: background 0.62s ease, color 0.62s ease;
+  max-width: 900px;
+  margin: 30px auto;
+}
+
+body.dark {
+  background: linear-gradient(135deg, #1c1c1c, #1c1c1c);
+  color: #eaeaea;
+  transition: background 0.66s ease, color 0.66s ease;
+}
+
+#theme-toggle {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  z-index: 10;
+  transition: transform 0.3s ease;
+}
+
+#theme-toggle:hover {
+  transform: rotate(10deg) scale(1.05);
+}
+
+#theme-icon {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+#theme-sun, #theme-moon {
+  transition: opacity 0.3s ease;
+}
+
+#theme-sun > circle {
+  fill: currentColor;
+}
+
+#theme-moon > circle:first-of-type {
+  fill: currentColor;
+}
+
+#theme-moon {
+  opacity: 0;
+}
+
+body.dark #theme-sun {
+  opacity: 0;
+}
+
+body.dark #theme-moon {
+  opacity: 1;
+}
+
+#theme-toggle #theme-icon #theme-moon .moon-cutout {
+  fill: #f7f3f0 !important;
+}
+
+body.dark #theme-toggle #theme-icon #theme-moon .moon-cutout {
+  fill: #1c1c1c !important;
+}
+
+#theme-rays {
+  stroke: currentColor;
+}
+
+#mainWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transition: background 0.3s ease;
+}
+
+body.dark #mainWrapper,
+body.dark .controls,
+body.dark .output {
+  background: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 4px 20px rgba(255,255,255,0.05);
+}
+
+textarea {
+  width: 100%;
+  min-height: 120px;
+  font-family: monospace;
+  font-size: 14px;
+  margin-bottom: 10px;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+  resize: vertical;
+}
+
+body.dark textarea {
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border-color: #555;
+}
+
+button {
+  background-color: #f7d9c4;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  margin: 5px 5px 5px 0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
+  font-family: inherit;
+}
+
+button:hover {
+  background-color: #f4c9ae;
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.preview {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  min-height: 60px;
+  white-space: pre-wrap;
+  font-family: inherit;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  margin-top: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.dark .preview {
+  background: rgba(30, 30, 30, 0.9);
+  border-color: #555;
+}
+
+.warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  color: #856404;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  display: none;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body.dark .warning {
+  background-color: #332701;
+  border-color: #856404;
+  color: #ffcc00;
+}
+
+.warning a {
+  color: #856404;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+body.dark .warning a {
+  color: #ffcc00;
+}
+
+.controls-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  margin-top: 0;
+  padding-top: 0.5rem;
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+body.dark h2 {
+  color: #eaeaea;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.1);
+}
+
+#output {
+  min-height: 120px;
+  resize: vertical;
+}
 </style>
 </head>
 <body>
-<h2>Minecraft Color Converter</h2>
-
-<textarea id="input"></textarea>
-
-<button onclick="runConvert('A')">Convert → EssentialsX</button>
-<button onclick="runConvert('B')">Convert → &x format</button>
-<button onclick="runConvert('C')">Convert → C1 (no duplicate &x)</button>
-<button onclick="copyOutput()">Copy Output</button>
-
-<textarea id="output" readonly></textarea>
-
-<div class="preview" id="preview"></div>
+<div id="theme-toggle">
+  <svg id="theme-icon" viewBox="0 0 24 24">
+    <g id="theme-sun">
+      <circle cx="12" cy="12" r="5" />
+      <path id="theme-rays" d="M12,1 L12,4 M12,20 L12,23 M4,12 L1,12 M23,12 L20,12 M4.2,4.2 L6.3,6.3 M17.7,17.7 L19.8,19.8 M4.2,19.8 L6.3,17.7 M17.7,6.3 L19.8,4.2" />
+    </g>
+<g id="theme-moon" style="opacity: 0;">
+  <mask id="moon-mask">
+    <rect width="100%" height="100%" fill="white"/>
+    <circle cx="15" cy="9" r="5.5" fill="black"/>
+  </mask>
+  
+  <circle cx="12" cy="12" r="5" mask="url(#moon-mask)" />
+</g>
+</svg>
+</div>
+<div id="mainWrapper">
+  <h2>Pikanetwork Rename Converter</h2>
+  
+  <textarea id="input" placeholder="Paste your color codes here..."></textarea>
+  
+  <div class="controls-row">
+    <button onclick="runConvert('A')">Convert → EssentialsX</button>
+    <button onclick="runConvert('B')">Convert → &amp;x format</button>
+    <button onclick="copyOutput()">Copy Output</button>
+  </div>
+  
+  <textarea id="output" readonly placeholder="Converted output will appear here..."></textarea>
+  
+  <div class="preview" id="preview"></div>
+  
+    <div id="specialCharWarning" class="warning">
+  ⚠️ Special character(s) detected. This rename will not work on Pikanetwork's current version of /rename. 
+  If you believe this should not be the case then please upvote the following 
+  <a href="https://pika-network.net/threads/revert-expand-rename-functions.559958/" target="_blank">forum suggestion</a>. 
+  Otherwise <a href="#" onclick="cleanSpecialChars(); return false;">click here</a> to attempt to "clean" it for the newer format.
+    </div>
+</div>
 
 <script>
-/* Extracts a 6-digit hex color from any supported format */
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+  document.body.classList.add('dark');
+}
+
+// read it brah
 function extractHex(s) {
     let m1 = s.match(/^&#([0-9a-fA-F]{6})/);
     if (m1) return m1[1];
@@ -36,18 +275,18 @@ function extractHex(s) {
     return null;
 }
 
-/* Converts hex string into EssentialsX hex */
+// Converts hex string into EssentialsX hex 
 function toEssX(hex) {
     return '&#' + hex.toLowerCase();
 }
 
-/* Converts hex string into &x&R&R&G&G&B&B format */
+// Converts you get the idea 
 function toX(hex) {
     hex = hex.toLowerCase();
     return `&x&${hex[0]}&${hex[1]}&${hex[2]}&${hex[3]}&${hex[4]}&${hex[5]}`;
 }
 
-/* Main conversion routine */
+// Main conversion 
 function convert(input, mode) {
     let out = "";
     let i = 0;
@@ -58,7 +297,7 @@ function convert(input, mode) {
         if (mHash) {
             let hex = mHash[1];
             if (mode === 'A') out += toEssX(hex);
-            if (mode === 'B' || mode === 'C') out += toX(hex);
+            if (mode === 'B') out += toX(hex);
             i += 7;
             continue;
         }
@@ -67,7 +306,7 @@ function convert(input, mode) {
         if (mEss) {
             let hex = mEss[1];
             if (mode === 'A') out += toEssX(hex);
-            if (mode === 'B' || mode === 'C') out += toX(hex);
+            if (mode === 'B') out += toX(hex);
             i += 8;
             continue;
         }
@@ -76,7 +315,7 @@ function convert(input, mode) {
         if (mX) {
             let hex = mX.slice(1).join('');
             if (mode === 'A') out += toEssX(hex);
-            if (mode === 'B' || mode === 'C') out += toX(hex);
+            if (mode === 'B') out += toX(hex);
             i += mX[0].length;
             continue;
         }
@@ -87,15 +326,23 @@ function convert(input, mode) {
     return out;
 }
 
-/* Runs conversion and updates preview */
+// Previewer "handler"
 function runConvert(mode) {
     let inp = document.getElementById("input").value;
     let conv = convert(inp, mode);
     document.getElementById("output").value = conv;
     updatePreview(conv);
+    
+    // unhide glaze
+    const warningDiv = document.getElementById("specialCharWarning");
+    if (checkForSpecialCharacters(conv)) {
+        warningDiv.style.display = 'block';
+    } else {
+        warningDiv.style.display = 'none';
+    }
 }
 
-/* Basic preview renderer */
+// Preview renderer 
 function updatePreview(t) {
     let html = "";
     let i = 0;
@@ -155,10 +402,283 @@ function updatePreview(t) {
     document.getElementById("preview").innerHTML = html;
 }
 
-/* Allows copying results */
-function copyOutput() {
-    navigator.clipboard.writeText(document.getElementById("output").value);
+// /rename suggestion glaze check 
+function checkForSpecialCharacters(text) {
+    const specialCharRegex = /[^a-zA-Z0-9\s&#'\-_.,!?]/;
+    return specialCharRegex.test(text);
 }
+
+// Self explanatory i swear 
+function copyOutput() {
+    const outputText = document.getElementById("output").value;
+    navigator.clipboard.writeText(outputText);
+    
+    // Be annoying
+    if (checkForSpecialCharacters(outputText)) {
+        const warningDiv = document.getElementById("specialCharWarning");
+        if (warningDiv.style.display === 'none') {
+            warningDiv.style.display = 'block';
+        }
+    }
+}
+
+document.getElementById('theme-toggle').addEventListener('click', function() {
+  const isDark = document.body.classList.toggle('dark');
+  
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  
+  const sun = document.getElementById('theme-sun');
+  const moon = document.getElementById('theme-moon');
+  const rays = document.getElementById('theme-rays');
+  
+  if (isDark) {
+    sun.style.opacity = '0';
+    moon.style.opacity = '1';
+    rays.style.opacity = '0';
+  } else {
+    sun.style.opacity = '1';
+    moon.style.opacity = '0';
+    rays.style.opacity = '1';
+  }
+});
+
+if (savedTheme === 'dark') {
+  document.body.classList.add('dark');
+  const sun = document.getElementById('theme-sun');
+  const moon = document.getElementById('theme-moon');
+  const rays = document.getElementById('theme-rays');
+  sun.style.opacity = '0';
+  moon.style.opacity = '1';
+  rays.style.opacity = '0';
+} else {
+  const sun = document.getElementById('theme-sun');
+  const moon = document.getElementById('theme-moon');
+  const rays = document.getElementById('theme-rays');
+  sun.style.opacity = '1';
+  moon.style.opacity = '0';
+  rays.style.opacity = '1';
+}
+// Font map for special characters
+const fontMap = {
+    A: 'ᴀ', B: 'ʙ', C: 'ᴄ', D: 'ᴅ', E: 'ᴇ', F: 'ꜰ',
+    G: 'ɢ', H: 'ʜ', I: 'ɪ', J: 'ᴊ', K: 'ᴋ', L: 'ʟ',
+    M: 'ᴍ', N: 'ɴ', O: 'ᴏ', P: 'ᴘ', Q: 'ꞯ', R: 'ʀ',
+    S: 'ꜱ', T: 'ᴛ', U: 'ᴜ', V: 'ᴠ', W: 'ᴡ', X: 'x',
+    Y: 'ʏ', Z: 'ᴢ'
+};
+
+// Too lazy to flip each individual character in that fontmap dawg
+const inverseFontMap = {};
+Object.entries(fontMap).forEach(([normal, special]) => {
+    inverseFontMap[special] = normal;
+});
+
+function cleanSpecialChars() {
+    const outputText = document.getElementById("output").value;
+    if (!outputText.trim()) return;
+    
+    let cleaned = '';
+    let cleanedCount = 0;
+    let i = 0;
+    
+    while (i < outputText.length) {
+        const char = outputText[i];
+        
+        if (char === '&') {
+            const hexMatch = outputText.slice(i).match(/^&#([0-9a-fA-F]{6})/);
+            const xMatch = outputText.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+            const formatMatch = outputText.slice(i).match(/^&[0-9a-fklmnorx]/i);
+            
+            if (hexMatch || xMatch || formatMatch) {
+                const code = hexMatch ? hexMatch[0] : xMatch ? xMatch[0] : formatMatch[0];
+                
+                let nextIndex = i + code.length;
+                let hasValidContentAfter = false;
+                
+                while (nextIndex < outputText.length) {
+                    const nextChar = outputText[nextIndex];
+                    if (nextChar === '&') {
+                        const nextCodeMatch = outputText.slice(nextIndex).match(/^&[0-9a-fklmnorx]/i);
+                        if (nextCodeMatch) {
+                            nextIndex += nextCodeMatch[0].length;
+                            continue;
+                        }
+                    }
+                    
+                    if (isAllowedCharacter(nextChar)) {
+                        hasValidContentAfter = true;
+                    }
+                    break;
+                }
+                
+                if (hasValidContentAfter) {
+                    cleaned += code;
+                    i += code.length;
+                } else {
+                    cleanedCount++;
+                    i += code.length;
+                }
+                continue;
+            }
+        }
+        
+        if (isAllowedCharacter(char)) {
+            if (inverseFontMap[char]) {
+                cleaned += inverseFontMap[char];
+                cleanedCount++;
+            } else {
+                cleaned += char;
+            }
+        } else {
+            cleanedCount++;
+        }
+        
+        i++;
+    }
+    
+    cleaned = cleaned.trim();
+    
+    document.getElementById("output").value = cleaned;
+    updatePreview(cleaned);
+    
+    const hasSpecialChars = checkForSpecialCharacters(cleaned);
+    const warningDiv = document.getElementById("specialCharWarning");
+    
+    if (hasSpecialChars) {
+        warningDiv.style.display = 'block';
+    } else {
+        warningDiv.style.display = 'none';
+    }
+    
+    showNotification(`Cleaned ${cleanedCount} character${cleanedCount === 1 ? '' : 's'}`);
+}
+
+function isAllowedCharacter(char) {
+    const allowedBasic = /[a-zA-Z0-9\s\-_.,!?'"()]/;
+    
+    if (char === '&') return true;
+    
+    if (Object.values(fontMap).includes(char)) return true;
+    
+    return allowedBasic.test(char);
+}
+function isProblematicCharacter(char) {
+    const safeRegex = /[a-zA-Z0-9\s\-_.,!?'"()&]/;
+    
+    const specialFontChars = Object.values(fontMap).join('');
+    
+    if (specialFontChars.includes(char)) {
+        return true;
+    }
+    
+    if (safeRegex.test(char)) {
+        return false;
+    }
+    
+    return true;
+}
+
+function checkForSpecialCharacters(text) {
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        
+        if (char === '&') {
+            const hexMatch = text.slice(i).match(/^&#([0-9a-fA-F]{6})/);
+            const xMatch = text.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+            const formatMatch = text.slice(i).match(/^&[0-9a-fklmnorx]/i);
+            
+            if (hexMatch) {
+                i += hexMatch[0].length - 1;
+                continue;
+            } else if (xMatch) {
+                i += xMatch[0].length - 1;
+                continue;
+            } else if (formatMatch) {
+                i += formatMatch[0].length - 1;
+                continue;
+            }
+        }
+        
+        if (!isAllowedCharacter(char)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function isAllowedCharacter(char) {
+    const allowedBasic = /[a-zA-Z0-9\s\-_.,!?'"()]/;
+    
+    if (char === '&') return true;
+    
+    if (Object.values(fontMap).includes(char)) return true;
+    
+    return allowedBasic.test(char);
+}
+function showNotification(message) {
+    const existingNotif = document.querySelector('.notification');
+    if (existingNotif) {
+        existingNotif.remove();
+    }
+    
+    const notif = document.createElement('div');
+    notif.className = 'notification';
+    notif.textContent = message;
+    notif.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        animation: slideIn 0.3s ease;
+    `;
+    
+    document.body.appendChild(notif);
+    
+    setTimeout(() => {
+        notif.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notif.remove(), 300);
+    }, 3000);
+}
+
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    .notification {
+        font-family: inherit;
+        font-weight: bold;
+    }
+    
+    body.dark .notification {
+        background: #2e7d32 !important;
+    }
+`;
+document.head.appendChild(style);
 </script>
 </body>
 </html>
