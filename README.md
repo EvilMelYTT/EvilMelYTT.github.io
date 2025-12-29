@@ -10,6 +10,10 @@
 </div>
 
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
+<h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerV10Lite">PikaNetwork Color Picker V10Lite</a></h3>
+<small>Ditto, but with cutbacks for performance sake</small>
+</div>
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerV9Beta">PikaNetwork Color Picker V9Beta</a></h3>
 <small>Previous version for archival sake</small>
 </div>
