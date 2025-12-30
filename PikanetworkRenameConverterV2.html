@@ -298,42 +298,35 @@ function toX(hex) {
 function convert(input, mode) {
     let out = "";
     let i = 0;
+    
     while (i < input.length) {
-        let slice = input.slice(i);
-
-        let mHash = slice.match(/^#([0-9a-fA-F]{6})/);
-        if (mHash) {
-            let hex = mHash[1];
-            if (mode === 'A') out += toEssX(hex);
-            if (mode === 'B') out += toX(hex);
-            i += 7;
-            continue;
+        const slice = input.slice(i);
+        
+        const formats = [
+            { regex: /^#([0-9a-fA-F]{6})/, length: 7 },
+            { regex: /^&#([0-9a-fA-F]{6})/, length: 8 },
+            { regex: /^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/, length: null }
+        ];
+        
+        let matched = false;
+        for (const format of formats) {
+            const match = slice.match(format.regex);
+            if (match) {
+                const hex = format.length === null ? match.slice(1).join('') : match[1];
+                out += mode === 'A' ? toEssX(hex) : toX(hex);
+                i += format.length || match[0].length;
+                matched = true;
+                break;
+            }
         }
-
-        let mEss = slice.match(/^&#([0-9a-fA-F]{6})/);
-        if (mEss) {
-            let hex = mEss[1];
-            if (mode === 'A') out += toEssX(hex);
-            if (mode === 'B') out += toX(hex);
-            i += 8;
-            continue;
+        
+        if (!matched) {
+            out += input[i];
+            i++;
         }
-
-        let mX = slice.match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
-        if (mX) {
-            let hex = mX.slice(1).join('');
-            if (mode === 'A') out += toEssX(hex);
-            if (mode === 'B') out += toX(hex);
-            i += mX[0].length;
-            continue;
-        }
-
-        out += input[i];
-        i++;
     }
     return out;
 }
-
 // Previewer "handler"
 function runConvert(mode) {
     let inp = document.getElementById("input").value;
@@ -354,50 +347,53 @@ function updatePreview(t) {
     let html = "";
     let i = 0;
     let color = null;
-    let bold=false, italic=false, under=false, strike=false;
+    let formats = { bold: false, italic: false, underline: false, strike: false };
 
-    function openSpan() {
-        let styles = "";
-        if (color) styles += `color:${color};`;
-        if (bold) styles += "font-weight:bold;";
-        if (italic) styles += "font-style:italic;";
-        if (under && strike) styles += "text-decoration:underline line-through;";
-        else if (under) styles += "text-decoration:underline;";
-        else if (strike) styles += "text-decoration:line-through;";
-        return `<span style="${styles}">`;
+    function buildSpan() {
+        let styles = [];
+        if (color) styles.push(`color:${color}`);
+        if (formats.bold) styles.push("font-weight:bold");
+        if (formats.italic) styles.push("font-style:italic");
+        
+        const decorations = [];
+        if (formats.underline) decorations.push("underline");
+        if (formats.strike) decorations.push("line-through");
+        if (decorations.length) styles.push(`text-decoration:${decorations.join(' ')}`);
+        
+        return `<span style="${styles.join(';')}">`;
     }
 
-    let spanOpen = openSpan();
+    html = buildSpan();
 
     while (i < t.length) {
         if (t[i] === '&') {
-            let hex = t.slice(i).match(/^&#([0-9a-fA-F]{6})/);
-            if (hex) {
-                color = "#" + hex[1];
-                html += "</span>";
-                spanOpen = openSpan();
-                html += spanOpen;
+            const hexMatch = t.slice(i).match(/^&#([0-9a-fA-F]{6})/);
+            if (hexMatch) {
+                color = "#" + hexMatch[1];
+                html += "</span>" + buildSpan();
                 i += 8;
                 continue;
             }
-            let mX = t.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
-            if (mX) {
-                color = "#" + mX.slice(1).join('');
-                html += "</span>";
-                spanOpen = openSpan();
-                html += spanOpen;
-                i += mX[0].length;
+            
+            const xMatch = t.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+            if (xMatch) {
+                color = "#" + xMatch.slice(1).join('');
+                html += "</span>" + buildSpan();
+                i += xMatch[0].length;
                 continue;
             }
-            let code = t[i+1] ? t[i+1].toLowerCase() : "";
-            if (code === 'l') bold = true;
-            if (code === 'o') italic = true;
-            if (code === 'n') under = true;
-            if (code === 'm') strike = true;
-            if (code === 'r') { color=null; bold=italic=under=strike=false; }
-            html += "</span>";
-            spanOpen = openSpan();
-            html += spanOpen;
+            
+            const code = t[i + 1] ? t[i + 1].toLowerCase() : "";
+            const formatMap = { l: 'bold', o: 'italic', n: 'underline', m: 'strike' };
+            
+            if (formatMap[code]) {
+                formats[formatMap[code]] = true;
+            } else if (code === 'r') {
+                color = null;
+                formats = { bold: false, italic: false, underline: false, strike: false };
+            }
+            
+            html += "</span>" + buildSpan();
             i += 2;
             continue;
         }
@@ -408,7 +404,6 @@ function updatePreview(t) {
     html += "</span>";
     document.getElementById("preview").innerHTML = html;
 }
-
 // Self explanatory i swear 
 function copyOutput() {
     const outputText = document.getElementById("output").value;
@@ -473,6 +468,7 @@ if (savedTheme === 'dark') {
   moon.style.opacity = '0';
   rays.style.opacity = '1';
 }
+
 // Font map for special characters
 const fontMap = {
     A: 'ᴀ', B: 'ʙ', C: 'ᴄ', D: 'ᴅ', E: 'ᴇ', F: 'ꜰ',
@@ -482,10 +478,46 @@ const fontMap = {
     Y: 'ʏ', Z: 'ᴢ'
 };
 
+const boldScriptMap = {
+    'A': '𝓐', 'B': '𝓑', 'C': '𝓒', 'D': '𝓓', 'E': '𝓔', 'F': '𝓕',
+    'G': '𝓖', 'H': '𝓗', 'I': '𝓘', 'J': '𝓙', 'K': '𝓚', 'L': '𝓛',
+    'M': '𝓜', 'N': '𝓝', 'O': '𝓞', 'P': '𝓟', 'Q': '𝓠', 'R': '𝓡',
+    'S': '𝓢', 'T': '𝓣', 'U': '𝓤', 'V': '𝓥', 'W': '𝓦', 'X': '𝓧',
+    'Y': '𝓨', 'Z': '𝓩'
+};
+
+const boldScriptLowercaseMap = {
+    'a': '𝓪', 'b': '𝓫', 'c': '𝓬', 'd': '𝓭', 'e': '𝓮', 'f': '𝓯',
+    'g': '𝓰', 'h': '𝓱', 'i': '𝓲', 'j': '𝓳', 'k': '𝓴', 'l': '𝓵',
+    'm': '𝓶', 'n': '𝓷', 'o': '𝓸', 'p': '𝓹', 'q': '𝓺', 'r': '𝓻',
+    's': '𝓼', 't': '𝓽', 'u': '𝓾', 'v': '𝓿', 'w': '𝔀', 'x': '𝔁',
+    'y': '𝔂', 'z': '𝔃'
+};
+
+const circledMap = {
+    'a': 'ⓐ', 'b': 'ⓑ', 'c': 'ⓒ', 'd': 'ⓓ', 'e': 'ⓔ', 'f': 'ⓕ',
+    'g': 'ⓖ', 'h': 'ⓗ', 'i': 'ⓘ', 'j': 'ⓙ', 'k': 'ⓚ', 'l': 'ⓛ',
+    'm': 'ⓜ', 'n': 'ⓝ', 'o': 'ⓞ', 'p': 'ⓟ', 'q': 'ⓠ', 'r': 'ⓡ',
+    's': 'ⓢ', 't': 'ⓣ', 'u': 'ⓤ', 'v': 'ⓥ', 'w': 'ⓦ', 'x': 'ⓧ',
+    'y': 'ⓨ', 'z': 'ⓩ'
+};
+
 // Too lazy to flip each individual character in that fontmap dawg
 const inverseFontMap = {};
 Object.entries(fontMap).forEach(([normal, special]) => {
     inverseFontMap[special] = normal;
+});
+
+Object.entries(boldScriptMap).forEach(([normal, special]) => {
+    inverseFontMap[special] = normal;
+});
+
+Object.entries(boldScriptLowercaseMap).forEach(([normal, special]) => {
+    inverseFontMap[special] = normal.toUpperCase();
+});
+
+Object.entries(circledMap).forEach(([normal, special]) => {
+    inverseFontMap[special] = normal.toUpperCase(); 
 });
 
 function cleanSpecialChars() {
@@ -501,113 +533,59 @@ function cleanSpecialChars() {
         
         if (char === '&') {
             const hexMatch = outputText.slice(i).match(/^&#([0-9a-fA-F]{6})/);
-            const xMatch = outputText.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
-            const formatMatch = outputText.slice(i).match(/^&[0-9a-fklmnorx]/i);
-            
             if (hexMatch) {
-                let nextIndex = i + hexMatch[0].length;
-                let hasAlphanumericAfter = false;
-                
-                while (nextIndex < outputText.length) {
-                    const nextChar = outputText[nextIndex];
-                    
-                    if (nextChar === '&') {
-                        const nextCodeMatch = outputText.slice(nextIndex).match(/^&[0-9a-fklmnorx]/i);
-                        if (nextCodeMatch) {
-                            nextIndex += nextCodeMatch[0].length;
-                            continue;
-                        }
-                    }
-                    
-                    if (/[a-zA-Z0-9]/.test(nextChar)) {
-                        hasAlphanumericAfter = true;
-                        break;
-                    }
-                    
-                    nextIndex++;
-                }
-                
-                if (hasAlphanumericAfter) {
-                    cleaned += hexMatch[0];
-                    i += hexMatch[0].length;
-                } else {
-                    cleanedCount++;
-                    i += hexMatch[0].length;
-                }
+                cleaned += hexMatch[0];
+                i += hexMatch[0].length;
                 continue;
-            } else if (xMatch) {
-                let nextIndex = i + xMatch[0].length;
-                let hasAlphanumericAfter = false;
-                
-                while (nextIndex < outputText.length) {
-                    const nextChar = outputText[nextIndex];
-                    
-                    if (nextChar === '&') {
-                        const nextCodeMatch = outputText.slice(nextIndex).match(/^&[0-9a-fklmnorx]/i);
-                        if (nextCodeMatch) {
-                            nextIndex += nextCodeMatch[0].length;
-                            continue;
-                        }
-                    }
-                    
-                    if (/[a-zA-Z0-9]/.test(nextChar)) {
-                        hasAlphanumericAfter = true;
-                        break;
-                    }
-                    
-                    nextIndex++;
-                }
-                
-                if (hasAlphanumericAfter) {
-                    cleaned += xMatch[0];
-                    i += xMatch[0].length;
-                } else {
-                    cleanedCount++;
-                    i += xMatch[0].length;
-                }
+            }
+            
+            const xMatch = outputText.slice(i).match(/^&x&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])&([0-9a-fA-F])/);
+            if (xMatch) {
+                cleaned += xMatch[0];
+                i += xMatch[0].length;
                 continue;
-            } else if (formatMatch) {
-                let nextIndex = i + formatMatch[0].length;
-                let hasAlphanumericAfter = false;
-                
-                while (nextIndex < outputText.length) {
-                    const nextChar = outputText[nextIndex];
-                    
-                    if (nextChar === '&') {
-                        const nextCodeMatch = outputText.slice(nextIndex).match(/^&[0-9a-fklmnorx]/i);
-                        if (nextCodeMatch) {
-                            nextIndex += nextCodeMatch[0].length;
-                            continue;
-                        }
-                    }
-                    
-                    if (/[a-zA-Z0-9]/.test(nextChar)) {
-                        hasAlphanumericAfter = true;
-                        break;
-                    }
-                    
-                    nextIndex++;
-                }
-                
-                if (hasAlphanumericAfter) {
-                    cleaned += formatMatch[0];
-                    i += formatMatch[0].length;
-                } else {
-                    cleanedCount++;
-                    i += formatMatch[0].length;
-                }
+            }
+            
+            const formatMatch = outputText.slice(i).match(/^&[0-9a-fklmnorx]/i);
+            if (formatMatch) {
+                cleaned += formatMatch[0];
+                i += formatMatch[0].length;
                 continue;
             }
         }
         
-        const alphanumeric = /[a-zA-Z0-9]/;
-        if (alphanumeric.test(char)) {
+        if (/[a-zA-Z0-9]/.test(char)) {
             cleaned += char;
-        } else {
-            cleanedCount++;
+            i++;
+            continue;
         }
         
-        i++;
+        let currentChar = char;
+        let charLength = 1;
+        
+        const charCode = char.charCodeAt(0);
+        if (charCode >= 0xD800 && charCode <= 0xDBFF && i + 1 < outputText.length) {
+            const nextCharCode = outputText.charCodeAt(i + 1);
+            if (nextCharCode >= 0xDC00 && nextCharCode <= 0xDFFF) {
+                currentChar = char + outputText[i + 1];
+                charLength = 2;
+            }
+        }
+        
+        if (inverseFontMap[currentChar]) {
+            cleaned += inverseFontMap[currentChar];
+            i += charLength;
+            continue;
+        }
+        
+        if (currentChar === ' ') {
+            cleaned += currentChar;
+            i += charLength;
+            continue;
+        }
+        
+        cleanedCount++;
+        i += charLength;
     }
     
     cleaned = cleaned.trim();
@@ -625,8 +603,7 @@ function cleanSpecialChars() {
     }
     
     showNotification(`Cleaned ${cleanedCount} character${cleanedCount === 1 ? '' : 's'}`);
-}
-let suggestionStatus = localStorage.getItem('suggestionStatus') || 'unknown';
+}let suggestionStatus = localStorage.getItem('suggestionStatus') || 'unknown';
 let lastStatusCheck = localStorage.getItem('lastStatusCheck') || 0;
 const STATUS_CHECK_INTERVAL = 3600000;
 
@@ -693,22 +670,35 @@ function isAllowedCharacter(char) {
 function isProblematicCharacter(char) {
     if (char === '&') return false;
     
-    const alphanumeric = /[a-zA-Z0-9]/;
+    const allowed = /[a-zA-Z0-9\s]/;
     
-    return !alphanumeric.test(char);
+    return !allowed.test(char);
 }
 
 // /rename suggestion glaze check 
 function checkForSpecialCharacters(text) {
     let textWithoutCodes = text.replace(/&#[0-9a-fA-F]{6}|&x&[0-9a-fA-F](?:&[0-9a-fA-F]){5}|&[0-9a-fklmnorx]/gi, '');
     
-    for (let i = 0; i < textWithoutCodes.length; i++) {
+    let i = 0;
+    while (i < textWithoutCodes.length) {
         const char = textWithoutCodes[i];
-        const alphanumeric = /[a-zA-Z0-9]/;
+        let currentChar = char;
+        let charLength = 1;
         
-        if (!alphanumeric.test(char)) {
+        const charCode = char.charCodeAt(0);
+        if (charCode >= 0xD800 && charCode <= 0xDBFF && i + 1 < textWithoutCodes.length) {
+            const nextCharCode = textWithoutCodes.charCodeAt(i + 1);
+            if (nextCharCode >= 0xDC00 && nextCharCode <= 0xDFFF) {
+                currentChar = char + textWithoutCodes[i + 1];
+                charLength = 2;
+            }
+        }
+        
+        if (!/[a-zA-Z0-9\s]/.test(currentChar) && !inverseFontMap[currentChar]) {
             return true;
         }
+        
+        i += charLength;
     }
     
     return false;
@@ -716,9 +706,9 @@ function checkForSpecialCharacters(text) {
 function isAllowedCharacter(char) {
     if (char === '&') return true;
     
-    const alphanumeric = /[a-zA-Z0-9]/;
+    const allowed = /[a-zA-Z0-9\s]/;
     
-    return alphanumeric.test(char);
+    return allowed.test(char);
 }
 function showNotification(message) {
     const existingNotif = document.querySelector('.notification');
