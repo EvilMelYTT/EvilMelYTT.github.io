@@ -1,4 +1,4 @@
-<h2 style="margin: 0 0 1rem 0; font-size: 1.8rem;">OPLS Season X ❕‼️❗</h2>
+<h2 style="margin: 0 0 1rem 0; font-size: 1.8rem;">OPLS Season X ❕‼️❗(Click the X on the side to remove this notif)</h2> 
 
 <p style="margin-bottom: 1rem;">New season, more renames, more code to skid. Format changed from <code style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">#colorcode</code> to <code style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">&xc&o&l&o&r&c&o&d&e</code> to <code style="background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px;">&#colorcode</code> and because I'm tired of teaching people how to do something I made FIVE VIDEO TUTORIALS ON, I made a hotfix for creating and copying renames.</p>
 
