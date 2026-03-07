@@ -967,18 +967,70 @@ function backToSearch() {
 }
 
 function scrollToGm(gm) {
-  const el = document.getElementById('gm-' + gm);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const isStats = document.getElementById('stats-page').style.display !== 'none';
+  if (isStats) {
+    const btn = document.querySelector(`.sv-gm-btn[data-gm="${gm}"]`);
+    if (btn) {
+      switchSvGm(gm, btn);
+      btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  } else {
+    const el = document.getElementById('gm-' + gm);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
-const RANK_TIER = ['Overlord+++','Divine+++','GodFather+++','Celestial+++','Eternal+++','King+++','Kingpin+++','SkyMaster+++','Ultimate+++','Omega+++','Champion','Emerald','Proton','Gamma','Diamond','Titan'];
+// Rank ladders per gamemode, lowest to highest
+const GM_RANKS = {
+  opfactions:  ['Pro','Hero','Lord','Legend','God','Immortal','Eternal'],
+  skypvp:      ['Hero','Prime','Delta','Arcane','Sigma','Divine'],
+  skymines:    ['Guardian','Sentinel','Regent','Grand','Royal','Monarch','Celestial'],
+  opskyblock:  ['SkyVip','SkyHero','SkyLord','SkyLegend','SkyGod','SkyKing','SkyMaster'],
+  kitpvp:      ['Vip','God','Legend','Ultimate','Baron','Omega'],
+  games:       ['VIP','Elite','Titan','Champion'],
+  genpvp:      ['Thug','Ronin','Bandit','Phantom','Mythic','Reaper','Kingpin'],
+  opprison:    ['Smuggler','Criminal','Gangster','Hitman','Captain','Boss','Godfather'],
+  survival:    ['Samurai','Ninja','Warlock','Alchemist','Wizard','Noble','King'],
+  oplifesteal: ['Neutron','Proton','Gamma','Beta','Alpha','Omega','Ultimate'],
+  classicskyblock: ['Knight','Baron','Paladin','Duke','Prince','Emperor','Overlord'],
+};
+
+// For each rank name, record { ladderPos: 0..1 (fraction), plusCount: 0-3 }
+// ladderPos = index / (ladder.length - 1), so top rank = 1.0 regardless of mode size
+const RANK_INFO = {};
+for (const [gm, ladder] of Object.entries(GM_RANKS)) {
+  const maxI = ladder.length - 1;
+  for (let i = 0; i < ladder.length; i++) {
+    const base = ladder[i];
+    const pos = i / maxI;
+    RANK_INFO[base] = { ladderPos: pos, plusCount: 0, base, gm };
+    // Only the top rank has + variants
+    if (i === maxI) {
+      for (let p = 1; p <= 3; p++) {
+        RANK_INFO[base + '+'.repeat(p)] = { ladderPos: pos, plusCount: p, base, gm };
+      }
+    }
+  }
+}
+
+// Compare two displayNames: returns positive if a > b, negative if a < b, 0 if equal/unknown
+function compareRanks(a, b) {
+  const ai = RANK_INFO[a], bi = RANK_INFO[b];
+  if (!ai && !bi) return 0;
+  if (!ai) return -1;
+  if (!bi) return 1;
+  // Primary: ladder position (1.0 = top of their mode)
+  if (ai.ladderPos !== bi.ladderPos) return ai.ladderPos - bi.ladderPos;
+  // Tiebreak: +++ count
+  return ai.plusCount - bi.plusCount;
+}
+
 const PIKA_SUBS = new Set(['Pika+','Pika⭐','Pika❤']);
 const isPikaSub = r => PIKA_SUBS.has(r.displayName) || r.displayName.startsWith('Pika');
 function splitRanks(ranks) {
-  const game = (ranks || []).filter(r => !isPikaSub(r)).sort((a,b) => {
-    const ai = RANK_TIER.indexOf(a.displayName), bi = RANK_TIER.indexOf(b.displayName);
-    return (ai===-1?999:ai) - (bi===-1?999:bi);
-  });
+  const game = (ranks || []).filter(r => !isPikaSub(r)).sort((a,b) =>
+    compareRanks(b.displayName, a.displayName)
+  );
   const subs = (ranks || []).filter(r => isPikaSub(r));
   return { game, subs, top: game[0] };
 }
