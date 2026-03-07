@@ -240,7 +240,7 @@ button{cursor:pointer;font-family:var(--body)}
     <div class="nav-section" style="margin-top:8px">API Calls</div>
     <div class="nav-item" data-target="s-profile"><div class="nav-dot"></div>① Profile</div>
     <div class="nav-item" data-target="s-leaderboard"><div class="nav-dot"></div>② Leaderboard Stats</div>
-    <div class="nav-section" style="margin-top:8px">Data → UI</div>
+    <div class="nav-section" style="margin-top:8px">Data -> UI</div>
     <div class="nav-item" data-target="s-hero"><div class="nav-dot"></div>Hero Panel</div>
     <div class="nav-item" data-target="s-ranks"><div class="nav-dot"></div>Ranks & Subscriptions</div>
     <div class="nav-item" data-target="s-scoring"><div class="nav-dot"></div>Activity Scoring</div>
@@ -316,9 +316,9 @@ button{cursor:pointer;font-family:var(--body)}
 
       <div class="proxy-flow">
         <div class="proxy-node active">corsproxy.io</div>
-        <div class="proxy-arrow">→ fail →</div>
+        <div class="proxy-arrow">-> fail -></div>
         <div class="proxy-node">allorigins.win</div>
-        <div class="proxy-arrow">→ fail →</div>
+        <div class="proxy-arrow">-> fail -></div>
         <div class="proxy-node">Direct (localhost server)</div>
       </div>
 
@@ -358,7 +358,7 @@ button{cursor:pointer;font-family:var(--body)}
               <div class="json-content" id="json-profile-annotated" style="display:none"><pre id="pre-profile-annotated"></pre></div>
             </div>
             <div class="mapping-panel">
-              <div class="mapping-title">Field → UI mappings</div>
+              <div class="mapping-title">Field -> UI mappings</div>
               <div id="mappings-profile"></div>
             </div>
             <div class="preview-panel">
@@ -393,7 +393,7 @@ button{cursor:pointer;font-family:var(--body)}
 
     
     <section class="guide-section" id="s-hero">
-      <div class="section-tag"><div class="section-num">3</div>Data → UI</div>
+      <div class="section-tag"><div class="section-num">3</div>Data -> UI</div>
       <div class="section-title">Hero Panel</div>
       <div class="section-desc">The big banner at the top of the Wrapped page. Built entirely from the profile response — no leaderboard data needed here.</div>
 
@@ -407,7 +407,7 @@ button{cursor:pointer;font-family:var(--body)}
           <div class="not-loaded" id="nl-hero">Run a trace above</div>
           <div id="loaded-hero" style="display:none">
             <div class="mapping-panel">
-              <div class="mapping-title">Field → UI mappings</div>
+              <div class="mapping-title">Field -> UI mappings</div>
               <div id="mappings-hero"></div>
             </div>
             <div class="preview-panel">
@@ -441,7 +441,7 @@ button{cursor:pointer;font-family:var(--body)}
 
     
     <section class="guide-section" id="s-ranks">
-      <div class="section-tag"><div class="section-num">4</div>Data → UI</div>
+      <div class="section-tag"><div class="section-num">4</div>Data -> UI</div>
       <div class="section-title">Ranks & Subscriptions</div>
       <div class="section-desc">The API returns all ranks in one flat array — game ranks and Pika+ subscriptions mixed together. The site separates them using a priority tier list and a subscription name check.</div>
 
@@ -459,12 +459,12 @@ button{cursor:pointer;font-family:var(--body)}
         <div class="call-body" id="body-ranks">
           <div class="mapping-panel">
             <div class="mapping-title">How splitRanks() works</div>
-            <div class="map-row"><span class="map-key">isPikaSub(r)</span><span class="map-arrow">→</span><span class="map-dest">True if <code>displayName</code> is in <span class="val">['Pika+','Pika⭐','Pika❤']</span> or starts with "Pika". These go to <strong>subRanks[]</strong>.</span></div>
-            <div class="map-row" style="margin-top:6px"><span class="map-key">gameRanks[]</span><span class="map-arrow">→</span><span class="map-dest">All non-sub ranks, sorted by position in <strong>RANK_TIER[]</strong>. Index 0 = highest prestige. Unknown ranks fall to index 999.</span></div>
-            <div class="map-row" style="margin-top:6px"><span class="map-key">topGameRank</span><span class="map-arrow">→</span><span class="map-dest">gameRanks[0] — appears as <strong>"Top Rank"</strong> in the hero panel. Never a subscription.</span></div>
+            <div class="map-row"><span class="map-key">isPikaSub(r)</span><span class="map-arrow">-></span><span class="map-dest">True if <code>displayName</code> is in <span class="val">['Pika+','Pika⭐','Pika❤']</span> or starts with "Pika". These go to <strong>subRanks[]</strong>.</span></div>
+            <div class="map-row" style="margin-top:6px"><span class="map-key">gameRanks[]</span><span class="map-arrow">-></span><span class="map-dest">All non-sub ranks, sorted by position in <strong>RANK_TIER[]</strong>. Index 0 = highest prestige. Unknown ranks fall to index 999.</span></div>
+            <div class="map-row" style="margin-top:6px"><span class="map-key">topGameRank</span><span class="map-arrow">-></span><span class="map-dest">gameRanks[0] — appears as <strong>"Top Rank"</strong> in the hero panel. Never a subscription.</span></div>
           </div>
           <div class="mapping-panel" style="border-top:1px solid var(--border)">
-            <div class="mapping-title">Rank tier order (highest → lowest)</div>
+            <div class="mapping-title">Rank tier order (highest -> lowest)</div>
             <div class="tier-list" id="tier-list-static"></div>
           </div>
           <div class="preview-panel" id="ranks-preview-panel" style="display:none">
@@ -477,7 +477,7 @@ button{cursor:pointer;font-family:var(--body)}
 
     
     <section class="guide-section" id="s-scoring">
-      <div class="section-tag"><div class="section-num">5</div>Data → UI</div>
+      <div class="section-tag"><div class="section-num">5</div>Data -> UI</div>
       <div class="section-title">Activity Scoring</div>
       <div class="section-desc">The site has no time-filtered data — it can't tell how much you played this year. Instead it derives an "activity score" from your leaderboard percentiles to rank how invested you are in each gamemode. This is what determines "Most Played" and the order of all sections.</div>
 
@@ -524,7 +524,7 @@ button{cursor:pointer;font-family:var(--body)}
 
     
     <section class="guide-section" id="s-gmsections">
-      <div class="section-tag"><div class="section-num">6</div>Data → UI</div>
+      <div class="section-tag"><div class="section-num">6</div>Data -> UI</div>
       <div class="section-title">Gamemode Sections (Wrapped)</div>
       <div class="section-desc">Each gamemode with a non-null leaderboard response gets its own section on the wrapped page. Stats shown are taken from <code>GM_META[gm].keys</code> — a curated list of the most meaningful stats for that mode. Order is determined by activity score.</div>
 
@@ -535,7 +535,7 @@ button{cursor:pointer;font-family:var(--body)}
 
     
     <section class="guide-section" id="s-statstab">
-      <div class="section-tag"><div class="section-num">7</div>Data → UI</div>
+      <div class="section-tag"><div class="section-num">7</div>Data -> UI</div>
       <div class="section-title">Stats Tab</div>
       <div class="section-desc">The 📊 Stats toggle shows the same data in a table format. The full leaderboard response is iterated — not just the curated keys — so every stat the API returns appears in the table, with rank and percentile.</div>
 
@@ -621,7 +621,7 @@ function calcScoreDemo(){
   const score = Math.round(pct*100*10)/10 + stats;
   document.getElementById('sc-result').textContent = score.toFixed(1);
   const topPct = ((place/total)*100).toFixed(1);
-  document.getElementById('sc-note').textContent = `Top ${topPct}% → percentile ${(pct*100).toFixed(1)} → score = ${(pct*100).toFixed(1)} + ${stats} stats`;
+  document.getElementById('sc-note').textContent = `Top ${topPct}% -> percentile ${(pct*100).toFixed(1)} -> score = ${(pct*100).toFixed(1)} + ${stats} stats`;
 }
 
 let traceProfile = null;
@@ -739,7 +739,7 @@ function syntaxHighlight(obj){
 }
 
 function mapRow(key,arrow,dest){
-  return `<div class="map-row" style="margin-bottom:5px"><span class="map-key">${key}</span><span class="map-arrow">→</span><span class="map-dest">${dest}</span></div>`;
+  return `<div class="map-row" style="margin-bottom:5px"><span class="map-key">${key}</span><span class="map-arrow">-></span><span class="map-dest">${dest}</span></div>`;
 }
 
 function toggleCard(id){
@@ -784,19 +784,19 @@ function renderProfileCard(ms){
   
   const annotated = {
     "username": p.username,
-    "
+    "-> hero title": `"${p.username}'s 2026 on"`,
     "lastSeen": p.lastSeen,
-    "
+    "-> hero subtitle": `"Last seen ${new Date(p.lastSeen).toLocaleDateString()}"`,
     "rank.level": p.rank?.level,
-    "
+    "-> hp-stat Pika Level": p.rank?.level,
     "rank.percentage": p.rank?.percentage,
-    "
+    "-> progress bar in stats view": `${p.rank?.percentage?.toFixed(1)}%`,
     "ranks": (p.ranks||[]).map(r=>({displayName:r.displayName, server:r.server})),
-    "
+    "-> splitRanks() -> topGameRank + subRanks": "see Ranks section",
     "friends[].length": (p.friends||[]).length,
-    "
+    "-> hp-stat Friends": (p.friends||[]).length,
     "discord_boosting": p.discord_boosting,
-    "
+    "-> shows Booster badge if true": p.discord_boosting,
   };
   document.getElementById('pre-profile-annotated').innerHTML = syntaxHighlight(annotated);
 
@@ -805,15 +805,15 @@ function renderProfileCard(ms){
 
   const {game,subs,top} = splitRanks(p.ranks||[]);
   document.getElementById('mappings-profile').innerHTML =
-    mapRow('username','→',`<strong>Hero panel title</strong>: "${p.username}'s 2026 on"`) +
-    mapRow('lastSeen','→',`<strong>Hero subtitle</strong>: "Last seen ${new Date(p.lastSeen).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}"`) +
-    mapRow('rank.level','→',`<strong>Pika Level</strong> stat chip in hero panel = <span class="val">${p.rank?.level}</span>`) +
-    mapRow('rank.percentage','→',`<strong>Level progress bar</strong> in stats view profile card = <span class="val">${p.rank?.percentage?.toFixed(1)}%</span>`) +
-    mapRow('ranks[]','→',`<strong>splitRanks()</strong> → top game rank = <span class="val">${top?.displayName||'none'}</span>, subscription = <span class="val">${subs[0]?.displayName||'none'}</span>`) +
-    mapRow('friends[]','→',`<strong>Friends count</strong> = <span class="val">${(p.friends||[]).length}</span> — names are also clickable in stats view profile card`) +
-    mapRow('discord_boosting','→',`Shows <strong>🚀 Booster</strong> badge in hero panel = <span class="val">${p.discord_boosting}</span>`) +
-    mapRow('discord_verified','→',`Discord icon colour in stats profile card`) +
-    mapRow('email_verified','→',`Email icon colour in stats profile card`);
+    mapRow('username','->',`<strong>Hero panel title</strong>: "${p.username}'s 2026 on"`) +
+    mapRow('lastSeen','->',`<strong>Hero subtitle</strong>: "Last seen ${new Date(p.lastSeen).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}"`) +
+    mapRow('rank.level','->',`<strong>Pika Level</strong> stat chip in hero panel = <span class="val">${p.rank?.level}</span>`) +
+    mapRow('rank.percentage','->',`<strong>Level progress bar</strong> in stats view profile card = <span class="val">${p.rank?.percentage?.toFixed(1)}%</span>`) +
+    mapRow('ranks[]','->',`<strong>splitRanks()</strong> -> top game rank = <span class="val">${top?.displayName||'none'}</span>, subscription = <span class="val">${subs[0]?.displayName||'none'}</span>`) +
+    mapRow('friends[]','->',`<strong>Friends count</strong> = <span class="val">${(p.friends||[]).length}</span> — names are also clickable in stats view profile card`) +
+    mapRow('discord_boosting','->',`Shows <strong>🚀 Booster</strong> badge in hero panel = <span class="val">${p.discord_boosting}</span>`) +
+    mapRow('discord_verified','->',`Discord icon colour in stats profile card`) +
+    mapRow('email_verified','->',`Email icon colour in stats profile card`);
 
   
   const lastSeen = new Date(p.lastSeen).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
@@ -873,14 +873,14 @@ function renderHeroCard(){
   document.getElementById('nl-hero').style.display='none';
   document.getElementById('loaded-hero').style.display='block';
   document.getElementById('mappings-hero').innerHTML =
-    mapRow('profile.username','→',`Inserted into title: <strong>"${p.username}'s 2026 on"</strong>`) +
-    mapRow('selectedYear (JS var)','→',`The year shown — defaults to 2026, changeable in the editor below`) +
-    mapRow('profile.lastSeen','→',`Subtitle line: <strong>"Last seen [date]"</strong> — unix ms converted via <code>new Date()</code>`) +
-    mapRow('rank.level','→',`<strong>Pika Level</strong> chip — raw integer, no formatting`) +
-    mapRow('ranks[] → splitRanks().top','→',`<strong>Top Rank</strong> chip = <span class="val">${top?.displayName||'none'}</span> + server label <span class="val">${top?.server||''}</span>`) +
-    mapRow('ranks[] → splitRanks().subs[0]','→',`<strong>Subscription</strong> chip in pink = <span class="val">${subs[0]?.displayName||'none'}</span>`) +
-    mapRow('friends[].length','→',`<strong>Friends</strong> chip = integer count`) +
-    mapRow('discord_boosting','→',`If <code>true</code>: shows <strong>🚀 Booster</strong> chip in pink`);
+    mapRow('profile.username','->',`Inserted into title: <strong>"${p.username}'s 2026 on"</strong>`) +
+    mapRow('selectedYear (JS var)','->',`The year shown — defaults to 2026, changeable in the editor below`) +
+    mapRow('profile.lastSeen','->',`Subtitle line: <strong>"Last seen [date]"</strong> — unix ms converted via <code>new Date()</code>`) +
+    mapRow('rank.level','->',`<strong>Pika Level</strong> chip — raw integer, no formatting`) +
+    mapRow('ranks[] -> splitRanks().top','->',`<strong>Top Rank</strong> chip = <span class="val">${top?.displayName||'none'}</span> + server label <span class="val">${top?.server||''}</span>`) +
+    mapRow('ranks[] -> splitRanks().subs[0]','->',`<strong>Subscription</strong> chip in pink = <span class="val">${subs[0]?.displayName||'none'}</span>`) +
+    mapRow('friends[].length','->',`<strong>Friends</strong> chip = integer count`) +
+    mapRow('discord_boosting','->',`If <code>true</code>: shows <strong>🚀 Booster</strong> chip in pink`);
 
   document.getElementById('preview-hero').innerHTML = buildHeroPreview(p.username,'2026',p.rank?.level,top,p);
 }
@@ -930,9 +930,9 @@ function renderGmCards(){
         ${ok&&d?`
         <div class="mapping-panel">
           <div class="mapping-title">${m.label} — ${statCount} stats returned, ${rankedCount} ranked, activity score: <strong>${score}</strong></div>
-          ${mapRow(`type=${gm}`,'→',`Selects the gamemode. The API ignores unknown types — returns null or empty.`)}
-          ${mapRow('interval=total','→',`All-time totals. No time filtering exists in the API.`)}
-          ${gm==='bedwars'?mapRow('mode=ALL_MODES','→','Aggregates across all BedWars modes. Without this, each mode is separate.'):''}
+          ${mapRow(`type=${gm}`,'->',`Selects the gamemode. The API ignores unknown types — returns null or empty.`)}
+          ${mapRow('interval=total','->',`All-time totals. No time filtering exists in the API.`)}
+          ${gm==='bedwars'?mapRow('mode=ALL_MODES','->','Aggregates across all BedWars modes. Without this, each mode is separate.'):''}
           <div style="margin-top:10px;font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Curated keys shown in Wrapped view (GM_META.keys):</div>
           ${m.keys.map(k=>{
             const s=d[k];
@@ -941,7 +941,7 @@ function renderGmCards(){
             const val=e?fmt(e.value):'—';
             const rank=e?`#${e.place.toLocaleString()}`:'unranked';
             const pct=e&&total?`top ${((e.place/total)*100).toFixed(1)}%`:'';
-            return mapRow(`[${k}]`,'→',`Shows as stat row: <span class="val">${val}</span> ${e?`<span class="rank-badge ${e.place===1?'gold':e.place<=3?'silver':''}">${rank}</span>`:'<span style="color:var(--text3)">not ranked</span>'} ${pct?`<span style="font-size:.7em;color:var(--text3)">(${pct})</span>`:''}`);
+            return mapRow(`[${k}]`,'->',`Shows as stat row: <span class="val">${val}</span> ${e?`<span class="rank-badge ${e.place===1?'gold':e.place<=3?'silver':''}">${rank}</span>`:'<span style="color:var(--text3)">not ranked</span>'} ${pct?`<span style="font-size:.7em;color:var(--text3)">(${pct})</span>`:''}`);
           }).join('')}
         </div>
         <div class="json-panel">
@@ -1008,7 +1008,7 @@ function renderGmSectionPreviews(){
         </div>
         <div class="call-body" id="body-gmp-${gm}">
           <div class="mapping-panel">
-            <div class="mapping-title">GM_META["${gm}"].keys → shown stats</div>
+            <div class="mapping-title">GM_META["${gm}"].keys -> shown stats</div>
             <table class="mini-table" style="margin-top:6px">
               <thead><tr><th>Stat name (GM_META key)</th><th>Value & rank</th></tr></thead>
               <tbody>${statsRows}</tbody>
