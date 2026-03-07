@@ -659,10 +659,8 @@ function setEx(name){ document.getElementById('ign-input').value=name; }
 (function(){
   const p = new URLSearchParams(location.search).get('player');
   if(p){
-    window.addEventListener('DOMContentLoaded',()=>{
-      document.getElementById('ign-input').value=p;
-      startTrace();
-    });
+    document.getElementById('ign-input').value=p;
+    startTrace();
   }
 })();
 
