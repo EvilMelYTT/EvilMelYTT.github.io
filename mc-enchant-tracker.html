@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enchantment Tracker</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+:root {
+  --gui-bg:#c6c6c6; --gui-dark:var(--gui-dark); --gui-light:#fff;
+  --gui-mid:var(--gui-mid); --gui-panel:var(--gui-panel); --gui-inset:var(--gui-inset);
+  --gui-text:var(--gui-text); --gui-border:#000;
+  --mc-yellow:#ffff55; --mc-aqua:#55ffff; --mc-red:#ff5555;
+  --mc-green:#55ff55; --mc-white:#fff; --mc-lgray:var(--gui-mid)aaa;
+  --mc-enchblue:#8080ff; --mc-lpurple:#ff55ff; --mc-darkblue:#0000aa;
+}
+*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
+body{
+  background-color:#1a1a2e;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 31px,rgba(0,0,0,.12) 31px,rgba(0,0,0,.12) 32px),
+    repeating-linear-gradient(90deg,transparent,transparent 31px,rgba(0,0,0,.12) 31px,rgba(0,0,0,.12) 32px);
+  font-family:'VT323',monospace;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:16px;color:#fff;
+}
+h1{font-size:2.8rem;text-shadow:3px 3px 0 #3d3d00,5px 5px 0 rgba(0,0,0,.4);color:var(--mc-yellow);margin-bottom:2px;letter-spacing:2px}
+.subtitle{font-size:1.15rem;color:var(--mc-lgray);margin-bottom:14px;text-shadow:1px 1px 0 #000}
+
+.mc-panel{background:var(--gui-bg);border:2px solid #000;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 var(--gui-dark),4px 4px 0 #000;width:100%;max-width:980px}
+.panel-title{background:var(--gui-bg);border-bottom:2px solid var(--gui-dark);padding:5px 10px;font-size:1.2rem;color:var(--gui-text);text-shadow:1px 1px 0 rgba(255,255,255,.5);display:flex;align-items:center;gap:8px}
+
+.gear-bar{display:flex;flex-wrap:wrap;gap:4px;padding:7px 8px;background:var(--gui-panel);border-bottom:2px solid var(--gui-dark);align-items:flex-end}
+.gear-slot{
+  display:flex;flex-direction:column;align-items:center;cursor:pointer;
+  padding:4px 5px 3px;background:var(--gui-inset);
+  border:2px solid #000;box-shadow:inset 1px 1px 0 #373737,inset -1px -1px 0 #fff;
+  min-width:52px;transition:background .05s;position:relative
+}
+.gear-slot:hover{background:#a0a0a0}
+.gear-slot.active{background:#b0b8e8;box-shadow:inset 1px 1px 0 #667,inset -1px -1px 0 #dde}
+.gear-slot .slot-img-wrap{width:32px;height:32px;display:flex;align-items:center;justify-content:center;position:relative}
+.gear-slot img{width:32px;height:32px;image-rendering:pixelated;object-fit:contain}
+
+.gear-slot.active .slot-img-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(100,80,255,.4) 0%,transparent 55%);
+  pointer-events:none;animation:glint 2s ease-in-out infinite alternate
+}
+@keyframes glint{from{opacity:.4}to{opacity:.9}}
+.slot-name{font-size:.8rem;color:var(--gui-text);margin-top:2px;white-space:nowrap}
+.gear-slot.active .slot-name{color:#1a1a6e}
+.slot-pct{font-size:.72rem;color:#666}
+.gear-slot.active .slot-pct{color:#005500}
+
+.pack-bar{
+  background:#b0b0b0;border-bottom:2px solid #888;
+  padding:5px 8px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  font-size:1rem;color:var(--gui-text)
+}
+.pack-bar label.mc-btn{display:flex;align-items:center;gap:4px}
+.pack-bar input[type=file]{display:none}
+.pack-status{display:flex;align-items:center;gap:6px;flex:1;flex-wrap:wrap}
+.pack-icon{width:24px;height:24px;image-rendering:pixelated;border:1px solid var(--gui-dark);display:none}
+.pack-badge{padding:1px 6px;border:1px solid;font-size:.88rem}
+.pack-badge.loaded{background:#001000;border-color:#009900;color:#55ff55}
+.pack-badge.none{background:#1e1e1e;border-color:var(--gui-dark);color:#999}
+.pack-hint{margin-left:auto;font-size:.82rem;color:#777}
+.pack-progress{font-size:.88rem;color:var(--gui-text)}
+
+.toolbar{background:var(--gui-bg);border-bottom:2px solid var(--gui-dark);padding:5px 8px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.tsep{width:1px;height:18px;background:#999;margin:0 2px}
+.mc-btn{
+  font-family:'VT323',monospace;font-size:1.05rem;padding:2px 8px;
+  background:var(--gui-bg);color:var(--gui-text);
+  border:2px solid #000;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 var(--gui-dark);
+  cursor:pointer;letter-spacing:.3px;white-space:nowrap;transition:background .05s
+}
+.mc-btn:active{box-shadow:inset 1px 1px 0 var(--gui-dark),inset -1px -1px 0 #fff;transform:translate(1px,1px)}
+.mc-btn:hover{background:#d4d4d4}
+.mc-btn.active{background:#d0d8ff;color:var(--mc-darkblue)}
+.mc-btn.danger{color:#880000}
+.mc-input{
+  font-family:'VT323',monospace;font-size:1.1rem;flex:1;min-width:110px;
+  background:#000;color:#fff;
+  border:2px solid #000;box-shadow:inset 1px 1px 0 var(--gui-dark),inset -1px -1px 0 #fff;
+  padding:1px 6px;outline:none;caret-color:#fff
+}
+.mc-input::placeholder{color:var(--gui-dark)}
+
+.tabs{display:flex;flex-wrap:wrap;background:var(--gui-mid);border-bottom:2px solid var(--gui-dark)}
+.tab{
+  font-family:'VT323',monospace;font-size:1.05rem;padding:4px 11px;
+  background:var(--gui-mid);color:var(--gui-text);border:none;border-right:1px solid #999;
+  cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap
+}
+.tab:hover{background:var(--gui-panel)}
+.tab.active{background:var(--gui-bg);color:#1a1a6e;font-size:1.1rem}
+.cbadge{background:#00a;color:#fff;font-size:.78rem;padding:0 4px;border:1px solid #000;min-width:18px;text-align:center}
+.tab.alldone .cbadge{background:#006600}
+
+.content{padding:8px;background:var(--gui-bg)}
+
+.prog-area{margin-bottom:7px;padding:5px 8px;background:#b5b5b5;border:2px solid #000;box-shadow:inset 1px 1px 0 #888,inset -1px -1px 0 #fff}
+.prog-label{font-size:1.05rem;color:var(--gui-text);display:flex;justify-content:space-between;margin-bottom:3px}
+.prog-outer{height:13px;background:var(--gui-dark);border:2px solid #000;box-shadow:inset 1px 1px 0 #333}
+.prog-inner{height:100%;background:linear-gradient(to bottom,#55ff55,#009900);transition:width .25s ease}
+.prog-inner.partial{background:linear-gradient(to bottom,#ffff55,var(--gui-mid)a00)}
+.prog-inner.low{background:linear-gradient(to bottom,#ff5555,#aa0000)}
+
+.enc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:5px}
+
+.enc-card{
+  background:#100010;border:1px solid #2d2d2d;
+  box-shadow:0 0 0 1px #5000a0,inset 0 0 0 1px #0d000d;
+  cursor:pointer;user-select:none;transition:box-shadow .08s
+}
+.enc-card:hover{box-shadow:0 0 0 1px #8040ff,inset 0 0 0 1px #0d000d,0 0 10px rgba(128,64,255,.22)}
+.enc-card.checked{background:#001000;box-shadow:0 0 0 1px #00aa00,inset 0 0 0 1px #000d00}
+.enc-card.checked:hover{box-shadow:0 0 0 1px #55ff55,inset 0 0 0 1px #000d00,0 0 10px rgba(0,200,0,.18)}
+.enc-card.servermax{background:#0d0d00;box-shadow:0 0 0 1px var(--gui-mid)a00,inset 0 0 0 1px #0d0d00}
+.enc-card.servermax:hover{box-shadow:0 0 0 1px #ffff55,inset 0 0 0 1px #0d0d00,0 0 10px rgba(255,220,0,.18)}
+.enc-card.optional{box-shadow:0 0 0 1px #660066,inset 0 0 0 1px #0d000d;opacity:.78}
+.enc-card.optional:hover{opacity:.93}
+.enc-card.curse{background:#100000;box-shadow:0 0 0 1px #660000,inset 0 0 0 1px #0d0000;opacity:.78}
+.enc-card.curse:hover{opacity:.93}
+.enc-card.optional.checked,.enc-card.optional.servermax,.enc-card.curse.checked{opacity:1}
+
+.card-hdr{display:flex;align-items:center;justify-content:space-between;padding:4px 7px;border-bottom:1px solid #2a2a2a;gap:6px}
+.enc-card.checked .card-hdr{border-bottom-color:#1a3a1a}
+.enc-card.servermax .card-hdr{border-bottom-color:#3a3a00}
+.enc-card.curse    .card-hdr{border-bottom-color:#3a1a1a}
+.enc-name{font-size:1.1rem;flex:1;letter-spacing:.2px}
+.nc{color:#8080ff;text-shadow:0 0 5px rgba(100,100,255,.5)}
+.nr{color:#ff5555;text-shadow:0 0 5px rgba(255,80,80,.5)}
+.ng{color:#55ff55;text-shadow:0 0 5px rgba(80,255,80,.4)}
+.ng-gold{color:#ffff55;text-shadow:0 0 5px rgba(255,220,0,.5)}
+
+.chk{width:17px;height:17px;background:#2a0a2a;border:1px solid #5000a0;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:transparent;flex-shrink:0;transition:all .08s}
+.enc-card.checked .chk{background:#0a2a0a;border-color:#00aa00;color:#55ff55}
+.enc-card.servermax .chk{background:#1a1a00;border-color:var(--gui-mid)a00;color:#ffff55}
+.enc-card.curse    .chk{background:#2a0a0a;border-color:#660000}
+.enc-card.curse.checked .chk{background:#2a0a0a;border-color:#aa0000;color:#ff5555}
+
+.card-body{padding:4px 7px 5px}
+.lvl-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.lvl-lbl{font-size:.88rem;color:var(--gui-mid)}
+.lvl-max{font-size:.8rem;color:#666;margin-left:auto}
+.pips{display:flex;gap:3px;flex-wrap:wrap}
+.pip{font-size:.8rem;padding:0 4px;background:#1e1e3e;border:1px solid #3030a0;color:var(--gui-mid);cursor:pointer;transition:all .07s}
+.pip:hover{background:#2a2a5a;border-color:#8080ff;color:#fff}
+.pip.on{background:#1a3a1a;border-color:#00aa00;color:#55ff55}
+
+.pip.server{background:#2a1e00;border-color:var(--gui-mid)a00;color:#ffaa00}
+.pip.server:hover{background:#3a2e00;border-color:#ffff55;color:#ffff55}
+.pip.server.on{background:#1a1400;border-color:#ffaa00;color:#ffff55}
+.pip.cpip{background:#3a1a1a;border-color:#660000;color:#ff5555}
+.pip.cpip:hover{background:#4a2a2a;border-color:#ff5555}
+.pip.cpip.on{background:#2a0a0a;border-color:#aa0000;color:#ff5555}
+
+.tags{display:flex;gap:3px;flex-wrap:wrap;margin-top:3px}
+.tag{font-size:.73rem;padding:0 3px;border:1px solid;letter-spacing:.2px}
+.t-opt{background:#200020;border-color:#aa00aa;color:#ff55ff}
+.t-curse{background:#200000;border-color:#aa0000;color:#ff5555}
+.t-treasure{background:#1a1a00;border-color:var(--gui-mid)a00;color:#ffff55}
+.t-stack{background:#001515;border-color:#005555;color:#55ffff}
+
+.opt-section{margin-top:8px}
+.sec-hdr{font-size:1.05rem;color:var(--gui-text);padding:3px 4px 2px;border-bottom:1px solid var(--gui-mid);margin-bottom:5px;display:flex;align-items:center;gap:5px}
+
+.stats{display:flex;flex-wrap:wrap;gap:8px;padding:5px 8px;background:#ababab;border-top:2px solid #888;font-size:.95rem;color:var(--gui-text);align-items:center}
+.si{display:flex;align-items:center;gap:4px}
+.dot{width:9px;height:9px;border:1px solid #000}
+.d-ok{background:#006600}.d-part{background:var(--gui-mid)a00}.d-empty{background:var(--gui-dark)}.d-opt{background:#aa00aa}.d-curse{background:#aa0000}
+
+.tt{position:fixed;z-index:9999;pointer-events:none;background:#100010;border:1px solid #2d2d2d;box-shadow:0 0 0 1px #5000a0,3px 3px 10px rgba(0,0,0,.8);padding:6px 10px;max-width:260px;display:none}
+.tt.vis{display:block}
+.tt-title{font-size:1.05rem;margin-bottom:3px}
+.tt-desc{font-size:.88rem;color:var(--gui-mid);line-height:1.35}
+.tt-gear{font-size:.8rem;color:#888;margin-top:4px;border-top:1px solid #2d2d2d;padding-top:3px;line-height:1.4}
+
+.empty-state{text-align:center;padding:26px;color:var(--gui-mid);font-size:1.3rem}
+
+#dropOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,200,.16);border:4px dashed #8080ff;z-index:10000;font-size:2.5rem;color:#fff;align-items:center;justify-content:center;text-shadow:2px 2px 0 #000;letter-spacing:2px}
+#dropOverlay.vis{display:flex}
+
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--gui-dark)}
+::-webkit-scrollbar-thumb{background:#888;border:1px solid #333}
+
+.watermark{position:fixed;bottom:10px;right:10px;height:65px;width:350px;background:url('https://assets.ppy.sh/user-profile-covers/9938020/c53c8d330ea57b8428ba877ac664601e692ac519e717836e62e5be7a17582a7c.png') center/cover;border-radius:5px;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;text-shadow:1px 1px 3px rgba(0,0,0,.9);font-size:12px;font-family:Arial,sans-serif;z-index:9000}
+.watermark-left{position:fixed;bottom:10px;left:10px;height:65px;width:262px;background:url('https://i.ibb.co/sdkCDzFD/q9pok1limzv71.jpg') center -70px/cover;border-radius:5px;border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;text-shadow:1px 1px 3px rgba(0,0,0,.9);font-size:12px;font-family:Arial,sans-serif;z-index:9000}
+.watermark-left-text,.watermark-text{background:rgba(0,0,0,.7);padding:4px 10px;border-radius:4px}
+#bottom-bar{position:fixed;bottom:10px;left:0;width:100%;display:none;align-items:center;padding:0 10px;box-sizing:border-box;z-index:9000;height:65px}
+#bottom-bar.wm-vis{display:flex}
+#scroller-container{flex:1;height:65px;margin:0 10px;overflow:hidden;position:relative;border-radius:5px;background:#111;border:2px solid var(--gui-dark)}
+#scroller-track{display:flex;height:100%;position:absolute;left:0;top:0}
+#scroller-track img{height:100%;margin-right:5px;object-fit:cover;flex-shrink:0}
+#scroller-loading{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;color:#fff;font-family:monospace;font-size:14px;background:rgba(0,0,0,.5);z-index:10}
+#easterSword:hover{transform:rotate(-20deg) scale(1.2)}
+
+@media(max-width:600px){
+  h1{font-size:2rem}
+  .enc-grid{grid-template-columns:1fr}
+  .gear-slot{min-width:44px}
+}
+</style>
+</head>
+<body>
+
+<h1><span id="easterSword" title="..." style="cursor:pointer;display:inline-block;transition:transform .15s" onclick="toggleWatermark()">⚔</span> Enchantment Tracker</h1>
+<p class="subtitle">All enchants stackable · Texture pack support · Auto-saved · <span style="color:#555;font-size:.9em">✦</span></p>
+
+<div class="mc-panel">
+
+  <div class="panel-title">🎒 Gear Slot</div>
+  <div class="gear-bar" id="gearBar"></div>
+
+  <div class="pack-bar">
+    <span>Texture Pack:</span>
+    <label class="mc-btn" title="Import a .zip resource pack">
+      📦 Import .zip
+      <input type="file" id="packInput" accept=".zip">
+    </label>
+    <button class="mc-btn danger" id="clearPackBtn" style="display:none" onclick="clearPack()">✖ Remove</button>
+    <div class="pack-status" id="packStatus">
+      <img class="pack-icon" id="packIcon">
+      <span class="pack-badge none" id="packBadge">No pack — vanilla 1.21 assets</span>
+      <span class="pack-progress" id="packProgress"></span>
+    </div>
+    <span class="pack-hint">or drag &amp; drop .zip anywhere</span>
+  </div>
+
+  <div class="pack-bar" style="border-top:1px solid #999">
+    <span>Item Import:</span>
+    <label class="mc-btn" title="Import enchantments from an NBT item export .txt file">
+      📋 Import Item .txt
+      <input type="file" id="nbtInput" accept=".txt">
+    </label>
+    <div class="pack-status" id="nbtStatus">
+      <span class="pack-badge none" id="nbtBadge">No item imported</span>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <span style="color:#3f3f3f;font-size:1rem">Filter:</span>
+    <button class="mc-btn active" id="fAll"        onclick="setFilter('all')">All</button>
+    <button class="mc-btn"        id="fIncomplete" onclick="setFilter('incomplete')">Incomplete</button>
+    <button class="mc-btn"        id="fComplete"   onclick="setFilter('complete')">Complete</button>
+    <div class="tsep"></div>
+    <input class="mc-input" id="searchInput" type="text" placeholder="Search enchantments..." oninput="renderAll()">
+    <div class="tsep"></div>
+    <button class="mc-btn active" id="fVanilla" onclick="toggleVanilla()" title="Show/hide vanilla enchants">⚗ Vanilla</button>
+    <button class="mc-btn active" id="fCustom"  onclick="toggleCustom()"  title="Show/hide custom server enchants">⭐ Custom</button>
+    <div class="tsep"></div>
+    <button class="mc-btn" onclick="toggleOptional()"><span id="optLabel">Hide</span> Optional</button>
+    <div class="tsep"></div>
+    <button class="mc-btn danger" onclick="resetGear()">Reset Slot</button>
+    <button class="mc-btn danger" onclick="resetAll()">Reset All</button>
+  </div>
+
+  <div class="tabs" id="tabsRow"></div>
+
+  <div class="content">
+    <div class="prog-area">
+      <div class="prog-label"><span id="progText">Loading...</span><span id="progPct">0%</span></div>
+      <div class="prog-outer"><div class="prog-inner" id="progBar" style="width:0%"></div></div>
+    </div>
+    <div id="mainGrid" class="enc-grid"></div>
+    <div class="opt-section" id="optSection" style="display:none">
+      <div class="sec-hdr">⚠ Optional / Curses / Situational</div>
+      <div id="optGrid" class="enc-grid"></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="si"><div class="dot d-ok"></div><span id="sOk">0</span> Maxed</div>
+    <div class="si"><div class="dot d-part"></div><span id="sPart">0</span> Partial</div>
+    <div class="si"><div class="dot d-empty"></div><span id="sEmpty">0</span> Empty</div>
+    <div class="si"><div class="dot d-opt"></div><span id="sOpt">0</span> Optional</div>
+    <div class="si"><div class="dot d-curse"></div><span id="sCurse">0</span> Curses</div>
+  </div>
+</div>
+
+<div class="mc-tooltip tt" id="tooltip">
+  <div class="tt-title" id="ttTitle"></div>
+  <div class="tt-desc"  id="ttDesc"></div>
+  <div class="tt-gear"  id="ttGear"></div>
+</div>
+
+<div id="dropOverlay">📦 Drop .zip to import texture pack</div>
+
+<script>
+
+const ROM = ['','I','II','III','IV','V','VI','VII','VIII','IX','X'];
+const toRom = n => ROM[n] || n;
+const MC_BASE = 'https://assets.mcasset.cloud/1.21.10/assets/minecraft/textures/item/';
+
+const $ = id => document.getElementById(id);
+const EL = {
+  gearBar:     null,
+  tabsRow:     null,
+  mainGrid:    null,
+  optSection:  null,
+  optGrid:     null,
+  progText:    null,
+  progPct:     null,
+  progBar:     null,
+  tooltip:     null,
+  ttTitle:     null,
+  ttDesc:      null,
+  ttGear:      null,
+  searchInput: null,
+  packBadge:   null,
+  packIcon:    null,
+  packProgress:null,
+  clearPackBtn:null,
+  nbtBadge:    null,
+  dropOverlay: null,
+};
+function cacheEls() { Object.keys(EL).forEach(k => EL[k] = $(k)); }
+
+const GEAR_SLOTS = [
+  { id:'helmet',      name:'Helmet',      tex:['netherite_helmet','diamond_helmet','iron_helmet'] },
+  { id:'chestplate',  name:'Chestplate',  tex:['netherite_chestplate','diamond_chestplate','iron_chestplate'] },
+  { id:'leggings',    name:'Leggings',    tex:['netherite_leggings','diamond_leggings','iron_leggings'] },
+  { id:'boots',       name:'Boots',       tex:['netherite_boots','diamond_boots','iron_boots'] },
+  { id:'sword',       name:'Sword',       tex:['netherite_sword','diamond_sword'] },
+  { id:'axe',         name:'Axe',         tex:['netherite_axe','diamond_axe'] },
+  { id:'pickaxe',     name:'Pickaxe',     tex:['netherite_pickaxe','diamond_pickaxe'] },
+  { id:'shovel',      name:'Shovel',      tex:['netherite_shovel','diamond_shovel'] },
+  { id:'hoe',         name:'Hoe',         tex:['netherite_hoe','diamond_hoe'] },
+  { id:'bow',         name:'Bow',         tex:['bow'] },
+  { id:'crossbow',    name:'Crossbow',    tex:['crossbow_standby','crossbow'],
+    directUrl:'https://assets.mcasset.cloud/1.21.10/assets/minecraft/textures/item/crossbow_standby.png' },
+  { id:'trident',     name:'Trident',     tex:['trident'] },
+  { id:'fishing_rod', name:'Fish Rod',    tex:['fishing_rod'] },
+  { id:'shears',      name:'Shears',      tex:['shears'] },
+  { id:'flint_steel', name:'Flint&Steel', tex:['flint_and_steel'] },
+  { id:'shield',      name:'Shield',      tex:['shield'],
+    directUrl:'https://minecraft.wiki/images/Shield_JE2_BE1.png?4837d' },
+  { id:'elytra',      name:'Elytra',      tex:['elytra'] },
+  { id:'mace',        name:'Mace',        tex:['mace'],
+    directUrl:'https://assets.mcasset.cloud/1.21.10/assets/minecraft/textures/item/mace.png' },
+];
+
+const resolvedSrc = {};
+
+const packBlobs = {};   
+let packLoaded = false;
+let packDisplayName = '';
+
+const ENCHANTS = [
+  
+  {id:'protection',            name:'Protection',            max:6, vanillaMax:4, serverBoosted:true, slots:['helmet','chestplate','leggings','boots','shield'], desc:'Reduces most damage types.',               note:'Vanilla max IV, server max VI. Conflicts w/ prot variants — stackable here'},
+  {id:'fire_protection',       name:'Fire Protection',       max:4, slots:['helmet','chestplate','leggings','boots'],          desc:'Reduces fire damage and burn time.',        note:'Stackable here'},
+  {id:'blast_protection',      name:'Blast Protection',      max:4, slots:['helmet','chestplate','leggings','boots'],          desc:'Reduces explosion damage and knockback.',   note:'Stackable here'},
+  {id:'projectile_protection', name:'Projectile Protection', max:4, slots:['helmet','chestplate','leggings','boots'],          desc:'Reduces projectile damage.',                note:'Stackable here'},
+  {id:'feather_falling',       name:'Feather Falling',       max:4, slots:['boots'],                                          desc:'Reduces fall damage.'},
+  {id:'respiration',           name:'Respiration',           max:3, slots:['helmet'],                                         desc:'Extends underwater breathing time.'},
+  {id:'aqua_affinity',         name:'Aqua Affinity',         max:1, slots:['helmet'],                                         desc:'Increases underwater mining speed.'},
+  {id:'thorns',                name:'Thorns',                max:3, slots:['helmet','chestplate','leggings','boots'],          desc:'Damages attackers when struck.',            optional:true, note:'Durability cost — optional'},
+  {id:'depth_strider',         name:'Depth Strider',         max:3, slots:['boots'],                                          desc:'Increases underwater movement speed.',      note:'Vanilla conflicts w/ Frost Walker — stackable here'},
+  {id:'frost_walker',          name:'Frost Walker',          max:2, slots:['boots'],                                          desc:'Turns water beneath feet to frosted ice.',  optional:true, treasure:true, note:'Vanilla conflicts w/ Depth Strider'},
+  {id:'soul_speed',            name:'Soul Speed',            max:3, slots:['boots'],                                          desc:'Increases speed on soul sand/soil.',        optional:true, treasure:true},
+  {id:'swift_sneak',           name:'Swift Sneak',           max:3, slots:['leggings'],                                       desc:'Increases sneaking speed.',                 treasure:true},
+  {id:'binding_curse',         name:'Curse of Binding',      max:1, slots:['helmet','chestplate','leggings','boots','elytra'], desc:'Cannot be removed from armor slot.',        curse:true, optional:true, treasure:true},
+
+  
+  {id:'sharpness',             name:'Sharpness',             max:7, vanillaMax:5, serverBoosted:true, slots:['sword','axe'],                                    desc:'Increases melee damage.',                   note:'Vanilla max V, server max VII. Conflicts w/ Smite/BoA — stackable here'},
+  {id:'smite',                 name:'Smite',                 max:5, slots:['sword','axe'],                                    desc:'Increased damage to undead mobs.',          note:'Stackable here'},
+  {id:'bane_of_arthropods',    name:'Bane of Arthropods',    max:5, slots:['sword','axe'],                                    desc:'Increased damage to arthropods.',           optional:true, note:'Stackable here'},
+  {id:'knockback',             name:'Knockback',             max:2, slots:['sword'],                                          desc:'Increases knockback dealt to targets.',     optional:true},
+  {id:'fire_aspect',           name:'Fire Aspect',           max:2, slots:['sword'],                                          desc:'Sets target on fire upon hit.'},
+  {id:'looting',               name:'Looting',               max:3, slots:['sword'],                                          desc:'Increases mob loot drop amounts.'},
+  {id:'sweeping_edge',         name:'Sweeping Edge',         max:3, slots:['sword'],                                          desc:'Increases sweeping attack damage.'},
+
+  
+  {id:'efficiency',            name:'Efficiency',            max:10, vanillaMax:5, serverBoosted:true, slots:['pickaxe','axe','shovel','hoe','shears'],           desc:'Increases tool speed.',                     note:'Vanilla max V, server max X'},
+  {id:'silk_touch',            name:'Silk Touch',            max:1, slots:['pickaxe','axe','shovel','hoe','shears'],           desc:'Mined blocks drop themselves.',             note:'Vanilla conflicts w/ Fortune — stackable here'},
+  {id:'fortune',               name:'Fortune',               max:3, slots:['pickaxe','axe','shovel','hoe'],                    desc:'Increases certain block drops.',            note:'Stackable here'},
+
+  
+  {id:'unbreaking',            name:'Unbreaking',            max:5, vanillaMax:3, serverBoosted:true, slots:['helmet','chestplate','leggings','boots','sword','axe','pickaxe','shovel','hoe','bow','crossbow','trident','fishing_rod','shears','flint_steel','shield','elytra','mace'], desc:'Increases item durability.',                note:'Vanilla max III, server max V'},
+  {id:'mending',               name:'Mending',               max:1, slots:['helmet','chestplate','leggings','boots','sword','axe','pickaxe','shovel','hoe','bow','crossbow','trident','fishing_rod','shears','flint_steel','shield','elytra','mace'], desc:'Repairs item using XP orbs.', treasure:true, note:'Vanilla conflicts w/ Infinity — stackable here'},
+  {id:'vanishing_curse',       name:'Curse of Vanishing',    max:1, slots:['helmet','chestplate','leggings','boots','sword','axe','pickaxe','shovel','hoe','bow','crossbow','trident','fishing_rod','shears','flint_steel','shield','elytra','mace'], desc:'Item vanishes on death.', curse:true, optional:true, treasure:true},
+
+  
+  {id:'power',                 name:'Power',                 max:5, slots:['bow'],                                            desc:'Increases arrow damage.'},
+  {id:'punch',                 name:'Punch',                 max:2, slots:['bow'],                                            desc:'Increases arrow knockback.',                optional:true},
+  {id:'flame',                 name:'Flame',                 max:1, slots:['bow'],                                            desc:'Arrows set targets on fire.'},
+  {id:'infinity',              name:'Infinity',              max:1, slots:['bow'],                                            desc:'Shooting does not consume arrows.',         note:'Vanilla conflicts w/ Mending — stackable here'},
+
+  
+  {id:'multishot',             name:'Multishot',             max:1, slots:['crossbow'],                                       desc:'Shoot 3 arrows simultaneously.',            note:'Vanilla conflicts w/ Piercing — stackable here'},
+  {id:'piercing',              name:'Piercing',              max:4, slots:['crossbow'],                                       desc:'Arrows pass through entities.',             note:'Stackable here'},
+  {id:'quick_charge',          name:'Quick Charge',          max:3, slots:['crossbow'],                                       desc:'Decreases crossbow reload time.'},
+
+  
+  {id:'impaling',              name:'Impaling',              max:5, slots:['trident'],                                        desc:'Increased damage to aquatic mobs.'},
+  {id:'riptide',               name:'Riptide',               max:3, slots:['trident'],                                        desc:'Hurls player with trident while in water/rain.', note:'Vanilla conflicts w/ Loyalty & Channeling — stackable here'},
+  {id:'loyalty',               name:'Loyalty',               max:3, slots:['trident'],                                        desc:'Trident returns after being thrown.',       note:'Stackable here'},
+  {id:'channeling',            name:'Channeling',            max:1, slots:['trident'],                                        desc:'Summons lightning during thunderstorms.',   optional:true, note:'Stackable here'},
+
+  
+  {id:'luck_of_the_sea',       name:'Luck of the Sea',       max:10, vanillaMax:3, serverBoosted:true, slots:['fishing_rod'], desc:'Increases rate of treasure catches.',       note:'Vanilla max III, server special items max X'},
+  {id:'lure',                  name:'Lure',                  max:10, vanillaMax:3, serverBoosted:true, slots:['fishing_rod'], desc:'Increases fishing speed.',                  note:'Vanilla max III, server special items max X'},
+
+  
+  {id:'wind_burst',            name:'Wind Burst',            max:3, slots:['mace'],                                           desc:'Launches player upward on smash attack.',  treasure:true},
+  {id:'breach',                name:'Breach',                max:4, slots:['mace'],                                           desc:'Reduces target armor effectiveness.'},
+  {id:'density',               name:'Density',               max:5, slots:['mace'],                                           desc:'Increases fall damage bonus per block.'},
+  {id:'smite_mace',            name:'Smite',                 max:5, slots:['mace'],                                           desc:'Increased damage to undead mobs.',          note:'Stackable here'},
+  {id:'bane_mace',             name:'Bane of Arthropods',    max:5, slots:['mace'],                                           desc:'Increased damage to arthropods.',           optional:true},
+  {id:'fire_aspect_mace',      name:'Fire Aspect',           max:2, slots:['mace'],                                           desc:'Sets target on fire upon hit.'},
+];
+
+const CUSTOM_ENCHANTS = [
+  {id:'hydro_aspect',       name:'Hydro Aspect',       max:3, slots:['sword','axe'],                              desc:'5% damage increase against Enderman, Blaze, and Magma Cube.',                     rarity:'Uncommon', rc:'#55ff55', school:'Refined'},
+  {id:'strafe',             name:'Strafe',             max:1, slots:['bow'],                                      desc:'Bow charges 2x faster.',                                                          rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'aegis',              name:'Aegis',              max:1, slots:['chestplate'],                               desc:'1% chance to dodge incoming damage.',                                              rarity:'Common',   rc:'#aaaaaa', school:'Arcane'},
+  {id:'inquisitive',        name:'Inquisitive',        max:4, slots:['sword','axe'],                              desc:'50% more experience from mobs per level.',                                        rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'execution',          name:'Execution',          max:3, slots:['sword','axe'],                              desc:'10% damage increase against Vindicator, Pillager, Evoker, Ravager and Vex.',     rarity:'Uncommon', rc:'#55ff55', school:'Refined'},
+  {id:'mystical_touch',     name:'Mystical Touch',     max:1, slots:['pickaxe','axe','shovel','hoe','shears'],    desc:'Gain Speed I and Haste I for 5s after breaking an ore.',                           rarity:'Common',   rc:'#aaaaaa', school:'Refined'},
+  {id:'aerohunts',          name:'Aerohunts',          max:3, slots:['sword','axe'],                              desc:'5% damage increase against flying/floating mobs.',                                 rarity:'Uncommon', rc:'#55ff55', school:'Refined'},
+  {id:'temposwift',         name:'Temposwift',         max:1, slots:['boots'],                                    desc:'When down to 30% health, receive Speed III for 5 seconds.',                       rarity:'Common',   rc:'#aaaaaa', school:'Arcane'},
+  {id:'miniatures_stomper', name:'Miniatures Stomper', max:3, slots:['sword','axe'],                              desc:'5% damage increase against Endermite, Silverfish and Vex.',                       rarity:'Common',   rc:'#aaaaaa', school:'Refined'},
+  {id:'scavenger',          name:'Scavenger',          max:1, slots:['sword','axe'],                              desc:'Steal 5% of enemy balance on kill.',                                               rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'bash',               name:'Bash',               max:1, slots:['sword','axe'],                              desc:'20% bonus damage on first hit. Enters infinite cooldown, resets after 5s out of combat.', rarity:'Uncommon', rc:'#55ff55', school:'Refined'},
+  {id:'moltens_touch',      name:'Moltens Touch',      max:1, slots:['pickaxe','axe','shovel','hoe','shears'],    desc:'Autosmelt mined ore into smelted variant.',                                        rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'enraged',            name:'Enraged',            max:1, slots:['sword','axe'],                              desc:'20% damage increase. Increases reloading time by 40% post hit (Mining Fatigue 2).', rarity:'Epic',   rc:'#aa00aa', school:'Refined'},
+  {id:'bloodlust',          name:'Bloodlust',          max:1, slots:['sword','axe'],                              desc:'10% chance to restore half a heart when landing a critical hit.',                  rarity:'Legendary',rc:'#ffaa00', school:'Arcane'},
+  {id:'militia',            name:'Militia',            max:1, slots:['sword','axe'],                              desc:'0.5% chance to drop the item a player is holding.',                               rarity:'Rare',     rc:'#55ffff', school:'Arcane'},
+  {id:'crimson',            name:'Crimson',            max:1, slots:['sword','axe'],                              desc:'Deals extra damage based on missing health, up to 30%.',                          rarity:'Rare',     rc:'#55ffff', school:'Arcane'},
+  {id:'chopper',            name:'Chopper',            max:1, slots:['pickaxe','axe','shovel','hoe','shears'],    desc:'25% chance to drop double logs.',                                                  rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'uppercut',           name:'Uppercut',           max:1, slots:['sword','axe'],                              desc:'10% more damage on critical hit. Knocks mobs and players upward.',                 rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'prowless',           name:'Prowless',           max:1, slots:['bow'],                                      desc:'Arrows home into mobs and players within 5 blocks.',                              rarity:'Uncommon', rc:'#55ff55', school:'Refined'},
+  {id:'repelation',         name:'Repelation',         max:1, slots:['sword','axe'],                              desc:'Right-click to load debuffs into sword; hit applies all debuffs to target.',       rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'frenzified',         name:'Frenzified',         max:1, slots:['bow'],                                      desc:'After hitting a shot, receive Speed I for 5s (+2s per level, Speed II at max).',  rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'overloaded',         name:'Overloaded',         max:1, slots:['bow'],                                      desc:'5% chance to fire an overloaded rocket that deals 150% damage, also self-damages.', rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'venom',              name:'Venom',              max:1, slots:['sword','axe'],                              desc:'5% chance to apply Poison II for 3s.',                                            rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'explosion',          name:'Explosion',          max:1, slots:['bow'],                                      desc:'Arrows cause an explosion on landing.',                                            rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'glacial',            name:'Glacial',            max:1, slots:['crossbow'],                                 desc:'60% chance to freeze targets with Slowness IV for 2 seconds.',                    rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'clusterbomb',        name:'Clusterbomb',        max:3, slots:['bow'],                                      desc:'At max charge, fire 2 more arrows (+1 per level).',                               rarity:'Epic',     rc:'#aa00aa', school:'Refined'},
+  {id:'quelling',           name:'Quelling',           max:3, slots:['sword','axe'],                              desc:'10% damage increase against Piglin, Piglin Brute, and Hoglin.',                   rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'armor_crunch',       name:'Armor Crunch',       max:1, slots:['sword','axe'],                              desc:'Deal 20% less damage. Reduce armor durability by up to 3 extra points per hit.',  rarity:'Common',   rc:'#aaaaaa', school:'Refined', optional:true, buns:true},
+  {id:'titanfall',          name:'Titanfall',          max:1, slots:['sword','axe'],                              desc:'10% damage increase against Iron Golem, Ghast, Warden and Ravager.',              rarity:'Epic',     rc:'#aa00aa', school:'Refined'},
+  {id:'icetide',            name:'Icetide',            max:1, slots:['trident'],                                  desc:"Trident grants Dolphin's Grace while held. Applies Slowness for 10s to hit enemies.", rarity:'Uncommon', rc:'#55ff55', school:'Arcane'},
+  {id:'satiety',            name:'Satiety',            max:1, slots:['helmet'],                                   desc:'No longer lose hunger.',                                                           rarity:'Rare',     rc:'#55ffff', school:'Arcane'},
+  {id:'butchering',         name:'Butchering',         max:3, slots:['sword','axe'],                              desc:'5% damage increase against passive mobs.',                                        rarity:'Epic',     rc:'#aa00aa', school:'Refined'},
+  {id:'disarmor',           name:'Disarmor',           max:1, slots:['sword','axe'],                              desc:'0.5% chance to remove one armor piece from the target player.',                   rarity:'Legendary',rc:'#ffaa00', school:'Arcane'},
+  {id:'heatwaves',          name:'Heatwaves',          max:1, slots:['trident'],                                  desc:'Trident grants Fire Resistance while held. Applies Fire for 7s to hit enemies.',  rarity:'Rare',     rc:'#55ffff', school:'Arcane'},
+  {id:'stormhailer',        name:'Stormhailer',        max:1, slots:['sword','axe'],                              desc:'Strike lightning on attacked enemies.',                                            rarity:'Mythic',   rc:'#ff55ff', school:'Arcane'},
+  {id:'whirlwind',          name:'Whirlwind',          max:1, slots:['bow'],                                      desc:'Arrows ignore gravity but have a fixed range of 60 blocks.',                      rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'heart_stealer',      name:'Heart Stealer',      max:1, slots:['sword','axe'],                              desc:'After killing a player, gain 2 hearts instead of 1.',                             rarity:'Mythic',   rc:'#ff55ff', school:'Arcane'},
+  {id:'purification',       name:'Purification',       max:1, slots:['helmet'],                                   desc:'All negative effects no longer work on player, but reduce armor points by 50%.',  rarity:'Epic',     rc:'#aa00aa', school:'Arcane'},
+  {id:'depth_crusher',      name:'Depth Crusher',      max:1, slots:['sword','axe'],                              desc:'10% damage increase against aquatic hostile mobs.',                               rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'sprees',             name:'Sprees',             max:1, slots:['pickaxe','axe','shovel','hoe','shears'],    desc:'After breaking 100 blocks, gain Haste 3 for 20s.',                                rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'cleave',             name:'Cleave',             max:1, slots:['sword','axe'],                              desc:'15% less damage, +2 block range, AOE like Sweeping Edge.',                        rarity:'Uncommon', rc:'#55ff55', school:'Refined', optional:true, buns:true},
+  {id:'meltdown',           name:'Meltdown',           max:1, slots:['sword','axe'],                              desc:'On critical hit, 5% chance to cause an explosion damaging everyone nearby.',       rarity:'Mythic',   rc:'#ff55ff', school:'Arcane'},
+  {id:'binding_custom',     name:'Binding',            max:3, slots:['boots'],                                    desc:'5% chance for attackers to receive Slowness 3 for 0.5s.',                         rarity:'Rare',     rc:'#55ffff', school:'Refined'},
+  {id:'rejuvenate',         name:'Rejuvenate',         max:3, slots:['helmet'],                                   desc:'Healing increased by 10% (+5% per level).',                                       rarity:'Common',   rc:'#aaaaaa', school:'Refined'},
+  {id:'crystallization',    name:'Crystallization',    max:3, slots:['leggings'],                                 desc:'Reduce damage from End Crystal and Respawn Anchor explosions by 70% while blocking.', rarity:'Legendary', rc:'#ffaa00', school:'Refined'},
+  {id:'devourer',           name:'Devourer',           max:3, slots:['sword','axe'],                              desc:'5% trigger chance (+2.5%/level): deal 1 heart less but heal 1 heart instead.',    rarity:'Rare',     rc:'#55ffff', school:'Refined', optional:true, buns:true},
+  {id:'initiator',          name:'Initiator',          max:1, slots:['bow'],                                      desc:'First arrow hit deals +60% damage then enters infinite cooldown. Resets after 7s out of combat.', rarity:'Epic', rc:'#aa00aa', school:'Refined'},
+  {id:'reflection',         name:'Reflection',         max:3, slots:['chestplate'],                               desc:'10% trigger chance: reduce incoming damage by 100%, reflect 20% back (+2.5% chance, +5% reflect per level).', rarity:'Legendary', rc:'#ffaa00', school:'Refined'},
+  {id:'featherlight',       name:'Featherlight',       max:1, slots:['boots'],                                    desc:'Immune to fall damage.',                                                           rarity:'Common',   rc:'#aaaaaa', school:'Arcane'},
+  {id:'lifebloom',          name:'Lifebloom',          max:1, slots:['chestplate'],                               desc:'When below 10 hearts, receive Regeneration VI and Resistance V for 3 seconds.',   rarity:'Mythic',   rc:'#ff55ff', school:'Arcane'},
+].map(e => ({...e, custom:true}));
+
+const ALL_ENCHANTS_COMBINED = [...ENCHANTS, ...CUSTOM_ENCHANTS];
+
+let activeGear = 'sword';
+let activeTab  = 'all';
+let curFilter  = 'all';
+let showOpt    = true;
+let showVanilla = true;
+let showCustom  = true;
+let data       = {};   
+
+const LS_KEY      = 'mc_enchtracker_v3';
+const LS_PACK_KEY = 'mc_enchtracker_pack_v1'; 
+
+function save() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify({activeGear, showOpt, showVanilla, showCustom, data})); } catch(e){}
+}
+
+function load() {
+  try {
+    const s = JSON.parse(localStorage.getItem(LS_KEY)||'{}');
+    if (s.data)       data = s.data;
+    if (s.activeGear) activeGear = s.activeGear;
+    if (s.showOpt     !== undefined) showOpt     = s.showOpt;
+    if (s.showVanilla !== undefined) showVanilla = s.showVanilla;
+    if (s.showCustom  !== undefined) showCustom  = s.showCustom;
+  } catch(e){}
+}
+
+function resetGear() {
+  if (!confirm(`Reset all enchantments for ${activeGear}?`)) return;
+  data[activeGear] = {};
+  save(); renderAll();
+}
+function resetAll() {
+  if (!confirm('Reset ALL gear data?')) return;
+  data = {}; save(); renderAll();
+}
+
+document.getElementById('packInput').addEventListener('change', e => {
+  if (e.target.files[0]) loadPackZip(e.target.files[0]);
+});
+
+document.addEventListener('dragover', e => { e.preventDefault(); EL.dropOverlay.classList.add('vis'); });
+document.addEventListener('dragleave', e => { if (e.relatedTarget === null) EL.dropOverlay.classList.remove('vis'); });
+document.addEventListener('drop', e => {
+  e.preventDefault();
+  EL.dropOverlay.classList.remove('vis');
+  const file = [...e.dataTransfer.files].find(f => f.name.endsWith('.zip'));
+  if (file) loadPackZip(file);
+  else alert('No .zip file found in drop.');
+});
+
+const GEAR_TEX_NAMES = new Set(GEAR_SLOTS.flatMap(g => g.tex));
+
+async function loadPackZip(file) {
+  const prog  = EL.packProgress;
+  const badge = EL.packBadge;
+  badge.className = 'pack-badge none';
+  badge.textContent = 'Loading...';
+  prog.textContent = '';
+
+  try {
+    const zip   = await JSZip.loadAsync(file);
+    const files = Object.keys(zip.files);
+
+    
+    let iconB64 = '';
+    const iconFile = zip.files['pack.png'];
+    if (iconFile) {
+      iconB64 = await iconFile.async('base64');
+      const iconEl = EL.packIcon;
+      iconEl.src   = 'data:image/png;base64,' + iconB64;
+      iconEl.style.display = 'inline-block';
+    }
+
+    
+    const metaFile = zip.files['pack.mcmeta'];
+    if (metaFile) {
+      try {
+        const meta = JSON.parse(await metaFile.async('string'));
+        packDisplayName = (meta.pack && meta.pack.description)
+          ? String(meta.pack.description).replace(/§./g,'') : file.name;
+      } catch(e) { packDisplayName = file.name; }
+    } else { packDisplayName = file.name; }
+
+    
+    let found = 0;
+    const itemRe = /assets\/(?:minecraft\/)?textures\/item\/([^\/]+\.png)$/;
+    Object.keys(packBlobs).forEach(k => delete packBlobs[k]);
+
+    const cacheTextures = {}; 
+    const tasks = [];
+    files.forEach(path => {
+      const m = path.match(itemRe);
+      if (!m || zip.files[path].dir) return;
+      const name = m[1].replace('.png','');
+      tasks.push(
+        zip.files[path].async('base64').then(b64 => {
+          const dataUrl = 'data:image/png;base64,' + b64;
+          packBlobs[name] = dataUrl;
+          found++;
+          prog.textContent = `Extracting... (${found} textures)`;
+          
+          if (GEAR_TEX_NAMES.has(name)) cacheTextures[name] = b64;
+        })
+      );
+    });
+
+    await Promise.all(tasks);
+
+    packLoaded = true;
+    badge.className = 'pack-badge loaded';
+    badge.textContent = `✔ ${packDisplayName} (${found} item textures)`;
+    prog.textContent = '';
+    EL.clearPackBtn.style.display = '';
+
+    
+    try {
+      localStorage.setItem(LS_PACK_KEY, JSON.stringify({
+        name: packDisplayName,
+        iconB64,
+        textures: cacheTextures
+      }));
+    } catch(e) { console.warn('Pack cache save failed (storage full?):', e); }
+
+    resolveGearImages();
+    renderGearBar();
+
+  } catch(err) {
+    badge.className = 'pack-badge none';
+    badge.textContent = '✖ Failed to load pack: ' + err.message;
+    console.error(err);
+  }
+}
+
+function clearPack() {
+  Object.keys(packBlobs).forEach(k => delete packBlobs[k]);
+  packLoaded = false;
+  packDisplayName = '';
+  EL.packBadge.className = 'pack-badge none';
+  EL.packBadge.textContent = 'No pack — vanilla 1.21 assets';
+  EL.packIcon.style.display = 'none';
+  EL.packProgress.textContent = '';
+  EL.clearPackBtn.style.display = 'none';
+  $('packInput').value = '';
+  try { localStorage.removeItem(LS_PACK_KEY); } catch(e) {}
+  resolveGearImages();
+  renderGearBar();
+}
+
+function restorePackFromCache() {
+  try {
+    const raw = localStorage.getItem(LS_PACK_KEY);
+    if (!raw) return;
+    const cached = JSON.parse(raw);
+    if (!cached || !cached.textures) return;
+    
+    Object.entries(cached.textures).forEach(([name, b64]) => {
+      packBlobs[name] = 'data:image/png;base64,' + b64;
+    });
+    packDisplayName = cached.name || 'Cached pack';
+    packLoaded = true;
+    
+    if (cached.iconB64) {
+      const iconEl = EL.packIcon;
+      iconEl.src   = 'data:image/png;base64,' + cached.iconB64;
+      iconEl.style.display = 'inline-block';
+    }
+    const count = Object.keys(cached.textures).length;
+    EL.packBadge.className = 'pack-badge loaded';
+    EL.packBadge.textContent = `✔ ${packDisplayName} (cached · ${count} gear textures)`;
+    EL.clearPackBtn.style.display = '';
+  } catch(e) { console.warn('Pack cache restore failed:', e); }
+}
+
+function resolveGearImages() {
+  GEAR_SLOTS.forEach(g => {
+    let src = null;
+    
+    for (const t of g.tex) {
+      if (packBlobs[t]) { src = packBlobs[t]; break; }
+    }
+    if (!src) {
+      
+      src = g.directUrl || (MC_BASE + g.tex[0] + '.png');
+    }
+    resolvedSrc[g.id] = src;
+  });
+}
+
+const BLANK_IMG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+
+function renderGearBar() {
+  EL.gearBar.innerHTML = GEAR_SLOTS.map(g => {
+    const req   = getSlotEnchants(g.id).filter(e => !e.optional && !e.curse && !e.custom);
+    const gd    = data[g.id] || {};
+    const maxed = req.filter(e => (gd[e.id]||0) >= (e.vanillaMax || e.max)).length;
+    const pct   = req.length ? Math.round(maxed/req.length*100) : 100;
+    const pctColor = pct===100 ? '#005500' : pct>=50 ? '#666' : '#880000';
+    return `<div class="gear-slot${g.id===activeGear?' active':''}" onclick="selectGear('${g.id}')">
+      <div class="slot-img-wrap">
+        <img src="${resolvedSrc[g.id]}" alt="${g.name}" data-gid="${g.id}" data-tex-idx="0" onerror="nextTex(this)">
+      </div>
+      <div class="slot-name">${g.name}</div>
+      <div class="slot-pct" style="color:${pctColor}">${pct}%</div>
+    </div>`;
+  }).join('');
+}
+
+function selectGear(id) { activeGear = id; activeTab = 'all'; renderGearBar(); renderTabs(); renderAll(); }
+
+function nextTex(img) {
+  const g = GEAR_SLOTS.find(g => g.id === img.dataset.gid);
+  if (!g) return;
+  let idx = parseInt(img.dataset.texIdx||0) + 1;
+  img.dataset.texIdx = idx;
+  img.src = idx < g.tex.length ? MC_BASE + g.tex[idx] + '.png' : BLANK_IMG;
+}
+
+function getSlotEnchants(slotId) {
+  return ALL_ENCHANTS_COMBINED.filter(e => e.slots.includes(slotId));
+}
+
+function getLvl(gId, eId) { return (data[gId]||{})[eId] || 0; }
+
+function setLvl(gId, eId, lvl) {
+  if (!data[gId]) data[gId] = {};
+  data[gId][eId] = lvl;
+  save();
+}
+
+const CAT_DEFS = [
+  {id:'armor',     icon:'🛡', name:'Armor'},
+  {id:'combat',    icon:'⚔', name:'Combat'},
+  {id:'tools',     icon:'⛏', name:'Tools'},
+  {id:'ranged',    icon:'🏹', name:'Ranged'},
+  {id:'trident',   icon:'🔱', name:'Trident'},
+  {id:'utility',   icon:'🎣', name:'Utility'},
+  {id:'universal', icon:'✨', name:'Universal'},
+  {id:'custom',    icon:'⭐', name:'Custom'},
+  {id:'optional',  icon:'⚠', name:'Optional'},
+  {id:'curse',     icon:'💀', name:'Curses'},
+];
+
+function getCat(e) {
+  if (e.curse)    return 'curse';
+  if (e.optional) return 'optional';
+  
+  if (e.custom)   return 'custom';
+  const s = e.slots;
+  if (['unbreaking','mending','vanishing_curse'].includes(e.id)) return 'universal';
+  if (s.some(x=>['helmet','chestplate','leggings','boots','shield'].includes(x)) && !s.includes('sword') && !s.includes('pickaxe')) return 'armor';
+  if (s.some(x=>['sword','axe'].includes(x)) && !s.includes('pickaxe')) return 'combat';
+  if (s.some(x=>['pickaxe','shovel','hoe','shears','flint_steel'].includes(x))) return 'tools';
+  if (s.some(x=>['bow','crossbow'].includes(x))) return 'ranged';
+  if (s.includes('trident')) return 'trident';
+  if (s.includes('fishing_rod')) return 'utility';
+  return 'universal';
+}
+
+function renderTabs() {
+  const enc = getSlotEnchants(activeGear);
+  const usedCats = new Set(enc.map(e => getCat(e)));
+  const row = EL.tabsRow;
+  row.innerHTML = '';
+
+  
+  row.appendChild(makeTab('all', '📚 All', enc));
+
+  CAT_DEFS.forEach(c => {
+    if (!usedCats.has(c.id)) return;
+    const ces = enc.filter(e => getCat(e)===c.id);
+    row.appendChild(makeTab(c.id, c.icon+' '+c.name, ces));
+  });
+}
+
+function makeTab(id, label, encs) {
+  const gd  = data[activeGear] || {};
+  const req = encs.filter(e => !e.optional && !e.curse);
+  const maxed = req.filter(e => (gd[e.id]||0)>=e.max).length;
+  const done  = req.length>0 && maxed===req.length;
+
+  const btn = document.createElement('button');
+  btn.className = 'tab' + (activeTab===id?' active':'') + (done?' alldone':'');
+  btn.innerHTML = `${label} <span class="cbadge">${maxed}/${req.length}</span>`;
+  btn.onclick = () => { activeTab = id; renderTabs(); renderAll(); };
+  return btn;
+}
+
+function setFilter(f) {
+  curFilter = f;
+  ['fAll','fIncomplete','fComplete'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById(f==='all'?'fAll':f==='incomplete'?'fIncomplete':'fComplete').classList.add('active');
+  renderAll();
+}
+
+function toggleVanilla() {
+  showVanilla = !showVanilla;
+  document.getElementById('fVanilla').classList.toggle('active', showVanilla);
+  save(); renderAll();
+}
+
+function toggleCustom() {
+  showCustom = !showCustom;
+  document.getElementById('fCustom').classList.toggle('active', showCustom);
+  save(); renderAll();
+}
+
+function toggleOptional() {
+  showOpt = !showOpt;
+  document.getElementById('optLabel').textContent = showOpt ? 'Hide' : 'Show';
+  save(); renderAll();
+}
+
+function renderAll() {
+  let encs = getSlotEnchants(activeGear);
+
+  
+  encs = encs.filter(e => {
+    if (e.custom)  return showCustom;
+    return showVanilla;
+  });
+
+  
+  if (activeTab !== 'all') encs = encs.filter(e => getCat(e) === activeTab);
+
+  
+  const q = EL.searchInput.value.toLowerCase().trim();
+  if (q) encs = encs.filter(e => e.name.toLowerCase().includes(q) || (e.desc||'').toLowerCase().includes(q));
+
+  const required = encs.filter(e => !e.optional && !e.curse);
+  const optional = encs.filter(e =>  e.optional || e.curse);
+
+  const gd = data[activeGear] || {};
+
+  
+  let filtered = required;
+  if (curFilter==='complete')   filtered = required.filter(e => (gd[e.id]||0)>=e.max);
+  if (curFilter==='incomplete') filtered = required.filter(e => (gd[e.id]||0)<e.max);
+
+  
+  const mg = EL.mainGrid;
+  if (!filtered.length) {
+    mg.innerHTML = '<div class="empty-state">✔ Nothing here!</div>';
+  } else {
+    mg.innerHTML = '';
+    filtered.forEach(e => mg.appendChild(makeCard(e)));
+  }
+
+  
+  const os = EL.optSection;
+  const og = EL.optGrid;
+  if (optional.length && showOpt) {
+    os.style.display = '';
+    og.innerHTML = '';
+    optional.forEach(e => og.appendChild(makeCard(e)));
+  } else {
+    os.style.display = 'none';
+  }
+
+  updateProgress(getSlotEnchants(activeGear));
+  updateStats(getSlotEnchants(activeGear));
+}
+
+function makeCard(enc) {
+  const gId  = activeGear;
+  const lvl  = getLvl(gId, enc.id);
+  const threshold = enc.vanillaMax || enc.max;   
+  const checked    = lvl >= threshold;            
+  const serverMaxed = enc.serverBoosted && lvl >= enc.max; 
+
+  const card = document.createElement('div');
+  card.className = 'enc-card';
+  if (serverMaxed)     card.classList.add('servermax');
+  else if (checked)    card.classList.add('checked');
+  if (enc.curse)       card.classList.add('curse');
+  else if (enc.optional) card.classList.add('optional');
+
+  
+  const tags = [];
+  if (enc.custom && enc.rarity) {
+    const schoolColor = enc.school === 'Arcane' ? '#ffaa00' : '#cccccc';
+    const schoolBg    = enc.school === 'Arcane' ? '#1a1000' : '#111111';
+    tags.push(`<span class="tag t-rarity" style="background:#111;border-color:${enc.rc};color:${enc.rc}">${enc.rarity}</span>`);
+    if (enc.school) tags.push(`<span class="tag" style="background:${schoolBg};border-color:${schoolColor};color:${schoolColor}">${enc.school}</span>`);
+  }
+  if (enc.buns)                  tags.push('<span class="tag" style="background:#1a0000;border-color:#660000;color:#ff6666">buns 💀</span>');
+  if (enc.serverBoosted)         tags.push(`<span class="tag" style="background:#1a1400;border-color:#aaaa00;color:#ffaa00">server ↑${toRom(enc.max)}</span>`);
+  if (enc.optional && !enc.curse && !enc.buns) tags.push('<span class="tag t-opt">optional</span>');
+  if (enc.curse)    tags.push('<span class="tag t-curse">curse</span>');
+  if (enc.treasure) tags.push('<span class="tag t-treasure">treasure</span>');
+  if (enc.note)     tags.push('<span class="tag t-stack">stackable ✓</span>');
+
+  
+  let nameStyle = '';
+  let nc;
+  if (enc.curse)               nc = 'nr';
+  else if (serverMaxed)        nc = 'ng-gold';
+  else if (checked)            nc = 'ng';
+  else if (enc.custom && enc.rc) { nc = ''; nameStyle = `style="color:${enc.rc};text-shadow:0 0 6px ${enc.rc}55"`; }
+  else                         nc = 'nc';
+
+  
+  let pips = '';
+  for (let i=1; i<=enc.max; i++) {
+    const on = lvl >= i;
+    const isServerLevel = enc.serverBoosted && enc.vanillaMax && i > enc.vanillaMax;
+    const cp = enc.curse ? ' cpip' : isServerLevel ? ' server' : '';
+    pips += `<span class="pip${cp}${on?' on':''}" onclick="setPip(event,'${gId}','${enc.id}',${i},${enc.max})">${toRom(i)}</span>`;
+  }
+
+  const checkChar = serverMaxed ? '✔' : checked ? '✔' : '';
+
+  card.innerHTML = `
+    <div class="card-hdr">
+      <span class="enc-name ${nc}" ${nameStyle}>${enc.name}</span>
+      <div class="chk">${checkChar}</div>
+    </div>
+    <div class="card-body">
+      <div class="lvl-row">
+        <span class="lvl-lbl">Lvl:</span>
+        <div class="pips">${pips}</div>
+        <span class="lvl-max">/ ${toRom(enc.max)}</span>
+      </div>
+      ${tags.length ? '<div class="tags">'+tags.join('')+'</div>' : ''}
+    </div>`;
+
+  
+  card.querySelector('.card-hdr').addEventListener('click', ev => {
+    if (ev.target.classList.contains('pip')) return;
+    const cur = getLvl(gId, enc.id);
+    const vmax = enc.vanillaMax || enc.max;
+    let next;
+    if (cur < vmax)        next = vmax;
+    else if (enc.serverBoosted && cur < enc.max) next = enc.max;
+    else                   next = 0;
+    setLvl(gId, enc.id, next);
+    renderAll(); renderTabs(); renderGearBar();
+  });
+
+  card.addEventListener('mouseenter', ev => showTT(ev, enc));
+  card.addEventListener('mousemove',  ev => moveTT(ev));
+  card.addEventListener('mouseleave', hideTT);
+
+  return card;
+}
+
+function setPip(ev, gId, eId, lvl, max) {
+  ev.stopPropagation();
+  const cur = getLvl(gId, eId);
+  setLvl(gId, eId, cur===lvl ? lvl-1 : lvl);
+  renderAll(); renderTabs(); renderGearBar();
+}
+
+function updateProgress(encs) {
+  const req  = encs.filter(e => !e.optional && !e.curse && !e.custom);
+  const gd   = data[activeGear] || {};
+  const maxed = req.filter(e => (gd[e.id]||0) >= (e.vanillaMax || e.max)).length;
+  const total = req.length;
+  const pct   = total ? Math.round(maxed/total*100) : 100;
+  EL.progText.textContent = `${maxed}/${total} vanilla enchants at base max  [${activeGear.replace('_',' ')}]`;
+  EL.progPct.textContent = pct+'%';
+  EL.progBar.style.width = pct+'%';
+  EL.progBar.className = 'prog-inner' + (pct===100?'':pct>=50?' partial':' low');
+}
+
+function updateStats(encs) {
+  const gd = data[activeGear] || {};
+  let ok=0, part=0, empty=0, opt=0, curse=0;
+  encs.forEach(e => {
+    const l = gd[e.id]||0;
+    if (e.curse)    { curse++; return; }
+    if (e.optional) { opt++;   return; }
+    if (e.custom)   { return; }
+    const threshold = e.vanillaMax || e.max;
+    if (l >= threshold) ok++;
+    else if (l > 0)     part++;
+    else                empty++;
+  });
+  $('sOk').textContent    = ok;
+  $('sPart').textContent  = part;
+  $('sEmpty').textContent = empty;
+  $('sOpt').textContent   = opt;
+  $('sCurse').textContent = curse;
+}
+
+function showTT(ev, enc) {
+  const maxLabel = enc.serverBoosted && enc.vanillaMax
+    ? `Vanilla ${toRom(enc.vanillaMax)} / Server ${toRom(enc.max)}`
+    : `Max ${toRom(enc.max)}`;
+  EL.ttTitle.textContent = enc.name + (enc.max>1 ? ` (${maxLabel})` : '');
+  if (enc.custom && enc.rc && !enc.curse) {
+    EL.ttTitle.style.color = enc.rc;
+    EL.ttTitle.style.textShadow = `0 0 6px ${enc.rc}55`;
+    EL.ttTitle.className = 'tt-title';
+  } else {
+    EL.ttTitle.style.color = '';
+    EL.ttTitle.style.textShadow = '';
+    EL.ttTitle.className = 'tt-title ' + (enc.curse ? 'nr' : 'nc');
+  }
+  EL.ttDesc.textContent = enc.desc||'';
+  const lines = [];
+  if (enc.custom && enc.rarity) {
+    const schoolColor = enc.school === 'Arcane' ? '#ffaa00' : '#cccccc';
+    const schoolDesc  = enc.school === 'Arcane'
+      ? 'Arcane — proc-based / reactive effect'
+      : 'Refined — passive / stat-based effect';
+    lines.push(`<span style="color:${enc.rc}">${enc.rarity}</span> · <span style="color:${schoolColor}">${schoolDesc}</span>`);
+  }
+  if (enc.treasure) lines.push('✦ Treasure enchantment');
+  if (enc.curse)    lines.push('☠ Curse — grindstone cannot remove');
+  if (enc.note)     lines.push('ℹ '+enc.note);
+  EL.ttGear.innerHTML = lines.join('<br>');
+  EL.tooltip.classList.add('vis');
+  moveTT(ev);
+}
+function moveTT(ev) {
+  const x = Math.min(ev.clientX+16, window.innerWidth  - EL.tooltip.offsetWidth  - 8);
+  const y = Math.min(ev.clientY+16, window.innerHeight - EL.tooltip.offsetHeight - 8);
+  EL.tooltip.style.left = x+'px'; EL.tooltip.style.top = y+'px';
+}
+function hideTT() { EL.tooltip.classList.remove('vis'); }
+
+const ITEM_TO_SLOT_EXACT = {'bow':'bow','crossbow':'crossbow','trident':'trident','fishing_rod':'fishing_rod','shears':'shears','flint_and_steel':'flint_steel','shield':'shield','elytra':'elytra','mace':'mace'};
+const ITEM_SUFFIXES = ['sword','axe','pickaxe','shovel','hoe','helmet','chestplate','leggings','boots'];
+function itemToSlot(id) {
+  if (ITEM_TO_SLOT_EXACT[id]) return ITEM_TO_SLOT_EXACT[id];
+  for (const s of ITEM_SUFFIXES) if (id.endsWith('_'+s)||id===s) return s;
+  return null;
+}
+
+document.getElementById('nbtInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => parseNBTImport(ev.target.result, file.name);
+  reader.readAsText(file);
+  e.target.value = ''; 
+});
+
+function parseNBTImport(text, filename) {
+  const badge = EL.nbtBadge;
+  badge.className = 'pack-badge none';
+  badge.textContent = 'Parsing...';
+
+  try {
+    
+    const nbtMatch = text.match(/Raw NBT:\s*(\{[\s\S]*?\})\s*\n/);
+    if (!nbtMatch) throw new Error('No "Raw NBT:" line found in file');
+    const raw = nbtMatch[1];
+
+    
+    const idMatch = raw.match(/\bid:"minecraft:([^"]+)"/);
+    if (!idMatch) throw new Error('Could not find item id in NBT');
+    const itemSuffix = idMatch[1];
+    const slotId = itemToSlot(itemSuffix);
+    if (!slotId) throw new Error(`Unknown item type: ${itemSuffix}`);
+
+    
+    
+    const encMatch = raw.match(/"minecraft:enchantments"\s*:\s*\{levels:\s*\{([^}]+)\}/);
+    if (!encMatch) throw new Error('No enchantments block found');
+    const levelsStr = encMatch[1];
+
+    
+    const pairs = [...levelsStr.matchAll(/"minecraft:([^"]+)"\s*:\s*(\d+)/g)];
+    if (!pairs.length) throw new Error('No enchantment entries parsed');
+
+    
+    const imported = {};
+    pairs.forEach(([, encId, lvl]) => {
+      imported[encId] = parseInt(lvl);
+    });
+
+    
+    if (!data[slotId]) data[slotId] = {};
+    
+    
+    let applied = 0, skipped = 0;
+    Object.entries(imported).forEach(([encId, lvl]) => {
+      
+      const match = ALL_ENCHANTS_COMBINED.find(e =>
+        e.slots.includes(slotId) && (e.id === encId || e.id.endsWith('_'+encId) || encId.endsWith('_'+e.id))
+      ) || ALL_ENCHANTS_COMBINED.find(e => e.id === encId);
+
+      if (match) {
+        data[slotId][match.id] = Math.min(lvl, match.max); 
+        applied++;
+      } else {
+        skipped++;
+      }
+    });
+
+    save();
+
+    
+    activeGear = slotId;
+    activeTab  = 'all';
+    renderGearBar();
+    renderTabs();
+    renderAll();
+
+    const gearName = GEAR_SLOTS.find(g=>g.id===slotId)?.name || slotId;
+    badge.className = 'pack-badge loaded';
+    badge.textContent = `✔ ${filename} → ${gearName} (${applied} enchants applied${skipped ? ', '+skipped+' unknown' : ''})`;
+
+  } catch(err) {
+    badge.className = 'pack-badge none';
+    badge.textContent = '✖ ' + err.message;
+    console.error('NBT import error:', err);
+  }
+}
+
+let wmActive = false;
+let wmInitialized = false;
+
+function toggleWatermark() {
+  const sword = document.getElementById('easterSword');
+  const bar   = document.getElementById('bottom-bar');
+  wmActive = !wmActive;
+  bar.classList.toggle('wm-vis', wmActive);
+  sword.style.transform = wmActive ? 'rotate(-20deg) scale(1.2)' : '';
+  if (wmActive && !wmInitialized) {
+    wmInitialized = true;
+    initScroller();
+  }
+}
+
+const WM_IMAGES = ["https://i.ibb.co/9mMj8RzQ/113376852-p0.jpg","https://i.ibb.co/HDYnD43K/97030021-p0.png","https://i.ibb.co/NvCMgVf/69286291-p0.png","https://i.ibb.co/mC8r1G3k/71167459-p0.jpg","https://i.ibb.co/v4VBkpMb/32480341-p0.jpg","https://i.ibb.co/XrQ4NrVf/105376158-p0.jpg","https://i.ibb.co/QjfSPqSc/128787795-p0.jpg","https://i.ibb.co/23FGYj9y/129488240-p0.jpg","https://i.ibb.co/VWbF2pJy/49940463-p0.jpg","https://i.ibb.co/0jvhc0KT/14054558-p0.jpg","https://i.ibb.co/vxqwyd8R/14000256-p0.jpg","https://i.ibb.co/M5Kk0sPP/14010438-p0.jpg","https://i.ibb.co/4RyVgMVh/13960380-p0.jpg","https://i.ibb.co/tpm1KTnw/16147400-p0.jpg","https://i.ibb.co/gbRZxWj7/15448515-p0.jpg","https://i.ibb.co/gF7RLC6t/56436094-p0.png","https://i.ibb.co/767V2N3/74282637-p0.png","https://i.ibb.co/YBQ8F0zT/74563637-p10.jpg","https://i.ibb.co/sJVjHg4d/74563637-p11.jpg","https://i.ibb.co/mVQck2P1/74320364-p0.png","https://i.ibb.co/Ng6G1LvB/80923342-p0.png","https://i.ibb.co/gFrdZ5HZ/80923471-p7.jpg","https://i.ibb.co/3yH2Tvyy/22878958-p0.png","https://i.ibb.co/yBfnXNRx/78858181-p0.png","https://i.ibb.co/RT1Vh5H3/15122746-p0.jpg","https://i.ibb.co/1BNL84T/12833654-p0.jpg","https://i.ibb.co/TM0X4222/96837658-p0.jpg","https://i.ibb.co/fY7G94wy/15144434-p0.png","https://i.ibb.co/wF2jdmYb/14040596-p0.jpg","https://i.ibb.co/rfMMMWy2/14377680-p0.jpg","https://i.ibb.co/1fJgLgLs/14887072-p0.jpg","https://i.ibb.co/GGdVfVn/14888306-p0.jpg","https://i.ibb.co/RGwcvMyJ/14194125-p0.jpg","https://i.ibb.co/Df1t39tn/59874287-p0.jpg","https://i.ibb.co/Z5rc3B1/72544447-p0.jpg","https://i.ibb.co/SXxq470s/80687747-p0.jpg","https://i.ibb.co/k2ZnYGT2/90882737-p0.png","https://i.ibb.co/k6WWsdt5/34498131-p0.jpg","https://i.ibb.co/qYy3RSmG/91065053-p0.png","https://i.ibb.co/JjHksvPY/90959021-p0.jpg","https://i.ibb.co/Txr4p9B1/38417383-p0.png","https://i.ibb.co/zWgzGg66/80923471-p0.jpg","https://i.ibb.co/cXcs8SBX/80923471-p5.jpg","https://i.ibb.co/ZpJLgYwH/18126874-p0.jpg","https://i.ibb.co/FbZFymMK/34983661-p0.jpg","https://i.ibb.co/kspH5r1N/117987177-p0.png","https://i.ibb.co/TDnbVLTd/66470513-p0.png","https://i.ibb.co/wNtHdz8X/124576922-p0.jpg","https://i.ibb.co/Y4pS58vz/71075337-p0.jpg","https://i.ibb.co/0y301G1g/17082049-p0.jpg","https://i.ibb.co/HfJFBFfk/114039012-p0.jpg","https://i.ibb.co/Q7mxvwWF/14970576-p0.png","https://i.ibb.co/twCDJwZ5/84273241-p0.jpg","https://i.ibb.co/yBQkpyNg/14939915-p0.jpg","https://i.ibb.co/NgYgY1SS/14696418-p0.jpg","https://i.ibb.co/fdMDNSsq/134132306-p0.jpg","https://i.ibb.co/zWsPWQHN/130869970-p0.jpg","https://i.ibb.co/C3fKhr3Q/129529288-p0.jpg","https://i.ibb.co/VcmSMMww/129488328-p0.png","https://i.ibb.co/6JYkD0wY/129104950-p0-favorite.jpg","https://i.ibb.co/ycQQn8YM/127070516-p0.png","https://i.ibb.co/Qj9fSPG5/127631028-p0.jpg","https://i.ibb.co/Fb68jXDW/126646376-p1.jpg","https://i.ibb.co/W4TTmrKk/122370315-p0.jpg","https://i.ibb.co/Z6rnCd6K/117993415-p0.jpg","https://i.ibb.co/QsPLRNr/117987318-p0-favorite.jpg","https://i.ibb.co/GGPn7gK/138835843-p0.jpg","https://i.ibb.co/B26YTMrB/115246511-p0.jpg","https://i.ibb.co/G4knK5vx/122004950-p0-min.jpg","https://i.ibb.co/nF7NHmy/122004950-p0-master1200.webp","https://i.ibb.co/Tq4YnSkn/129488328-p0-master1200.webp","https://i.ibb.co/Xxr3b1hh/96811374-p0.jpg","https://i.ibb.co/cSfyyJqj/15172211-p0-master1200.webp","https://i.ibb.co/7N1qrbHL/47730149-p0-master1200.webp","https://i.ibb.co/xKfZTPrd/60498994-p0.png","https://i.ibb.co/k22sc1x0/107649822-p0-master1200.webp","https://i.ibb.co/hJQ49LB2/107649822-p13-master1200.webp","https://i.ibb.co/HDqDXDTr/107649822-p14-master1200.webp","https://i.ibb.co/Ldwh3VT5/127951315-p0-master1200.webp","https://i.ibb.co/kgtHzb30/79995854-p0-master1200.webp","https://i.ibb.co/6cDLMZPP/15888063-p0-master1200.webp","https://i.ibb.co/jPSpgR6F/84907932-p0-master1200.webp","https://i.ibb.co/fYvmskGh/107335998-p0-master1200.webp","https://i.ibb.co/1GQ4LXJt/14897039-p0-master1200.webp","https://i.ibb.co/W4dTXmC4/17642471-p0-master1200.webp","https://i.ibb.co/Y4nskHnV/46328969-p0-master1200.webp","https://i.ibb.co/rGd9JKQS/35971343-p0-master1200.webp","https://i.ibb.co/4RFwmww4/19537991-p0-master1200.webp","https://i.ibb.co/xtZF47tV/13630562-p0-master1200.webp","https://i.ibb.co/S4g6Thyb/15412556-p0-master1200.webp","https://i.ibb.co/b5Dd60y7/14051428-p0-master1200.webp","https://i.ibb.co/NgVmnKw9/82133500-p0-master1200.webp","https://i.ibb.co/bR82bP5K/98001962-p0-master1200.webp","https://i.ibb.co/TB1dZZBj/29587986-p0-master1200.webp","https://i.ibb.co/zh6Cd8bb/97764598-p0-master1200.webp","https://i.ibb.co/LzmM0tv3/95857567-p0-master1200.webp","https://i.ibb.co/7JtmKdyj/54115101-p0.jpg","https://i.ibb.co/FL1LHM9w/19462688-p0-master1200.webp","https://i.ibb.co/ZRY1KzJb/117980361-p0-master1200.webp","https://i.ibb.co/tTqmxGN5/26599253-p0.jpg","https://i.ibb.co/DP4RcQDj/86061021-p0-master1200.webp","https://i.ibb.co/CcnDJwF/129530247-p0-master1200.webp","https://i.ibb.co/tMkFj06D/d0a0e22217b548fbab87f2e97cac78fdf2464006-hq.gif","https://i.ibb.co/rKQR4GLK/images-27.jpg","https://i.ibb.co/TBfZXX66/images-28.jpg","https://i.ibb.co/jkCCqMCV/a94487e4f63b3e7f40365392385ad52f.gif","https://i.ibb.co/LzNht9DF/images-29.jpg","https://i.ibb.co/sB9PghL/tumblr-mr9xd31-MCH1s1pzmeo1-400.gif","https://i.ibb.co/R4b6NQPF/tumblr-mpoqt4v04-F1squyp0o1-500.gif","https://i.ibb.co/gFTwcRgH/tumblr-mlbhsr-J2321r6jylpo1-500.gif","https://i.ibb.co/gLrp2HcG/tumblr-mpgo7q-Kqgy1qj9uf7o1-500.gif","https://i.ibb.co/V0XVFJMM/tumblr-mr7yq9ben-P1rhlkj4o1-500.gif","https://i.ibb.co/HfkLQK06/tumblr-mn0d86f-YKg1s8166so1-500.gif","https://i.ibb.co/dwKGTdtx/tumblr-md6rnh6-EQD1rsw0k3o1-500.gif","https://i.ibb.co/fdj9kqR0/kuroneko-crying-kuroneko.gif","https://i.ibb.co/N6hR3P81/sample-d398025e6c04ee30429e1aa49c2a48a475752081.jpg","https://i.ibb.co/PsJ7ZBQh/sample-637e037f0253d655d8116b71512e178c1c8ec823.jpg","https://i.ibb.co/ZCHgHFn/sample-414dbad77d063a984a2c64cea54273277d0970fd.jpg","https://i.ibb.co/sdkCDzFD/q9pok1limzv71.jpg","https://i.ibb.co/4ZFV2SV5/oreimo-05-2.jpg","https://i.ibb.co/MdPFJgd/kuroneko-ruri.gif","https://i.ibb.co/x8Mhv8sS/kuroneko-didnt-deserve-that-ending-v0-pn2m5d4f6lbf1.jpg","https://i.ibb.co/Q7cqWsSz/Kuroneko-in-the-arcade-S02-E01-m21-s31.webp","https://i.ibb.co/XrZ630Vy/Kuroneko-Appearance.webp","https://i.ibb.co/RGSc7nXc/kasseus-maximus-kuroneko-layingdown-resize-fix.jpg","https://i.ibb.co/5xXkmLGs/117988529-p0.jpg","https://i.ibb.co/XnvK64v/ef66df23956ceda5762bdc0b48fcc2bc.jpg","https://i.ibb.co/wFgBLx13/bd4d27e3d8d050221eca8695e843972e.jpg"];
+
+function initScroller() {
+  const track   = document.getElementById('scroller-track');
+  const loading = document.getElementById('scroller-loading');
+  let loaded = 0;
+  const imgs = [];
+
+  WM_IMAGES.forEach(url => {
+    const img = new Image();
+    img.src = url;
+    img.onload = img.onerror = () => {
+      loaded++;
+      loading.textContent = `Loading all images ᓚᘏᗢ ${Math.round(loaded/WM_IMAGES.length*100)}%`;
+      if (loaded === WM_IMAGES.length) startScroller();
+    };
+    imgs.push(img);
+  });
+
+  function startScroller() {
+    loading.style.display = 'none';
+    imgs.forEach(img => track.appendChild(img));
+    imgs.forEach(img => track.appendChild(img.cloneNode()));
+    let scroll = 0;
+    (function animate() {
+      scroll += 0.5;
+      if (scroll >= track.scrollWidth / 2) scroll = 0;
+      track.style.transform = `translateX(-${scroll}px)`;
+      requestAnimationFrame(animate);
+    })();
+  }
+}
+
+load();
+cacheEls();
+restorePackFromCache();
+resolveGearImages();
+renderGearBar();
+renderTabs();
+renderAll();
+document.getElementById('optLabel').textContent = showOpt ? 'Hide' : 'Show';
+document.getElementById('fVanilla').classList.toggle('active', showVanilla);
+document.getElementById('fCustom').classList.toggle('active', showCustom);
+</script>
+<div id="bottom-bar">
+  <div class="watermark-left">
+    <span class="watermark-left-text" id="wm-left-text">Notourconcern</span>
+  </div>
+  <div id="scroller-container">
+    <div id="scroller-track"></div>
+    <div id="scroller-loading">Loading all images ᓚᘏᗢ 0%</div>
+  </div>
+  <div class="watermark">
+    <span class="watermark-text">@EvilMel</span>
+  </div>
+</div>
+
+</body>
+</html>
