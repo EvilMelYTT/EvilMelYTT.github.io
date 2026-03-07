@@ -8,11 +8,11 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 :root {
-  --gui-bg:#c6c6c6; --gui-dark:var(--gui-dark); --gui-light:#fff;
-  --gui-mid:var(--gui-mid); --gui-panel:var(--gui-panel); --gui-inset:var(--gui-inset);
-  --gui-text:var(--gui-text); --gui-border:#000;
+  --gui-bg:#c6c6c6; --gui-dark:#555555; --gui-light:#fff;
+  --gui-mid:#aaaaaa; --gui-panel:#b8b8b8; --gui-inset:#8b8b8b;
+  --gui-text:#3f3f3f; --gui-border:#000;
   --mc-yellow:#ffff55; --mc-aqua:#55ffff; --mc-red:#ff5555;
-  --mc-green:#55ff55; --mc-white:#fff; --mc-lgray:var(--gui-mid)aaa;
+  --mc-green:#55ff55; --mc-white:#fff; --mc-lgray:#aaaaaa;
   --mc-enchblue:#8080ff; --mc-lpurple:#ff55ff; --mc-darkblue:#0000aa;
 }
 *{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated}
@@ -206,6 +206,28 @@ h1{font-size:2.8rem;text-shadow:3px 3px 0 #3d3d00,5px 5px 0 rgba(0,0,0,.4);color
   .enc-grid{grid-template-columns:1fr}
   .gear-slot{min-width:44px}
 }
+/* ── duplicate picker modal ── */
+#dupModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9999;align-items:center;justify-content:center}
+#dupModal.vis{display:flex}
+#dupBox{background:var(--gui-bg);border:2px solid #000;box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 var(--gui-dark),6px 6px 0 #000;max-width:92vw;max-height:88vh;display:flex;flex-direction:column;gap:0;min-width:340px}
+#dupTitle{background:var(--gui-panel);border-bottom:2px solid var(--gui-dark);padding:6px 12px;font-size:1.25rem;color:var(--gui-text)}
+#dupSubtitle{padding:4px 12px 0;font-size:.9rem;color:#555}
+#dupCards{display:flex;flex-wrap:wrap;gap:10px;padding:12px;overflow-y:auto;flex:1}
+#dupFooter{border-top:2px solid var(--gui-dark);padding:6px 10px;display:flex;justify-content:flex-end;background:var(--gui-panel)}
+
+.dup-card{
+  background:var(--gui-inset);border:2px solid #000;
+  box-shadow:inset 1px 1px 0 #373737,inset -1px -1px 0 #fff;
+  padding:8px;display:flex;flex-direction:column;gap:5px;
+  min-width:190px;max-width:220px;cursor:default
+}
+.dup-card-name{font-size:1.05rem;line-height:1.1;word-break:break-word}
+.dup-card-img{width:40px;height:40px;image-rendering:pixelated;align-self:center}
+.dup-card-encs{font-size:.82rem;color:#ccc;line-height:1.35;max-height:130px;overflow-y:auto}
+.dup-card-encs span{display:block}
+.dup-card-lore{font-size:.78rem;line-height:1.3;border-top:1px solid #888;padding-top:4px;max-height:90px;overflow-y:auto}
+.dup-card-lore span{display:block}
+.dup-use-btn{margin-top:4px;width:100%}
 </style>
 </head>
 <body>
@@ -234,13 +256,13 @@ h1{font-size:2.8rem;text-shadow:3px 3px 0 #3d3d00,5px 5px 0 rgba(0,0,0,.4);color
   </div>
 
   <div class="pack-bar" style="border-top:1px solid #999">
-    <span>Item Import:</span>
-    <label class="mc-btn" title="Import enchantments from an NBT item export .txt file">
-      📋 Import Item .txt
+    <span><a href="https://modrinth.com/mod/yoinkgui" target="_blank" style="color:var(--gui-text);text-decoration:underline dotted">YoinkGUI</a> Import:</span>
+    <label class="mc-btn" title="Import from a YoinkGUI .txt export (single item or full inventory)">
+      📋 Import .txt
       <input type="file" id="nbtInput" accept=".txt">
     </label>
     <div class="pack-status" id="nbtStatus">
-      <span class="pack-badge none" id="nbtBadge">No item imported</span>
+      <span class="pack-badge none" id="nbtBadge">No import</span>
     </div>
   </div>
 
@@ -290,6 +312,17 @@ h1{font-size:2.8rem;text-shadow:3px 3px 0 #3d3d00,5px 5px 0 rgba(0,0,0,.4);color
   <div class="tt-gear"  id="ttGear"></div>
 </div>
 
+<div id="dupModal">
+  <div id="dupBox">
+    <div id="dupTitle">Multiple items found for this slot</div>
+    <div id="dupSubtitle"></div>
+    <div id="dupCards"></div>
+    <div id="dupFooter">
+      <button class="mc-btn" onclick="closeDupModal()">✖ Cancel</button>
+    </div>
+  </div>
+</div>
+
 <div id="dropOverlay">📦 Drop .zip to import texture pack</div>
 
 <script>
@@ -319,6 +352,7 @@ const EL = {
   clearPackBtn:null,
   nbtBadge:    null,
   dropOverlay: null,
+  dupModal:    null,
 };
 function cacheEls() { Object.keys(EL).forEach(k => EL[k] = $(k)); }
 
@@ -1005,82 +1039,268 @@ document.getElementById('nbtInput').addEventListener('change', e => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = ev => parseNBTImport(ev.target.result, file.name);
+  reader.onload = ev => parseYoinkImport(ev.target.result, file.name);
   reader.readAsText(file);
-  e.target.value = ''; 
+  e.target.value = '';
 });
 
-function parseNBTImport(text, filename) {
+/* ── parse a single component-JSON `extra` array into coloured HTML ── */
+function renderMCName(jsonStr) {
+  try {
+    const obj = JSON.parse(jsonStr);
+    const parts = obj.extra || (obj.text ? [obj] : []);
+    return parts.map(p => {
+      const col = p.color || '#fff';
+      const hex = col.startsWith('#') ? col : MC_NAMED_COLORS[col] || '#fff';
+      const bold = p.bold ? 'font-weight:bold;' : '';
+      return `<span style="color:${hex};${bold}">${escHtml(p.text||'')}</span>`;
+    }).join('');
+  } catch { return escHtml(jsonStr); }
+}
+
+/* ── parse an array of lore JSON strings into coloured HTML lines ── */
+function renderMCLore(loreArr) {
+  return loreArr.map(raw => {
+    try {
+      const trimmed = raw.replace(/^'+|'+$/g, '').replace(/^"+|"+$/g, '');
+      if (!trimmed || trimmed === '""') return '<span style="color:transparent">·</span>';
+      const obj = JSON.parse(trimmed);
+      const parts = [].concat(obj.extra || (obj.text ? [obj] : []));
+      const line = parts.map(p => {
+        if (typeof p === 'string') return escHtml(p);
+        const col = p.color || 'gray';
+        const hex = col.startsWith('#') ? col : MC_NAMED_COLORS[col] || '#aaa';
+        const bold = p.bold ? 'font-weight:bold;' : '';
+        return `<span style="color:${hex};${bold}">${escHtml(p.text||'')}</span>`;
+      }).join('');
+      return line || '<span style="color:transparent">·</span>';
+    } catch { return ''; }
+  }).filter(l => l !== '').join('\n');
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+const MC_NAMED_COLORS = {
+  black:'#000000', dark_blue:'#0000aa', dark_green:'#00aa00', dark_aqua:'#00aaaa',
+  dark_red:'#aa0000', dark_purple:'#aa00aa', gold:'#ffaa00', gray:'#aaaaaa',
+  dark_gray:'#555555', blue:'#5555ff', green:'#55ff55', aqua:'#55ffff',
+  red:'#ff5555', light_purple:'#ff55ff', yellow:'#ffff55', white:'#ffffff',
+};
+
+/* ── extract enchantments object from a raw NBT string ── */
+function extractEnchants(raw) {
+  const encMatch = raw.match(/"minecraft:enchantments"\s*:\s*\{levels:\s*\{([^}]+)\}/);
+  if (!encMatch) return {};
+  const imported = {};
+  [...encMatch[1].matchAll(/"minecraft:([^"]+)"\s*:\s*(\d+)/g)]
+    .forEach(([, id, lvl]) => imported[id] = parseInt(lvl));
+  return imported;
+}
+
+/* ── extract lore JSON strings from raw NBT ── */
+function extractLore(raw) {
+  const loreMatch = raw.match(/"minecraft:lore"\s*:\s*\[([^\]]+(?:\][^\]]*)*?)\]/);
+  if (!loreMatch) return [];
+  return [...loreMatch[1].matchAll(/'([^']*)'/g)].map(m => m[1]);
+}
+
+/* ── apply enchants for a given slot from an imported enchant map ── */
+function applyEnchants(slotId, imported) {
+  if (!data[slotId]) data[slotId] = {};
+  let applied = 0, skipped = 0;
+  Object.entries(imported).forEach(([encId, lvl]) => {
+    const match =
+      ALL_ENCHANTS_COMBINED.find(e => e.slots.includes(slotId) && (e.id === encId || e.id.endsWith('_'+encId) || encId.endsWith('_'+e.id))) ||
+      ALL_ENCHANTS_COMBINED.find(e => e.id === encId);
+    if (match) { data[slotId][match.id] = Math.min(lvl, match.max); applied++; }
+    else skipped++;
+  });
+  return { applied, skipped };
+}
+
+/* ── split inventory file into item blocks ── */
+function splitInventoryBlocks(text) {
+  return [...text.matchAll(/=== ITEM \d+ ===([\s\S]*?)(?====|$)/g)]
+    .map(m => m[1].trim());
+}
+
+/* ── parse one item block into { raw, slotId, enchants, nameHtml, loreHtml, imgSrc } ── */
+function parseItemBlock(block) {
+  const rawMatch = block.match(/Raw NBT:\s*(\{[\s\S]*?\})\s*\n/);
+  if (!rawMatch) return null;
+  const raw = rawMatch[1];
+
+  const idMatch = raw.match(/\bid:"minecraft:([^"]+)"/);
+  if (!idMatch) return null;
+  const slotId = itemToSlot(idMatch[1]);
+  if (!slotId) return null;
+
+  const enchants = extractEnchants(raw);
+  const loreArr  = extractLore(raw);
+
+  /* custom_name JSON */
+  let nameHtml = escHtml(idMatch[1]);
+  const cnMatch = raw.match(/"minecraft:custom_name"\s*:\s*'({[^']+})'/);
+  if (cnMatch) {
+    try { nameHtml = renderMCName(cnMatch[1]); } catch {}
+  }
+
+  const loreHtml = renderMCLore(loreArr);
+  const gearSlot = GEAR_SLOTS.find(g => g.id === slotId);
+  const imgSrc   = resolvedSrc[slotId] || (gearSlot ? MC_BASE + gearSlot.tex[0] + '.png' : '');
+
+  return { raw, slotId, enchants, nameHtml, loreHtml, imgSrc };
+}
+
+/* ── pending duplicate resolution state ── */
+let _dupPending = {}; /* slotId -> [itemObj, ...] */
+let _dupFilename = '';
+let _dupSingleItems = []; /* non-duplicate items already applied */
+
+function parseYoinkImport(text, filename) {
   const badge = EL.nbtBadge;
   badge.className = 'pack-badge none';
   badge.textContent = 'Parsing...';
+  _dupFilename = filename;
 
   try {
-    
-    const nbtMatch = text.match(/Raw NBT:\s*(\{[\s\S]*?\})\s*\n/);
-    if (!nbtMatch) throw new Error('No "Raw NBT:" line found in file');
-    const raw = nbtMatch[1];
+    const isInventory = /=== ITEM \d+ ===/.test(text);
 
-    
-    const idMatch = raw.match(/\bid:"minecraft:([^"]+)"/);
-    if (!idMatch) throw new Error('Could not find item id in NBT');
-    const itemSuffix = idMatch[1];
-    const slotId = itemToSlot(itemSuffix);
-    if (!slotId) throw new Error(`Unknown item type: ${itemSuffix}`);
+    if (!isInventory) {
+      /* ── legacy single-item path ── */
+      const raw = (text.match(/Raw NBT:\s*(\{[\s\S]*?\})\s*\n/) || [])[1];
+      if (!raw) throw new Error('No "Raw NBT:" found');
+      const idMatch = raw.match(/\bid:"minecraft:([^"]+)"/);
+      if (!idMatch) throw new Error('Could not find item id');
+      const slotId = itemToSlot(idMatch[1]);
+      if (!slotId) throw new Error(`Unknown item type: ${idMatch[1]}`);
+      const enchants = extractEnchants(raw);
+      if (!Object.keys(enchants).length) throw new Error('No enchantments found');
+      const { applied, skipped } = applyEnchants(slotId, enchants);
+      save();
+      activeGear = slotId; activeTab = 'all';
+      renderGearBar(); renderTabs(); renderAll();
+      const gearName = GEAR_SLOTS.find(g=>g.id===slotId)?.name || slotId;
+      badge.className = 'pack-badge loaded';
+      badge.textContent = `✔ ${filename} → ${gearName} (${applied} applied${skipped?', '+skipped+' unknown':''})`;
+      return;
+    }
 
-    
-    
-    const encMatch = raw.match(/"minecraft:enchantments"\s*:\s*\{levels:\s*\{([^}]+)\}/);
-    if (!encMatch) throw new Error('No enchantments block found');
-    const levelsStr = encMatch[1];
+    /* ── inventory path ── */
+    const blocks = splitInventoryBlocks(text);
+    const items  = blocks.map(parseItemBlock).filter(Boolean);
+    if (!items.length) throw new Error('No valid items found in inventory export');
 
-    
-    const pairs = [...levelsStr.matchAll(/"minecraft:([^"]+)"\s*:\s*(\d+)/g)];
-    if (!pairs.length) throw new Error('No enchantment entries parsed');
-
-    
-    const imported = {};
-    pairs.forEach(([, encId, lvl]) => {
-      imported[encId] = parseInt(lvl);
+    /* group by slot */
+    const bySlot = {};
+    items.forEach(item => {
+      if (!bySlot[item.slotId]) bySlot[item.slotId] = [];
+      bySlot[item.slotId].push(item);
     });
 
-    
-    if (!data[slotId]) data[slotId] = {};
-    
-    
-    let applied = 0, skipped = 0;
-    Object.entries(imported).forEach(([encId, lvl]) => {
-      
-      const match = ALL_ENCHANTS_COMBINED.find(e =>
-        e.slots.includes(slotId) && (e.id === encId || e.id.endsWith('_'+encId) || encId.endsWith('_'+e.id))
-      ) || ALL_ENCHANTS_COMBINED.find(e => e.id === encId);
-
-      if (match) {
-        data[slotId][match.id] = Math.min(lvl, match.max); 
-        applied++;
-      } else {
-        skipped++;
-      }
+    const dups    = {};
+    const singles = [];
+    Object.entries(bySlot).forEach(([slotId, arr]) => {
+      if (arr.length > 1) dups[slotId] = arr;
+      else singles.push(arr[0]);
     });
 
+    /* apply non-duplicate slots immediately */
+    let totalApplied = 0, totalSkipped = 0;
+    singles.forEach(item => {
+      const { applied, skipped } = applyEnchants(item.slotId, item.enchants);
+      totalApplied += applied; totalSkipped += skipped;
+    });
     save();
+    renderGearBar(); renderTabs(); renderAll();
 
-    
-    activeGear = slotId;
-    activeTab  = 'all';
-    renderGearBar();
-    renderTabs();
-    renderAll();
-
-    const gearName = GEAR_SLOTS.find(g=>g.id===slotId)?.name || slotId;
-    badge.className = 'pack-badge loaded';
-    badge.textContent = `✔ ${filename} → ${gearName} (${applied} enchants applied${skipped ? ', '+skipped+' unknown' : ''})`;
+    if (Object.keys(dups).length) {
+      _dupPending = dups;
+      _dupSingleItems = singles;
+      openDupModal(filename, singles.length, totalApplied, totalSkipped);
+      badge.className = 'pack-badge loaded';
+      badge.textContent = `✔ ${filename}: ${singles.length} slots applied, ${Object.keys(dups).length} need choice`;
+    } else {
+      badge.className = 'pack-badge loaded';
+      badge.textContent = `✔ ${filename}: ${items.length} items (${totalApplied} enchants applied${totalSkipped?', '+totalSkipped+' unknown':''})`;
+    }
 
   } catch(err) {
     badge.className = 'pack-badge none';
     badge.textContent = '✖ ' + err.message;
-    console.error('NBT import error:', err);
+    console.error('YoinkGUI import error:', err);
   }
+}
+
+/* ── duplicate picker modal ── */
+function openDupModal(filename, singlesApplied, totalApplied, totalSkipped) {
+  const box      = document.getElementById('dupBox');
+  const subtitle = document.getElementById('dupSubtitle');
+  const cards    = document.getElementById('dupCards');
+
+  subtitle.textContent = `${singlesApplied} slot(s) auto-applied. Pick which item to use for each duplicate slot:`;
+  cards.innerHTML = '';
+
+  Object.entries(_dupPending).forEach(([slotId, items]) => {
+    const gearName = GEAR_SLOTS.find(g=>g.id===slotId)?.name || slotId;
+
+    /* slot header */
+    const hdr = document.createElement('div');
+    hdr.style.cssText = 'width:100%;font-size:1.05rem;color:var(--gui-text);border-bottom:1px solid #999;padding-bottom:3px;margin-bottom:2px;flex-basis:100%';
+    hdr.textContent = `⚔ ${gearName} (${items.length} items)`;
+    cards.appendChild(hdr);
+
+    /* item cards */
+    items.forEach((item, idx) => {
+      const encEntries = Object.entries(item.enchants);
+      const encHtml = encEntries.map(([id, lvl]) => {
+        const def = ALL_ENCHANTS_COMBINED.find(e => e.id === id || e.id.endsWith('_'+id));
+        const name = def ? def.name : id;
+        const col  = def?.custom ? (def.rc||'#aaa') : '#aaa';
+        return `<span style="color:${col}">${escHtml(name)} ${toRom(lvl)||lvl}</span>`;
+      }).join('');
+
+      const card = document.createElement('div');
+      card.className = 'dup-card';
+      card.innerHTML = `
+        <div class="dup-card-name">${item.nameHtml}</div>
+        <img class="dup-card-img" src="${item.imgSrc}" alt="${gearName}" onerror="this.style.display='none'">
+        <div class="dup-card-encs">${encHtml || '<span style="color:#666">No enchantments</span>'}</div>
+        ${item.loreHtml ? `<div class="dup-card-lore" style="white-space:pre-line">${item.loreHtml}</div>` : ''}
+        <button class="mc-btn dup-use-btn" onclick="chooseDup('${slotId}',${idx})">✔ Use this</button>
+      `;
+      cards.appendChild(card);
+    });
+
+    /* spacer between slot groups */
+    const spacer = document.createElement('div');
+    spacer.style.cssText = 'width:100%;height:6px;flex-basis:100%';
+    cards.appendChild(spacer);
+  });
+
+  document.getElementById('dupModal').classList.add('vis');
+}
+
+function chooseDup(slotId, idx) {
+  const item = _dupPending[slotId][idx];
+  applyEnchants(slotId, item.enchants);
+  delete _dupPending[slotId];
+  save();
+  renderGearBar(); renderTabs(); renderAll();
+
+  /* if all dupes resolved, close modal and update badge */
+  if (!Object.keys(_dupPending).length) {
+    closeDupModal();
+    EL.nbtBadge.textContent = `✔ ${_dupFilename}: all slots resolved`;
+  } else {
+    /* re-render remaining */
+    openDupModal(_dupFilename, _dupSingleItems.length, 0, 0);
+  }
+}
+
+function closeDupModal() {
+  document.getElementById('dupModal').classList.remove('vis');
+  _dupPending = {};
 }
 
 let wmActive = false;
