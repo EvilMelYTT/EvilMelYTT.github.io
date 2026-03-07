@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pika Wrapped — API Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0e14;--bg2:#12141c;--bg3:#181a24;--bg4:#1e2130;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --accent:#5b8fff;--accent2:#3a6fef;
+  --gold:#f5c248;--green:#3ecf7e;--red:#f06060;--purple:#a78bfa;--pink:#f472b6;
+  --text:#dde3f0;--text2:#8892a8;--text3:#505870;
+  --mono:'IBM Plex Mono',monospace;
+  --head:'Syne',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --radius:10px;--radius2:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:15px}
+body{font-family:var(--body);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+code{font-family:var(--mono);font-size:.82em;background:rgba(91,143,255,.1);border:1px solid rgba(91,143,255,.2);border-radius:4px;padding:.1em .35em;color:#93b4ff}
+pre{font-family:var(--mono)}
+button{cursor:pointer;font-family:var(--body)}
+
+#topbar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(12,14,20,.9);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:14px;padding:0 28px;height:50px;
+}
+.tb-logo{font-family:var(--head);font-size:.95rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px}
+.tb-logo-dot{width:22px;height:22px;background:linear-gradient(135deg,var(--accent),#2244cc);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.tb-chip{font-size:.65rem;font-weight:600;background:rgba(91,143,255,.1);border:1px solid rgba(91,143,255,.25);color:var(--accent);border-radius:99px;padding:.15rem .6rem;font-family:var(--mono)}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tb-back{font-size:.75rem;font-weight:600;color:var(--text2);background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:4px 12px;transition:all .15s}
+.tb-back:hover{color:#fff;border-color:rgba(255,255,255,.2)}
+
+.page{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 50px)}
+@media(max-width:760px){.page{grid-template-columns:1fr}}
+
+#sidenav{
+  position:sticky;top:50px;align-self:start;height:calc(100vh - 50px);overflow-y:auto;
+  padding:20px 0;border-right:1px solid var(--border);background:var(--bg2);
+}
+#sidenav::-webkit-scrollbar{width:3px}
+#sidenav::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+.nav-section{padding:6px 18px 4px;font-size:.62rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 18px;font-size:.78rem;font-weight:600;color:var(--text2);cursor:pointer;transition:all .12s;border-left:2px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.03)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(91,143,255,.06)}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background .12s}
+.nav-item.active .nav-dot{background:var(--accent)}
+.nav-item.done .nav-dot{background:var(--green)}
+@media(max-width:760px){#sidenav{display:none}}
+
+#main{padding:36px 44px 80px;max-width:860px}
+@media(max-width:900px){#main{padding:24px 20px 60px}}
+
+.intro-head{font-family:var(--head);font-size:2rem;font-weight:800;line-height:1.15;margin-bottom:10px}
+.intro-head span{color:var(--accent)}
+.intro-sub{font-size:.9rem;color:var(--text2);max-width:600px;line-height:1.7;margin-bottom:28px}
+.search-card{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius2);padding:20px 24px;margin-bottom:14px}
+.search-card h3{font-family:var(--head);font-size:.9rem;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.search-row{display:flex;gap:10px}
+.search-row input{flex:1;background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:9px 14px;font-family:var(--mono);font-size:.85rem;color:#fff;outline:none;transition:border-color .15s}
+.search-row input:focus{border-color:rgba(91,143,255,.5);box-shadow:0 0 0 3px rgba(91,143,255,.08)}
+.search-row input::placeholder{color:var(--text3)}
+.go-btn{background:var(--accent);border:none;border-radius:9px;padding:9px 22px;font-size:.85rem;font-weight:700;color:#fff;transition:background .15s;white-space:nowrap}
+.go-btn:hover{background:var(--accent2)}
+.go-btn:disabled{opacity:.45;cursor:not-allowed}
+.example-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.ex-label{font-size:.7rem;color:var(--text3)}
+.ex-btn{font-size:.72rem;font-weight:600;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:99px;padding:2px 10px;color:var(--text2);transition:all .12s}
+.ex-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+.progress-bar{height:3px;background:var(--bg4);border-radius:99px;overflow:hidden;margin-top:14px;display:none}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));border-radius:99px;width:0%;transition:width .3s}
+.progress-label{font-size:.7rem;color:var(--text2);margin-top:5px;display:none}
+
+.guide-section{margin-bottom:48px;scroll-margin-top:64px}
+.section-tag{display:inline-flex;align-items:center;gap:7px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;color:var(--text3)}
+.section-num{width:20px;height:20px;background:var(--bg4);border:1px solid var(--border2);border-radius:5px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.65rem;font-weight:700;color:var(--accent)}
+.section-title{font-family:var(--head);font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.section-desc{font-size:.875rem;color:var(--text2);line-height:1.75;margin-bottom:18px;max-width:680px}
+
+.call-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);overflow:hidden;margin-bottom:14px;transition:border-color .2s}
+.call-card.loaded{border-color:rgba(62,207,126,.2)}
+.call-card.error{border-color:rgba(240,96,96,.25)}
+.call-head{display:flex;align-items:center;gap:10px;padding:12px 18px;background:var(--bg4);border-bottom:1px solid var(--border)}
+.method{font-family:var(--mono);font-size:.62rem;font-weight:600;padding:.18rem .5rem;border-radius:5px;background:rgba(62,207,126,.1);color:var(--green);border:1px solid rgba(62,207,126,.25)}
+.call-url{font-family:var(--mono);font-size:.75rem;color:var(--text2);flex:1;word-break:break-all}
+.call-url .u-base{color:var(--text3)}
+.call-url .u-path{color:#93b4ff}
+.call-url .u-param{color:var(--gold)}
+.call-url .u-val{color:var(--pink)}
+.status-badge{font-family:var(--mono);font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:99px;flex-shrink:0;border:1px solid}
+.status-badge.ok{background:rgba(62,207,126,.1);color:var(--green);border-color:rgba(62,207,126,.25)}
+.status-badge.err{background:rgba(240,96,96,.1);color:var(--red);border-color:rgba(240,96,96,.25)}
+.status-badge.wait{background:rgba(91,143,255,.1);color:var(--accent);border-color:rgba(91,143,255,.2);animation:blink 1.2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+.timing{font-size:.65rem;color:var(--text3);font-family:var(--mono);flex-shrink:0}
+.call-toggle{font-size:.65rem;color:var(--text3);flex-shrink:0;transition:transform .2s;cursor:pointer;padding:4px;background:none;border:none}
+.call-toggle.open{transform:rotate(180deg)}
+
+.call-body{display:none;border-top:1px solid var(--border)}
+.call-body.open{display:block}
+
+.mapping-panel{padding:16px 20px;display:flex;flex-direction:column;gap:10px;border-bottom:1px solid var(--border)}
+.mapping-title{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:4px}
+.map-row{display:flex;align-items:flex-start;gap:0;background:var(--bg);border:1px solid var(--border);border-radius:9px;overflow:hidden;font-size:.78rem}
+.map-key{font-family:var(--mono);color:#93b4ff;padding:8px 12px;background:rgba(91,143,255,.07);border-right:1px solid var(--border);white-space:nowrap;font-size:.75rem;flex-shrink:0;min-width:0}
+.map-arrow{padding:8px 8px;color:var(--text3);flex-shrink:0;font-size:.8rem}
+.map-dest{padding:8px 10px;color:var(--text2);flex:1;line-height:1.5}
+.map-dest strong{color:#fff;font-weight:600}
+.map-dest .val{font-family:var(--mono);color:var(--gold);font-size:.75em;background:rgba(245,194,72,.08);padding:.1em .3em;border-radius:3px}
+
+.json-panel{padding:0}
+.json-tabs{display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,.15)}
+.json-tab{padding:8px 16px;font-size:.72rem;font-weight:700;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .12s}
+.json-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.json-content{padding:16px 20px;max-height:320px;overflow-y:auto;overflow-x:auto}
+.json-content::-webkit-scrollbar{width:4px;height:4px}
+.json-content::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:99px}
+.json-content pre{font-size:.73rem;line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.j-key{color:#7dd3fc}.j-str{color:#86efac}.j-num{color:#fbbf24}.j-bool{color:#f472b6}.j-null{color:var(--text3)}.j-comment{color:var(--text3);font-style:italic}
+.copy-btn{font-size:.63rem;font-weight:700;background:var(--bg4);border:1px solid var(--border);border-radius:5px;padding:2px 8px;color:var(--text3);float:right;margin-bottom:6px;transition:color .12s}
+.copy-btn:hover{color:#fff}
+
+.preview-panel{padding:16px 20px;border-top:1px solid var(--border)}
+.preview-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.preview-label span{background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);color:var(--purple);border-radius:99px;padding:.1rem .55rem;font-size:.62rem}
+
+.mini-hero{background:linear-gradient(135deg,#2200a0,#1a1870);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.mini-avatar{width:44px;height:44px;border-radius:8px;border:2px solid rgba(255,255,255,.15);background:#2a2040;flex-shrink:0}
+.mini-hero-text h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:#fceb38;margin-bottom:1px}
+.mini-hero-text p{font-size:.72rem;color:rgba(255,255,255,.45)}
+.mini-stats-strip{display:flex;gap:0;background:rgba(0,0,0,.2);border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+.mini-stat{flex:1;padding:6px 10px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.mini-stat:last-child{border-right:none}
+.mini-stat-label{font-size:.6rem;color:rgba(255,255,255,.4);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.mini-stat-val{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:#fff}
+
+.mini-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.mini-table th{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);padding:5px 10px;text-align:left;border-bottom:1px solid var(--border)}
+.mini-table td{padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text2)}
+.mini-table td:last-child{font-family:var(--mono);color:#fff;font-weight:600;text-align:right}
+.rank-badge{display:inline-flex;align-items:center;background:rgba(91,143,255,.12);border:1px solid rgba(91,143,255,.25);border-radius:4px;padding:1px 5px;font-size:.65rem;font-family:var(--mono);color:#93b4ff;margin-left:5px}
+.rank-badge.gold{background:rgba(245,194,72,.12);border-color:rgba(245,194,72,.3);color:var(--gold)}
+.rank-badge.silver{background:rgba(200,200,200,.08);border-color:rgba(200,200,200,.2);color:#c8c8c8}
+
+.mini-gm-card{display:flex;align-items:center;gap:10px;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:6px}
+.mini-gm-icon{width:32px;height:32px;border-radius:6px;overflow:hidden;flex-shrink:0;background:#1a2030}
+.mini-gm-icon img{width:100%;height:100%;object-fit:cover}
+.mini-gm-name{font-weight:700;font-size:.82rem;color:#fff}
+.mini-gm-score{font-family:var(--mono);font-size:.72rem;color:var(--gold);margin-left:auto}
+
+.mini-rank-badge{display:inline-flex;align-items:center;background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.28);border-radius:5px;padding:3px 9px;font-size:.75rem;font-weight:700;color:var(--purple);margin:2px}
+.mini-rank-badge.sub{background:rgba(244,114,182,.1);border-color:rgba(244,114,182,.28);color:var(--pink)}
+
+.live-editor{border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;margin-top:12px}
+.live-editor-head{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);font-size:.7rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+.live-editor-head svg{color:var(--green);flex-shrink:0}
+.editor-row{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.editor-row:last-child{border-bottom:none}
+.editor-label{font-size:.72rem;font-weight:600;color:var(--text2);min-width:90px;flex-shrink:0}
+.editor-input{background:var(--bg);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;font-family:var(--mono);font-size:.78rem;color:#fff;outline:none;width:100px;transition:border-color .15s}
+.editor-input:focus{border-color:rgba(91,143,255,.5)}
+.editor-result{font-family:var(--mono);font-size:.76rem;color:var(--gold);padding:4px 10px;background:rgba(245,194,72,.06);border-radius:5px;border:1px solid rgba(245,194,72,.15)}
+.editor-note{font-size:.7rem;color:var(--text3);font-style:italic}
+
+.score-box{background:var(--bg4);border:1px solid var(--border2);border-radius:var(--radius);padding:14px 18px;margin-top:10px}
+.score-formula{font-family:var(--mono);font-size:.8rem;color:#fff;margin-bottom:8px;line-height:1.8}
+.score-formula .sf-comment{color:var(--text3);font-style:italic}
+.score-formula .sf-var{color:#93b4ff}
+.score-formula .sf-op{color:var(--pink)}
+.score-formula .sf-num{color:var(--gold)}
+.score-breakdown{display:flex;flex-direction:column;gap:5px}
+.sb-row{display:flex;align-items:center;gap:10px;font-size:.75rem}
+.sb-label{color:var(--text2);flex:1}
+.sb-bar-wrap{flex:2;background:rgba(255,255,255,.06);border-radius:99px;height:6px;overflow:hidden}
+.sb-bar{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--purple))}
+.sb-val{font-family:var(--mono);color:var(--gold);min-width:40px;text-align:right;font-size:.72rem}
+
+.callout{display:flex;gap:10px;background:rgba(91,143,255,.06);border:1px solid rgba(91,143,255,.18);border-radius:9px;padding:12px 16px;margin:14px 0;font-size:.8rem;color:var(--text2);line-height:1.65}
+.callout.warn{background:rgba(245,194,72,.06);border-color:rgba(245,194,72,.18);color:#e8d48a}
+.callout.green{background:rgba(62,207,126,.06);border-color:rgba(62,207,126,.18);color:#a0e8bc}
+.callout-icon{font-size:1rem;flex-shrink:0;margin-top:1px}
+
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3);font-size:.85rem}
+.empty-state .es-icon{font-size:2rem;margin-bottom:10px;opacity:.4}
+
+.flow{display:flex;flex-direction:column;gap:0;margin:14px 0}
+.flow-step{display:flex;align-items:flex-start;gap:12px}
+.flow-line{display:flex;flex-direction:column;align-items:center;gap:0}
+.flow-circle{width:28px;height:28px;border-radius:50%;background:var(--bg4);border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:800;font-family:var(--mono);color:var(--accent);flex-shrink:0}
+.flow-connector{width:2px;flex:1;background:var(--border);min-height:20px}
+.flow-content{padding:2px 0 18px;flex:1}
+.flow-content h4{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:3px}
+.flow-content p{font-size:.75rem;color:var(--text2);line-height:1.6}
+
+.tier-list{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.tier-row{display:flex;align-items:center;gap:8px;padding:5px 12px;border-radius:7px;font-size:.78rem;background:var(--bg4);border:1px solid var(--border)}
+.tier-index{font-family:var(--mono);font-size:.65rem;color:var(--text3);min-width:20px}
+.tier-name{font-weight:700;flex:1}
+.tier-tag{font-size:.62rem;font-weight:700;border-radius:99px;padding:.1rem .5rem;border:1px solid}
+.tier-tag.game{background:rgba(91,143,255,.1);color:var(--accent);border-color:rgba(91,143,255,.25)}
+.tier-tag.sub{background:rgba(244,114,182,.1);color:var(--pink);border-color:rgba(244,114,182,.25)}
+
+.proxy-flow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:12px 0;font-size:.75rem}
+.proxy-node{background:var(--bg4);border:1px solid var(--border2);border-radius:7px;padding:5px 12px;color:var(--text2);font-weight:600}
+.proxy-node.active{border-color:rgba(91,143,255,.35);color:var(--accent);background:rgba(91,143,255,.07)}
+.proxy-arrow{color:var(--text3);font-size:.8rem}
+
+.not-loaded{text-align:center;padding:28px 20px;color:var(--text3);font-size:.8rem;font-style:italic}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="tb-logo">
+    <div class="tb-logo-dot">🎮</div>
+    Pika Wrapped
+  </div>
+  <span class="tb-chip">API Guide</span>
+  <div class="tb-right">
+    <a href="pika-wrapped.html" class="tb-back">← Back to Wrapped</a>
+  </div>
+</div>
+
+<div class="page">
+
+  
+  <nav id="sidenav">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" data-target="s-intro"><div class="nav-dot"></div>How it works</div>
+    <div class="nav-item" data-target="s-cors"><div class="nav-dot"></div>CORS & Proxies</div>
+    <div class="nav-section" style="margin-top:8px">API Calls</div>
+    <div class="nav-item" data-target="s-profile"><div class="nav-dot"></div>① Profile</div>
+    <div class="nav-item" data-target="s-leaderboard"><div class="nav-dot"></div>② Leaderboard Stats</div>
+    <div class="nav-section" style="margin-top:8px">Data → UI</div>
+    <div class="nav-item" data-target="s-hero"><div class="nav-dot"></div>Hero Panel</div>
+    <div class="nav-item" data-target="s-ranks"><div class="nav-dot"></div>Ranks & Subscriptions</div>
+    <div class="nav-item" data-target="s-scoring"><div class="nav-dot"></div>Activity Scoring</div>
+    <div class="nav-item" data-target="s-gmsections"><div class="nav-dot"></div>Gamemode Sections</div>
+    <div class="nav-item" data-target="s-statstab"><div class="nav-dot"></div>Stats Tab</div>
+  </nav>
+
+  
+  <main id="main">
+
+    
+    <section class="guide-section" id="s-intro">
+      <div class="intro-head">What happens when you<br><span>type a username?</span></div>
+      <div class="intro-sub">This guide walks through every API call made, which fields come back, and exactly where each piece of data ends up on the Pika Wrapped site. Enter a username below to make it live.</div>
+
+      <div class="search-card">
+        <h3>🔍 Enter a username to trace</h3>
+        <div class="search-row">
+          <input type="text" id="ign-input" placeholder="e.g. Notourconcern" autocomplete="off" spellcheck="false">
+          <button class="go-btn" id="go-btn" onclick="startTrace()">Trace</button>
+        </div>
+        <div class="example-row">
+          <span class="ex-label">Try:</span>
+          <button class="ex-btn" onclick="setEx('Notourconcern')">Notourconcern</button>
+          <button class="ex-btn" onclick="setEx('ShadowedLeaves')">ShadowedLeaves</button>
+          <button class="ex-btn" onclick="setEx('synxx9999')">synxx9999</button>
+        </div>
+        <div class="progress-bar" id="prog-bar"><div class="progress-fill" id="prog-fill"></div></div>
+        <div class="progress-label" id="prog-label"></div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-icon">ℹ️</div>
+        <div>Every section below is interactive once you run a trace. Collapsed cards expand to show the raw JSON response, field-by-field mappings to the UI, and live mini-previews built from real data.</div>
+      </div>
+
+      <div class="section-title" style="margin-top:24px;font-size:1.05rem">The full call sequence</div>
+      <div class="flow" style="margin-top:14px">
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-circle">1</div><div class="flow-connector"></div></div>
+          <div class="flow-content"><h4>Profile fetch</h4><p><code>GET /api/profile/{username}</code> — returns the player object: username, last seen, level, ranks, friends, Discord status. This runs first, blocking, because the username must resolve to confirm the player exists.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-circle">2</div><div class="flow-connector"></div></div>
+          <div class="flow-content"><h4>Leaderboard stats — all 12 gamemodes in parallel</h4><p><code>GET /api/profile/{username}/leaderboard?type={gm}&interval=total</code> fires simultaneously for every gamemode via <code>Promise.allSettled()</code>. A failed gamemode doesn't crash the others.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-line"><div class="flow-circle">3</div></div>
+          <div class="flow-content"><h4>Render</h4><p>Both datasets are passed to <code>renderWrapped()</code> and <code>renderStats()</code>. No further network calls are made — all UI is derived from what came back in steps 1 & 2.</p></div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px">
+        <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);margin-bottom:10px">API Sources</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a href="https://pika-network.net/threads/pikanetwork-api.556900" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:9px 16px;color:var(--text2);font-size:.78rem;font-weight:600;transition:all .15s;text-decoration:none" onmouseover="this.style.borderColor='rgba(91,143,255,.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='';this.style.color=''">
+            <span style="font-size:1rem">🧵</span>
+            <div><div style="color:#fff;font-weight:700;font-size:.8rem">PikaNetwork API Thread</div><div style="font-size:.68rem;color:var(--text3)">pika-network.net/threads/…</div></div>
+          </a>
+          <a href="https://app.swaggerhub.com/apis-docs/MALLUSRGREAT_1/PikaNetworkAPI/1.0.0" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid var(--border2);border-radius:9px;padding:9px 16px;color:var(--text2);font-size:.78rem;font-weight:600;transition:all .15s;text-decoration:none" onmouseover="this.style.borderColor='rgba(62,207,126,.4)';this.style.color='#fff'" onmouseout="this.style.borderColor='';this.style.color=''">
+            <span style="font-size:1rem">📄</span>
+            <div><div style="color:#fff;font-weight:700;font-size:.8rem">SwaggerHub Spec</div><div style="font-size:.68rem;color:var(--text3)">PikaNetworkAPI v1.0.0</div></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-cors">
+      <div class="section-tag"><div class="section-num">0</div>Background</div>
+      <div class="section-title">CORS & Proxy Strategy</div>
+      <div class="section-desc">Browsers block direct requests to <code>stats.pika-network.net/api</code> from a local HTML file due to CORS (Cross-Origin Resource Sharing). The site tries three options in order:</div>
+
+      <div class="proxy-flow">
+        <div class="proxy-node active">corsproxy.io</div>
+        <div class="proxy-arrow">→ fail →</div>
+        <div class="proxy-node">allorigins.win</div>
+        <div class="proxy-arrow">→ fail →</div>
+        <div class="proxy-node">Direct (localhost server)</div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div>Public proxy services are rate-limited and occasionally down. For reliable results, serve the file with <code>npx serve .</code> or <code>python -m http.server</code> — a local server context lets the browser make direct API calls.</div>
+      </div>
+
+      <div class="section-desc" style="margin-top:12px">Each proxy wraps the target URL as a query parameter. The <code>pFetch()</code> function loops through them until one responds with HTTP 200, throwing immediately on 404 or 429 to avoid wasting proxy quota.</div>
+    </section>
+
+    
+    <section class="guide-section" id="s-profile">
+      <div class="section-tag"><div class="section-num">1</div>API Call</div>
+      <div class="section-title">Profile Fetch</div>
+      <div class="section-desc">The first and only sequential call. If this 404s, everything stops. The response is a single JSON object with all player metadata — no pagination, no follow-up needed.</div>
+
+      <div class="call-card" id="card-profile">
+        <div class="call-head">
+          <span class="method">GET</span>
+          <span class="call-url" id="url-profile">
+            <span class="u-base">stats.pika-network.net</span><span class="u-path">/api/profile/</span><span class="u-val">{username}</span>
+          </span>
+          <span class="status-badge" id="status-profile">—</span>
+          <span class="timing" id="timing-profile"></span>
+          <button class="call-toggle" id="toggle-profile" onclick="toggleCard('profile')">▾</button>
+        </div>
+        <div class="call-body" id="body-profile">
+          <div class="not-loaded" id="nl-profile">Run a trace above to see live data here</div>
+          <div id="loaded-profile" style="display:none">
+            <div class="json-panel">
+              <div class="json-tabs">
+                <div class="json-tab active" onclick="switchTab('profile','raw',this)">Raw JSON</div>
+                <div class="json-tab" onclick="switchTab('profile','annotated',this)">Annotated</div>
+              </div>
+              <div class="json-content" id="json-profile-raw"><pre id="pre-profile-raw"></pre></div>
+              <div class="json-content" id="json-profile-annotated" style="display:none"><pre id="pre-profile-annotated"></pre></div>
+            </div>
+            <div class="mapping-panel">
+              <div class="mapping-title">Field → UI mappings</div>
+              <div id="mappings-profile"></div>
+            </div>
+            <div class="preview-panel">
+              <div class="preview-label">Live mini-preview <span>from this response</span></div>
+              <div id="preview-profile"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <div class="callout-icon">💡</div>
+        <div><strong>Key field:</strong> <code>profile.ranks[]</code> is an array that can contain both game ranks (like <em>Ultimate+++</em>) and subscriptions (like <em>Pika❤</em>) mixed together. The site uses the <code>splitRanks()</code> function to separate them — see the Ranks section below.</div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-leaderboard">
+      <div class="section-tag"><div class="section-num">2</div>API Calls × 12</div>
+      <div class="section-title">Leaderboard Stats — Per Gamemode</div>
+      <div class="section-desc">One call per gamemode, all fired simultaneously. The response maps every tracked stat name to an object containing the player's rank position and the total number of players tracked for that stat. A missing key means no data — the stat is simply skipped in the UI.</div>
+
+      <div class="callout">
+        <div class="callout-icon">ℹ️</div>
+        <div>BedWars gets an extra <code>&mode=ALL_MODES</code> parameter so it returns cross-mode totals rather than per-mode splits.</div>
+      </div>
+
+      <div id="gm-call-cards">
+        <div class="not-loaded">Run a trace above to see per-gamemode calls here</div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-hero">
+      <div class="section-tag"><div class="section-num">3</div>Data → UI</div>
+      <div class="section-title">Hero Panel</div>
+      <div class="section-desc">The big banner at the top of the Wrapped page. Built entirely from the profile response — no leaderboard data needed here.</div>
+
+      <div class="call-card" id="card-hero">
+        <div class="call-head">
+          <span class="method" style="background:rgba(167,139,250,.1);color:var(--purple);border-color:rgba(167,139,250,.25)">UI</span>
+          <span class="call-url" style="color:#c4b5fd">Hero Panel construction</span>
+          <button class="call-toggle" id="toggle-hero" onclick="toggleCard('hero')">▾</button>
+        </div>
+        <div class="call-body" id="body-hero">
+          <div class="not-loaded" id="nl-hero">Run a trace above</div>
+          <div id="loaded-hero" style="display:none">
+            <div class="mapping-panel">
+              <div class="mapping-title">Field → UI mappings</div>
+              <div id="mappings-hero"></div>
+            </div>
+            <div class="preview-panel">
+              <div class="preview-label">Live mini-preview <span>from this response</span></div>
+              <div id="preview-hero"></div>
+              <div class="live-editor" id="editor-hero" style="margin-top:14px">
+                <div class="live-editor-head">
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+                  Live editor — tweak values
+                </div>
+                <div class="editor-row">
+                  <span class="editor-label">Username</span>
+                  <input class="editor-input" id="ed-username" value="" style="width:140px" oninput="updateHeroPreview()">
+                  <span class="editor-note">changes the title text</span>
+                </div>
+                <div class="editor-row">
+                  <span class="editor-label">Year</span>
+                  <input class="editor-input" id="ed-year" value="2026" style="width:80px" oninput="updateHeroPreview()">
+                </div>
+                <div class="editor-row">
+                  <span class="editor-label">Level</span>
+                  <input class="editor-input" id="ed-level" value="" style="width:80px" oninput="updateHeroPreview()">
+                  <span class="editor-result" id="ed-level-result"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-ranks">
+      <div class="section-tag"><div class="section-num">4</div>Data → UI</div>
+      <div class="section-title">Ranks & Subscriptions</div>
+      <div class="section-desc">The API returns all ranks in one flat array — game ranks and Pika+ subscriptions mixed together. The site separates them using a priority tier list and a subscription name check.</div>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div>The API lists ranks in no guaranteed order. Without the tier list, a lower rank like <em>Titan</em> could appear as "Top Rank" above <em>Overlord+++</em>.</div>
+      </div>
+
+      <div class="call-card">
+        <div class="call-head">
+          <span class="method" style="background:rgba(167,139,250,.1);color:var(--purple);border-color:rgba(167,139,250,.25)">UI</span>
+          <span class="call-url" style="color:#c4b5fd">splitRanks() — rank separation logic</span>
+          <button class="call-toggle" id="toggle-ranks" onclick="toggleCard('ranks')">▾</button>
+        </div>
+        <div class="call-body" id="body-ranks">
+          <div class="mapping-panel">
+            <div class="mapping-title">How splitRanks() works</div>
+            <div class="map-row"><span class="map-key">isPikaSub(r)</span><span class="map-arrow">→</span><span class="map-dest">True if <code>displayName</code> is in <span class="val">['Pika+','Pika⭐','Pika❤']</span> or starts with "Pika". These go to <strong>subRanks[]</strong>.</span></div>
+            <div class="map-row" style="margin-top:6px"><span class="map-key">gameRanks[]</span><span class="map-arrow">→</span><span class="map-dest">All non-sub ranks, sorted by position in <strong>RANK_TIER[]</strong>. Index 0 = highest prestige. Unknown ranks fall to index 999.</span></div>
+            <div class="map-row" style="margin-top:6px"><span class="map-key">topGameRank</span><span class="map-arrow">→</span><span class="map-dest">gameRanks[0] — appears as <strong>"Top Rank"</strong> in the hero panel. Never a subscription.</span></div>
+          </div>
+          <div class="mapping-panel" style="border-top:1px solid var(--border)">
+            <div class="mapping-title">Rank tier order (highest → lowest)</div>
+            <div class="tier-list" id="tier-list-static"></div>
+          </div>
+          <div class="preview-panel" id="ranks-preview-panel" style="display:none">
+            <div class="preview-label">This player's ranks <span>parsed</span></div>
+            <div id="preview-ranks"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-scoring">
+      <div class="section-tag"><div class="section-num">5</div>Data → UI</div>
+      <div class="section-title">Activity Scoring</div>
+      <div class="section-desc">The site has no time-filtered data — it can't tell how much you played this year. Instead it derives an "activity score" from your leaderboard percentiles to rank how invested you are in each gamemode. This is what determines "Most Played" and the order of all sections.</div>
+
+      <div class="score-box">
+        <div class="score-formula">
+          <span class="sf-comment">
+          <span class="sf-var">percentile</span> <span class="sf-op">=</span> <span class="sf-num">1</span> <span class="sf-op">-</span> (place <span class="sf-op">/</span> total)<br>
+          <span class="sf-comment">
+          <span class="sf-var">score</span> <span class="sf-op">=</span> (avgPercentile <span class="sf-op">×</span> <span class="sf-num">100</span>) <span class="sf-op">+</span> rankedStatCount<br>
+          <span class="sf-comment">
+        </div>
+        <div id="score-breakdown-live"><div class="not-loaded" style="padding:10px 0">Run a trace to see live score breakdown</div></div>
+      </div>
+
+      <div class="callout">
+        <div class="callout-icon">💡</div>
+        <div>A player who is top 5% in 6 stats will score higher than one who is #1 in a single stat with no other presence. The breadth bonus rewards all-round play.</div>
+      </div>
+
+      <div class="live-editor" id="score-editor">
+        <div class="live-editor-head">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+          Try the formula yourself
+        </div>
+        <div class="editor-row">
+          <span class="editor-label">Your rank</span>
+          <input class="editor-input" id="sc-place" value="50" oninput="calcScoreDemo()">
+        </div>
+        <div class="editor-row">
+          <span class="editor-label">Total players</span>
+          <input class="editor-input" id="sc-total" value="1000" oninput="calcScoreDemo()">
+        </div>
+        <div class="editor-row">
+          <span class="editor-label">Ranked stats</span>
+          <input class="editor-input" id="sc-stats" value="6" oninput="calcScoreDemo()">
+        </div>
+        <div class="editor-row">
+          <span class="editor-label">Result</span>
+          <span class="editor-result" id="sc-result">—</span>
+          <span class="editor-note" id="sc-note"></span>
+        </div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-gmsections">
+      <div class="section-tag"><div class="section-num">6</div>Data → UI</div>
+      <div class="section-title">Gamemode Sections (Wrapped)</div>
+      <div class="section-desc">Each gamemode with a non-null leaderboard response gets its own section on the wrapped page. Stats shown are taken from <code>GM_META[gm].keys</code> — a curated list of the most meaningful stats for that mode. Order is determined by activity score.</div>
+
+      <div id="gm-section-previews">
+        <div class="not-loaded">Run a trace to see per-gamemode section previews</div>
+      </div>
+    </section>
+
+    
+    <section class="guide-section" id="s-statstab">
+      <div class="section-tag"><div class="section-num">7</div>Data → UI</div>
+      <div class="section-title">Stats Tab</div>
+      <div class="section-desc">The 📊 Stats toggle shows the same data in a table format. The full leaderboard response is iterated — not just the curated keys — so every stat the API returns appears in the table, with rank and percentile.</div>
+
+      <div id="stats-tab-preview">
+        <div class="not-loaded">Run a trace to see a live stats table preview</div>
+      </div>
+
+      <div class="callout" style="margin-top:18px">
+        <div class="callout-icon">ℹ️</div>
+        <div><strong>Top % in the stats table</strong> is <code>place / total × 100</code>. Rank #1 of 10,000 = Top 0.01%. The <em>lower</em> the percentage, the better — this is different from how "percentile" is usually expressed (where higher = better), so mentally invert it.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+const API = 'https://stats.pika-network.net/api';
+const PROXIES = [
+  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => u
+];
+
+const GM_META = {
+  bedwars:          { label:'Bed Wars',     keys:['Kills','Final kills','Wins','Losses','Deaths','Beds destroyed','Games played','Highest winstreak reached'] },
+  opprison:         { label:'OP Prison',    keys:['Blocks Broken','Raw Blocks Broken','Prestige','Ascension','Beacons','Tokens'] },
+  classicskyblock:  { label:'Oneblock',     keys:['Player Level','Mobs Killed','Kills','Deaths','Balance'] },
+  skypvp:           { label:'Sky PvP',      keys:['Kills','Deaths','Highest Killstreak','Rank Rating','Balance'] },
+  skymines:         { label:'SkyMines',     keys:['Player Level','Blocks Mined','Kills','Balance','Bosses Killed'] },
+  kitpvp:           { label:'KitPvP',       keys:['Kills','Level','Prestige','Highest Killstreak','Balance'] },
+  survival:         { label:'Survival',     keys:['Player Level','Mobs Killed','EXP Collected','Balance'] },
+  unrankedpractice: { label:'Practice',     keys:['Kills','Wins','Deaths','Games played','Highest winstreak reached'] },
+  opskyblock:       { label:'OP Skyblock',  keys:['Player Level','Kills','Balance','Miner Skill Level','Souls'] },
+  oplifesteal:      { label:'OP Lifesteal', keys:['Player Level','Kills','Deaths','Highest Killstreak','Mobs Killed','Blocks Broken','Blocks Placed','Balance'] },
+  genpvp:           { label:'Gen PvP',      keys:['Kills','Deaths','Level','Highest Killstreak','Balance'] },
+  opfactions:       { label:'OP Factions',  keys:['Kills','Deaths','Player Level','Highest Killstreak','Balance'] },
+};
+
+const GM_ICON = {
+  bedwars:'https://pika-network.net/dist/img/minigames-125.png',
+  opprison:'https://pika-network.net/dist/img/prison-125.png',
+  classicskyblock:'https://pika-network.net/dist/img/classic-skyblock-125.png',
+  skypvp:'https://cdn.cgsys.net/i/2f540e3a831c4c0ab1ddbe1e4769049f',
+  skymines:'https://pika-network.net/dist/img/skymines-125.png',
+  kitpvp:'https://pika-network.net/dist/img/kitpvp-125.png',
+  survival:'https://pika-network.net/dist/img/survival-125.png',
+  unrankedpractice:'https://pika-network.net/dist/img/practice-125.png',
+  opskyblock:'https://pika-network.net/dist/img/opskyblock-125.png',
+  oplifesteal:'https://pika-network.net/dist/img/lifesteal-125.png',
+  genpvp:'https://cdn.cgsys.net/i/43c3693b7f2248ffbf42b19b3d6b6565',
+  opfactions:'https://pika-network.net/dist/img/factions-125.png',
+};
+
+const RANK_TIER = ['Overlord+++','Divine+++','GodFather+++','Celestial+++','Eternal+++','King+++','Kingpin+++','SkyMaster+++','Ultimate+++','Omega+++','Champion','Emerald','Proton','Gamma','Diamond','Titan'];
+const PIKA_SUBS = new Set(['Pika+','Pika⭐','Pika❤']);
+const isPikaSub = r => PIKA_SUBS.has(r.displayName) || r.displayName.startsWith('Pika');
+function splitRanks(ranks) {
+  const game = (ranks||[]).filter(r=>!isPikaSub(r)).sort((a,b)=>{
+    const ai=RANK_TIER.indexOf(a.displayName),bi=RANK_TIER.indexOf(b.displayName);
+    return (ai===-1?999:ai)-(bi===-1?999:bi);
+  });
+  return {game, subs:(ranks||[]).filter(r=>isPikaSub(r)), top:game[0]};
+}
+
+(function(){
+  const el = document.getElementById('tier-list-static');
+  RANK_TIER.forEach((r,i)=>{
+    el.innerHTML += `<div class="tier-row"><span class="tier-index">${i+1}</span><span class="tier-name">${r}</span><span class="tier-tag game">game rank</span></div>`;
+  });
+  ['Pika+','Pika⭐','Pika❤'].forEach(r=>{
+    el.innerHTML += `<div class="tier-row"><span class="tier-index">—</span><span class="tier-name">${r}</span><span class="tier-tag sub">subscription</span></div>`;
+  });
+})();
+
+calcScoreDemo();
+function calcScoreDemo(){
+  const place = parseFloat(document.getElementById('sc-place').value)||1;
+  const total = parseFloat(document.getElementById('sc-total').value)||1;
+  const stats = parseFloat(document.getElementById('sc-stats').value)||1;
+  if(total<=0){document.getElementById('sc-result').textContent='—';return;}
+  const pct = Math.max(0,1-(place/total));
+  const score = Math.round(pct*100*10)/10 + stats;
+  document.getElementById('sc-result').textContent = score.toFixed(1);
+  const topPct = ((place/total)*100).toFixed(1);
+  document.getElementById('sc-note').textContent = `Top ${topPct}% → percentile ${(pct*100).toFixed(1)} → score = ${(pct*100).toFixed(1)} + ${stats} stats`;
+}
+
+let traceProfile = null;
+let traceGmResults = {};
+let traceUsername = '';
+
+async function pFetch(url){
+  let lastErr;
+  for(const make of PROXIES){
+    try{
+      const res = await fetch(make(url),{headers:{Accept:'application/json'},signal:AbortSignal.timeout(9000)});
+      if(res.ok) return JSON.parse(await res.text());
+      if(res.status===404) throw Object.assign(new Error('404'),{status:404});
+      if(res.status===429) throw Object.assign(new Error('429'),{status:429});
+      lastErr=new Error(`HTTP ${res.status}`);
+    }catch(e){
+      if(e.status===404||e.status===429) throw e;
+      lastErr=e;
+    }
+  }
+  throw lastErr||new Error('All proxies failed');
+}
+
+function setProgress(pct, label){
+  const bar=document.getElementById('prog-bar');
+  const fill=document.getElementById('prog-fill');
+  const lbl=document.getElementById('prog-label');
+  bar.style.display='block'; lbl.style.display='block';
+  fill.style.width=pct+'%';
+  lbl.textContent=label;
+}
+
+function setEx(name){ document.getElementById('ign-input').value=name; }
+
+(function(){
+  const p = new URLSearchParams(location.search).get('player');
+  if(p){
+    window.addEventListener('DOMContentLoaded',()=>{
+      document.getElementById('ign-input').value=p;
+      startTrace();
+    });
+  }
+})();
+
+async function startTrace(){
+  const username = document.getElementById('ign-input').value.trim();
+  if(!username) return;
+  document.getElementById('go-btn').disabled=true;
+  traceProfile=null; traceGmResults={}; traceUsername=username;
+
+  setProgress(5,'Fetching profile…');
+  const t0=Date.now();
+  try{
+    traceProfile = await pFetch(`${API}/profile/${username}`);
+  }catch(e){
+    setProgress(100,'Profile fetch failed: '+(e.message||e));
+    document.getElementById('go-btn').disabled=false;
+    return;
+  }
+  const profileTime = Date.now()-t0;
+  setProgress(20,`Profile loaded (${profileTime}ms) — fetching ${Object.keys(GM_META).length} gamemode stats…`);
+
+  const gmKeys = Object.keys(GM_META);
+  let done=0;
+  await Promise.allSettled(gmKeys.map(async gm=>{
+    const t1=Date.now();
+    try{
+      const mode = gm==='bedwars'?'&mode=ALL_MODES':'';
+      traceGmResults[gm] = {data:await pFetch(`${API}/profile/${username}/leaderboard?type=${gm}&interval=total${mode}`), time:Date.now()-t1, ok:true};
+    }catch(e){
+      traceGmResults[gm] = {data:null, time:Date.now()-t1, ok:false, err:e.message};
+    }
+    done++;
+    setProgress(20+Math.round((done/gmKeys.length)*75), `Loaded ${done}/${gmKeys.length} gamemodes…`);
+  }));
+
+  setProgress(100,'All data loaded — rendering guide…');
+  setTimeout(()=>{
+    document.getElementById('prog-bar').style.display='none';
+    document.getElementById('prog-label').style.display='none';
+  },1200);
+
+  renderGuide(profileTime);
+  document.getElementById('go-btn').disabled=false;
+}
+
+function fmt(v){
+  if(v===null||v===undefined||v==='') return '—';
+  const n=typeof v==='string'?parseFloat(v):v;
+  if(isNaN(n)) return String(v);
+  if(n>=1e9) return (n/1e9).toFixed(2)+'B';
+  if(n>=1e6) return (n/1e6).toFixed(2)+'M';
+  return n.toLocaleString();
+}
+
+function calcScore(gm){
+  const r=traceGmResults[gm];
+  if(!r||!r.data||typeof r.data!=='object') return 0;
+  const statObjs=Object.values(r.data);
+  if(!statObjs.length) return 0;
+  let totalPct=0,ranked=0;
+  for(const s of statObjs){
+    const e=s?.entries?.[0];
+    const t=s?.metadata?.total||0;
+    if(e&&t>0){totalPct+=Math.max(0,1-(e.place/t));ranked++;}
+  }
+  return Math.round((totalPct/statObjs.length)*100*10)/10+ranked;
+}
+
+function syntaxHighlight(obj){
+  const json=JSON.stringify(obj,null,2);
+  return json.replace(/(".*?")\s*:/g,'<span class="j-key">$1</span>:')
+    .replace(/:\s*(".*?")/g,': <span class="j-str">$1</span>')
+    .replace(/:\s*(-?\d+\.?\d*)/g,': <span class="j-num">$1</span>')
+    .replace(/:\s*(true|false)/g,': <span class="j-bool">$1</span>')
+    .replace(/:\s*(null)/g,': <span class="j-null">$1</span>');
+}
+
+function mapRow(key,arrow,dest){
+  return `<div class="map-row" style="margin-bottom:5px"><span class="map-key">${key}</span><span class="map-arrow">→</span><span class="map-dest">${dest}</span></div>`;
+}
+
+function toggleCard(id){
+  const body=document.getElementById('body-'+id);
+  const btn=document.getElementById('toggle-'+id);
+  if(!body||!btn) return;
+  body.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+
+function switchTab(cardId,tabId,btnEl){
+  ['raw','annotated'].forEach(t=>{
+    const el=document.getElementById(`json-${cardId}-${t}`);
+    if(el) el.style.display = t===tabId?'block':'none';
+  });
+  btnEl.closest('.json-tabs').querySelectorAll('.json-tab').forEach(b=>b.classList.remove('active'));
+  btnEl.classList.add('active');
+}
+
+function renderGuide(profileTime){
+  renderProfileCard(profileTime);
+  renderGmCards();
+  renderHeroCard();
+  renderRanksPreview();
+  renderScoreBreakdown();
+  renderGmSectionPreviews();
+  renderStatsTabPreview();
+  updateNavDots();
+}
+
+function renderProfileCard(ms){
+  const p = traceProfile;
+  document.getElementById('status-profile').textContent='200 OK';
+  document.getElementById('status-profile').className='status-badge ok';
+  document.getElementById('timing-profile').textContent=ms+'ms';
+  document.getElementById('card-profile').classList.add('loaded');
+
+  
+  const display={...p, friends:(p.friends||[]).slice(0,3).concat(p.friends?.length>3?[`…+${p.friends.length-3} more`]:[])};
+  document.getElementById('pre-profile-raw').innerHTML = syntaxHighlight(display);
+
+  
+  const annotated = {
+    "username": p.username,
+    "
+    "lastSeen": p.lastSeen,
+    "
+    "rank.level": p.rank?.level,
+    "
+    "rank.percentage": p.rank?.percentage,
+    "
+    "ranks": (p.ranks||[]).map(r=>({displayName:r.displayName, server:r.server})),
+    "
+    "friends[].length": (p.friends||[]).length,
+    "
+    "discord_boosting": p.discord_boosting,
+    "
+  };
+  document.getElementById('pre-profile-annotated').innerHTML = syntaxHighlight(annotated);
+
+  document.getElementById('nl-profile').style.display='none';
+  document.getElementById('loaded-profile').style.display='block';
+
+  const {game,subs,top} = splitRanks(p.ranks||[]);
+  document.getElementById('mappings-profile').innerHTML =
+    mapRow('username','→',`<strong>Hero panel title</strong>: "${p.username}'s 2026 on"`) +
+    mapRow('lastSeen','→',`<strong>Hero subtitle</strong>: "Last seen ${new Date(p.lastSeen).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}"`) +
+    mapRow('rank.level','→',`<strong>Pika Level</strong> stat chip in hero panel = <span class="val">${p.rank?.level}</span>`) +
+    mapRow('rank.percentage','→',`<strong>Level progress bar</strong> in stats view profile card = <span class="val">${p.rank?.percentage?.toFixed(1)}%</span>`) +
+    mapRow('ranks[]','→',`<strong>splitRanks()</strong> → top game rank = <span class="val">${top?.displayName||'none'}</span>, subscription = <span class="val">${subs[0]?.displayName||'none'}</span>`) +
+    mapRow('friends[]','→',`<strong>Friends count</strong> = <span class="val">${(p.friends||[]).length}</span> — names are also clickable in stats view profile card`) +
+    mapRow('discord_boosting','→',`Shows <strong>🚀 Booster</strong> badge in hero panel = <span class="val">${p.discord_boosting}</span>`) +
+    mapRow('discord_verified','→',`Discord icon colour in stats profile card`) +
+    mapRow('email_verified','→',`Email icon colour in stats profile card`);
+
+  
+  const lastSeen = new Date(p.lastSeen).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+  document.getElementById('preview-profile').innerHTML = `
+    <div class="mini-hero">
+      <img class="mini-avatar" src="https://visage.surgeplay.com/bust/${p.username}" onerror="this.src='https://visage.surgeplay.com/bust/MHF_Steve'">
+      <div class="mini-hero-text">
+        <h3>${p.username}'s 2026 on</h3>
+        <p>Last seen ${lastSeen}</p>
+      </div>
+    </div>
+    <div class="mini-stats-strip">
+      <div class="mini-stat"><div class="mini-stat-label">Level</div><div class="mini-stat-val">${p.rank?.level||0}</div></div>
+      <div class="mini-stat"><div class="mini-stat-label">Top Rank</div><div class="mini-stat-val" style="font-size:.75rem">${top?.displayName||'—'}</div></div>
+      <div class="mini-stat"><div class="mini-stat-label">Friends</div><div class="mini-stat-val">${(p.friends||[]).length}</div></div>
+      ${p.discord_boosting?`<div class="mini-stat"><div class="mini-stat-label">Discord</div><div class="mini-stat-val" style="font-size:.75rem;color:#f47fff">🚀</div></div>`:''}
+    </div>`;
+
+  
+  document.getElementById('ed-username').value = p.username;
+  document.getElementById('ed-level').value = p.rank?.level||0;
+  document.getElementById('ed-level-result').textContent = `Level ${p.rank?.level||0}`;
+}
+
+function updateHeroPreview(){
+  const u = document.getElementById('ed-username').value||'Player';
+  const yr = document.getElementById('ed-year').value||'2026';
+  const lv = document.getElementById('ed-level').value||'0';
+  document.getElementById('ed-level-result').textContent = `Level ${lv}`;
+  if(document.getElementById('preview-hero')){
+    const p = traceProfile;
+    if(!p) return;
+    const {top} = splitRanks(p.ranks||[]);
+    document.getElementById('preview-hero').innerHTML = buildHeroPreview(u,yr,lv,top,p);
+  }
+}
+
+function buildHeroPreview(username,year,level,topRank,p){
+  return `
+    <div class="mini-hero">
+      <img class="mini-avatar" src="https://visage.surgeplay.com/bust/${username}" onerror="this.src='https://visage.surgeplay.com/bust/MHF_Steve'">
+      <div class="mini-hero-text">
+        <h3>${username}'s ${year} on</h3>
+        <p>Last seen ${new Date(p.lastSeen).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'})}</p>
+      </div>
+    </div>
+    <div class="mini-stats-strip" style="margin-top:6px">
+      <div class="mini-stat"><div class="mini-stat-label">Level</div><div class="mini-stat-val">${level}</div></div>
+      ${topRank?`<div class="mini-stat"><div class="mini-stat-label">Top Rank</div><div class="mini-stat-val" style="font-size:.75rem">${topRank.displayName}</div></div>`:''}
+      <div class="mini-stat"><div class="mini-stat-label">Friends</div><div class="mini-stat-val">${(p.friends||[]).length}</div></div>
+    </div>`;
+}
+
+function renderHeroCard(){
+  const p = traceProfile;
+  const {game,subs,top} = splitRanks(p.ranks||[]);
+  document.getElementById('nl-hero').style.display='none';
+  document.getElementById('loaded-hero').style.display='block';
+  document.getElementById('mappings-hero').innerHTML =
+    mapRow('profile.username','→',`Inserted into title: <strong>"${p.username}'s 2026 on"</strong>`) +
+    mapRow('selectedYear (JS var)','→',`The year shown — defaults to 2026, changeable in the editor below`) +
+    mapRow('profile.lastSeen','→',`Subtitle line: <strong>"Last seen [date]"</strong> — unix ms converted via <code>new Date()</code>`) +
+    mapRow('rank.level','→',`<strong>Pika Level</strong> chip — raw integer, no formatting`) +
+    mapRow('ranks[] → splitRanks().top','→',`<strong>Top Rank</strong> chip = <span class="val">${top?.displayName||'none'}</span> + server label <span class="val">${top?.server||''}</span>`) +
+    mapRow('ranks[] → splitRanks().subs[0]','→',`<strong>Subscription</strong> chip in pink = <span class="val">${subs[0]?.displayName||'none'}</span>`) +
+    mapRow('friends[].length','→',`<strong>Friends</strong> chip = integer count`) +
+    mapRow('discord_boosting','→',`If <code>true</code>: shows <strong>🚀 Booster</strong> chip in pink`);
+
+  document.getElementById('preview-hero').innerHTML = buildHeroPreview(p.username,'2026',p.rank?.level,top,p);
+}
+
+function renderRanksPreview(){
+  const p = traceProfile;
+  const {game,subs} = splitRanks(p.ranks||[]);
+  if(!game.length && !subs.length) return;
+  document.getElementById('ranks-preview-panel').style.display='block';
+  let html='<div style="margin-bottom:8px"><div style="font-size:.72rem;color:var(--text3);margin-bottom:5px">Game ranks (sorted by tier):</div>';
+  html += game.map(r=>`<span class="mini-rank-badge">${r.displayName} <span style="opacity:.5;font-size:.7em;margin-left:3px">${r.server}</span></span>`).join('');
+  if(subs.length){
+    html+='<div style="font-size:.72rem;color:var(--text3);margin:8px 0 5px">Subscriptions (separated):</div>';
+    html+=subs.map(r=>`<span class="mini-rank-badge sub">${r.displayName}</span>`).join('');
+  }
+  html+='</div>';
+  document.getElementById('preview-ranks').innerHTML=html;
+}
+
+function renderGmCards(){
+  const container = document.getElementById('gm-call-cards');
+  container.innerHTML='';
+  const gmKeys = Object.keys(GM_META);
+  gmKeys.forEach(gm=>{
+    const m = GM_META[gm];
+    const r = traceGmResults[gm];
+    const ok = r?.ok;
+    const t = r?.time||0;
+    const d = r?.data;
+    const statCount = d?Object.keys(d).length:0;
+    const rankedCount = d?Object.values(d).filter(s=>s?.entries?.[0]).length:0;
+    const score = calcScore(gm).toFixed(0);
+
+    const card = document.createElement('div');
+    card.className='call-card'+(ok?' loaded':' error');
+    card.innerHTML=`
+      <div class="call-head">
+        <span class="method">GET</span>
+        <span class="call-url">
+          <span class="u-base">…/api/profile/</span><span class="u-val">${traceUsername}</span><span class="u-path">/leaderboard</span><span class="u-param">?type=<span class="u-val">${gm}</span>&interval=total${gm==='bedwars'?'&mode=ALL_MODES':''}</span>
+        </span>
+        <span class="status-badge ${ok?'ok':'err'}">${ok?'200 OK':r?.err||'fail'}</span>
+        <span class="timing">${t}ms</span>
+        <button class="call-toggle" id="toggle-gm-${gm}" onclick="toggleCard('gm-${gm}')">▾</button>
+      </div>
+      <div class="call-body" id="body-gm-${gm}">
+        ${ok&&d?`
+        <div class="mapping-panel">
+          <div class="mapping-title">${m.label} — ${statCount} stats returned, ${rankedCount} ranked, activity score: <strong>${score}</strong></div>
+          ${mapRow(`type=${gm}`,'→',`Selects the gamemode. The API ignores unknown types — returns null or empty.`)}
+          ${mapRow('interval=total','→',`All-time totals. No time filtering exists in the API.`)}
+          ${gm==='bedwars'?mapRow('mode=ALL_MODES','→','Aggregates across all BedWars modes. Without this, each mode is separate.'):''}
+          <div style="margin-top:10px;font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Curated keys shown in Wrapped view (GM_META.keys):</div>
+          ${m.keys.map(k=>{
+            const s=d[k];
+            const e=s?.entries?.[0];
+            const total=s?.metadata?.total||0;
+            const val=e?fmt(e.value):'—';
+            const rank=e?`#${e.place.toLocaleString()}`:'unranked';
+            const pct=e&&total?`top ${((e.place/total)*100).toFixed(1)}%`:'';
+            return mapRow(`[${k}]`,'→',`Shows as stat row: <span class="val">${val}</span> ${e?`<span class="rank-badge ${e.place===1?'gold':e.place<=3?'silver':''}">${rank}</span>`:'<span style="color:var(--text3)">not ranked</span>'} ${pct?`<span style="font-size:.7em;color:var(--text3)">(${pct})</span>`:''}`);
+          }).join('')}
+        </div>
+        <div class="json-panel">
+          <div class="json-tabs">
+            <div class="json-tab active" onclick="switchTab('gm-${gm}','raw',this)">Raw JSON</div>
+          </div>
+          <div class="json-content" id="json-gm-${gm}-raw"><pre>${syntaxHighlight(d)}</pre></div>
+        </div>`
+        :`<div class="mapping-panel"><div style="color:var(--red);font-size:.8rem">No data returned — this player has no stats in ${m.label}, or the API call failed.</div></div>`}
+      </div>`;
+    container.appendChild(card);
+  });
+}
+
+function renderScoreBreakdown(){
+  const gmKeys = Object.keys(GM_META);
+  const scores = gmKeys.map(gm=>({gm,label:GM_META[gm].label,score:calcScore(gm)}))
+    .filter(x=>x.score>0)
+    .sort((a,b)=>b.score-a.score);
+  if(!scores.length){document.getElementById('score-breakdown-live').innerHTML='<div class="not-loaded">No ranked stats found</div>';return;}
+  const max = scores[0].score;
+  let html='<div class="score-breakdown">';
+  scores.forEach((x,i)=>{
+    html+=`<div class="sb-row">
+      <span class="sb-label">${i===0?'🥇 ':i===1?'🥈 ':i===2?'🥉 ':''}${x.label}</span>
+      <div class="sb-bar-wrap"><div class="sb-bar" style="width:${(x.score/max*100).toFixed(0)}%"></div></div>
+      <span class="sb-val">${x.score.toFixed(0)}</span>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('score-breakdown-live').innerHTML=html;
+}
+
+function renderGmSectionPreviews(){
+  const gmKeys = Object.keys(GM_META);
+  const scores={};
+  gmKeys.forEach(gm=>scores[gm]=calcScore(gm));
+  const sorted = gmKeys.filter(gm=>traceGmResults[gm]?.ok&&traceGmResults[gm]?.data).sort((a,b)=>scores[b]-scores[a]);
+  if(!sorted.length){document.getElementById('gm-section-previews').innerHTML='<div class="not-loaded">No gamemode data</div>';return;}
+
+  let html='';
+  sorted.slice(0,4).forEach((gm,i)=>{
+    const m=GM_META[gm];
+    const d=traceGmResults[gm].data;
+    let statsRows='';
+    m.keys.slice(0,5).forEach(k=>{
+      const s=d[k];if(!s)return;
+      const e=s.entries?.[0];if(!e)return;
+      const badge = e.place<=1?'gold':e.place<=3?'silver':'';
+      statsRows+=`<tr><td>${k}</td><td>${fmt(e.value)}<span class="rank-badge ${badge}">#${e.place.toLocaleString()}</span></td></tr>`;
+    });
+    if(!statsRows) statsRows='<tr><td colspan="2" style="color:var(--text3)">No ranked stats</td></tr>';
+    html+=`
+      <div class="call-card loaded" style="margin-bottom:10px">
+        <div class="call-head">
+          <span class="method" style="background:rgba(167,139,250,.1);color:var(--purple);border-color:rgba(167,139,250,.25)">UI</span>
+          <div class="mini-gm-card" style="background:none;border:none;padding:0;flex:1;margin:0;gap:8px">
+            <div class="mini-gm-icon"><img src="${GM_ICON[gm]||''}" onerror="this.style.display='none'"></div>
+            <span style="font-weight:700;color:#fff;font-size:.85rem">${m.label}</span>
+            <span style="font-family:var(--mono);font-size:.7rem;color:var(--gold);margin-left:auto">Score: ${scores[gm].toFixed(0)}</span>
+            ${i===0?'<span class="rank-badge gold" style="font-size:.62rem">Most Played</span>':''}
+          </div>
+          <button class="call-toggle" id="toggle-gmp-${gm}" onclick="toggleCard('gmp-${gm}')">▾</button>
+        </div>
+        <div class="call-body" id="body-gmp-${gm}">
+          <div class="mapping-panel">
+            <div class="mapping-title">GM_META["${gm}"].keys → shown stats</div>
+            <table class="mini-table" style="margin-top:6px">
+              <thead><tr><th>Stat name (GM_META key)</th><th>Value & rank</th></tr></thead>
+              <tbody>${statsRows}</tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+  });
+  if(sorted.length>4) html+=`<div class="callout" style="margin-top:4px"><div class="callout-icon">ℹ️</div><div>…and ${sorted.length-4} more gamemode sections below in the actual site, in the same format.</div></div>`;
+  document.getElementById('gm-section-previews').innerHTML=html;
+}
+
+function renderStatsTabPreview(){
+  const gmKeys=Object.keys(GM_META);
+  const scores={};
+  gmKeys.forEach(gm=>scores[gm]=calcScore(gm));
+  const sorted=gmKeys.filter(gm=>traceGmResults[gm]?.ok&&traceGmResults[gm]?.data).sort((a,b)=>scores[b]-scores[a]);
+  if(!sorted.length){document.getElementById('stats-tab-preview').innerHTML='<div class="not-loaded">No data</div>';return;}
+
+  const topGm=sorted[0];
+  const d=traceGmResults[topGm].data;
+  const m=GM_META[topGm];
+  let rows='';
+  const allKeys=[...new Set([...m.keys,...Object.keys(d)])];
+  allKeys.slice(0,10).forEach(k=>{
+    const s=d[k];if(!s)return;
+    const e=s.entries?.[0];
+    const place=e?.place??null;
+    const total=s.metadata?.total??0;
+    const val=e?fmt(e.value):'—';
+    const topPct=e&&total?`top ${((e.place/total)*100).toFixed(1)}%`:'';
+    const badgeCls=place===1?'gold':place&&place<=3?'silver':'';
+    rows+=`<tr>
+      <td>${place?`<span class="rank-badge ${badgeCls}">#${place.toLocaleString()}</span>`:`<span style="color:var(--text3)">—</span>`}</td>
+      <td>${k}${total?`<br><span style="font-size:.65rem;color:var(--text3)">${total.toLocaleString()} tracked</span>`:''}</td>
+      <td>${val}${topPct?`<br><span style="font-size:.65rem;color:var(--text3)">${topPct}</span>`:''}</td>
+    </tr>`;
+  });
+
+  document.getElementById('stats-tab-preview').innerHTML=`
+    <div class="call-card loaded">
+      <div class="call-head">
+        <span class="method" style="background:rgba(167,139,250,.1);color:var(--purple);border-color:rgba(167,139,250,.25)">UI</span>
+        <span class="call-url" style="color:#c4b5fd">Stats tab — ${m.label} (top-scored gamemode)</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="mini-table">
+          <thead><tr><th>Rank</th><th>Stat <span style="color:var(--text3);font-weight:400">(from API response key)</span></th><th>Value + Top %</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+      <div style="padding:10px 16px;font-size:.72rem;color:var(--text3)">Showing ${Math.min(10,allKeys.length)} of ${allKeys.length} stats. Top % = place ÷ total × 100 (lower = better).</div>
+    </div>`;
+}
+
+function updateNavDots(){
+  document.querySelectorAll('.nav-item').forEach(item=>{
+    const target=item.dataset.target;
+    const sec=document.getElementById(target);
+    if(!sec) return;
+    if(target==='s-profile'||target==='s-leaderboard'||target==='s-hero'||target==='s-ranks'||target==='s-scoring'||target==='s-gmsections'||target==='s-statstab'){
+      item.classList.add('done');
+    }
+  });
+}
+
+document.querySelectorAll('.nav-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    const target=document.getElementById(item.dataset.target);
+    if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+      const nav=document.querySelector(`.nav-item[data-target="${e.target.id}"]`);
+      if(nav) nav.classList.add('active');
+    }
+  });
+},{threshold:0.2,rootMargin:'-50px 0px -60% 0px'});
+document.querySelectorAll('.guide-section').forEach(s=>observer.observe(s));
+
+document.getElementById('body-ranks').classList.add('open');
+document.getElementById('toggle-ranks').classList.add('open');
+</script>
+</body>
+</html>

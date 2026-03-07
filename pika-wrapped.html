@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pika Wrapped | PikaNetwork</title>
+<link rel="icon" href="https://pika-network.net/resources/img/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Nunito',sans-serif;background:#1a1c24;color:#e0e0e0;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+img{max-width:100%}
+
+#topbar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:44px;
+  background:rgba(10,5,30,0.7);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.topbar-menu-btn{color:rgba(255,255,255,.7);font-size:1.1rem;padding:4px;transition:color .15s}
+.topbar-menu-btn:hover{color:#fff}
+.topbar-right{display:flex;align-items:center;gap:14px;font-size:.8rem;color:rgba(255,255,255,.55)}
+.topbar-right a{color:rgba(255,255,255,.55);transition:color .15s}
+.topbar-right a:hover{color:#fff}
+.topbar-site-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:4px 12px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.7);transition:all .15s}
+.topbar-site-btn:hover{background:rgba(255,255,255,.15);color:#fff}
+
+#topbar-search{display:flex;align-items:center;gap:8px}
+#topbar-input{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:7px;padding:5px 12px;color:#fff;font-size:.8rem;font-family:'Nunito',sans-serif;outline:none;width:160px}
+#topbar-input::placeholder{color:rgba(255,255,255,.35)}
+#topbar-search-btn{background:rgba(255,200,0,.2);border:1px solid rgba(255,200,0,.35);border-radius:6px;padding:4px 10px;font-size:.75rem;font-weight:700;color:#fceb38;transition:all .15s}
+#topbar-search-btn:hover{background:rgba(255,200,0,.35)}
+
+#sidebar{
+  position:fixed;top:0;left:0;bottom:0;z-index:200;
+  width:165px;
+  background:rgba(10,5,30,0.92);
+  backdrop-filter:blur(12px);
+  border-right:1px solid rgba(255,255,255,0.07);
+  transform:translateX(-100%);
+  transition:transform .25s ease;
+  overflow-y:auto;
+  padding-top:56px;
+}
+#sidebar.open{transform:translateX(0)}
+.sidebar-overlay{position:fixed;inset:0;z-index:190;background:rgba(0,0,0,.5);display:none}
+.sidebar-overlay.open{display:block}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 16px;
+  font-size:.83rem;font-weight:600;
+  color:rgba(255,255,255,.65);
+  transition:all .15s;
+  cursor:pointer;
+  border-left:3px solid transparent;
+}
+.sidebar-item:hover{color:#fff;background:rgba(255,255,255,.06);border-left-color:rgba(255,255,255,.3)}
+.sidebar-item.active{color:#fff;background:rgba(100,60,220,.2);border-left-color:#7e31e3}
+.sidebar-item img{width:28px;height:28px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#2a2040}
+
+#main{padding-top:44px}
+
+#landing{
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:60px 20px;
+  background:radial-gradient(ellipse at 50% 0%,#2d0080 0%,#1a0050 40%,#18181f 100%);
+}
+.landing-logo{
+  width:120px;margin-bottom:16px;
+  filter:drop-shadow(0 0 20px rgba(126,49,227,.6));
+}
+.landing-title{
+  font-family:'Merriweather',serif;
+  font-size:2.4rem;font-weight:700;
+  color:#fceb38;
+  text-shadow:0 2px 20px rgba(252,235,56,.4);
+  margin-bottom:6px;
+}
+.landing-sub{font-size:.95rem;color:rgba(255,255,255,.55);margin-bottom:36px}
+.landing-search-box{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  width:100%;max-width:420px;
+}
+.landing-avatar-wrap{
+  width:80px;height:80px;border-radius:12px;overflow:hidden;
+  border:3px solid rgba(255,255,255,.15);
+  background:#2a2040;
+  transition:border-color .2s;
+}
+.landing-avatar-wrap:has(img[src*="MHF_Steve"]){border-color:rgba(255,255,255,.1)}
+.landing-avatar-wrap img{width:100%;height:100%;object-fit:cover}
+.landing-input-row{display:flex;width:100%;border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.4)}
+.landing-input{
+  flex:1;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-right:none;
+  border-radius:10px 0 0 10px;outline:none;
+  padding:13px 16px;font-size:.95rem;color:#fff;font-family:'Nunito',sans-serif;
+}
+.landing-input::placeholder{color:rgba(255,255,255,.3)}
+.landing-btn{
+  background:linear-gradient(135deg,#7e31e3,#fceb38 200%);
+  border:none;padding:13px 22px;
+  font-size:.9rem;font-weight:700;color:#fff;
+  font-family:'Nunito',sans-serif;cursor:pointer;
+  transition:opacity .15s;white-space:nowrap;
+  border-radius:0 10px 10px 0;
+}
+.landing-btn:hover{opacity:.88}
+.landing-year-row{display:flex;align-items:center;gap:8px}
+.landing-year-label{font-size:.75rem;color:rgba(255,255,255,.38)}
+.year-btn{padding:5px 12px;border-radius:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5);transition:all .15s}
+.year-btn:hover{color:rgba(255,255,255,.85)}
+.year-btn.active{background:rgba(252,235,56,.15);border-color:rgba(252,235,56,.5);color:#fceb38}
+.landing-error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 14px;font-size:.82rem;color:#f87171;display:none;width:100%;text-align:left}
+.landing-note{font-size:.72rem;color:rgba(255,255,255,.3);margin-top:8px;line-height:1.6}
+.landing-note code{background:rgba(255,255,255,.08);border-radius:3px;padding:1px 4px;font-family:monospace}
+
+#loading{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;background:#18181f}
+.spinner{width:48px;height:48px;border:3px solid rgba(126,49,227,.2);border-top-color:#7e31e3;border-radius:50%;animation:spin .75s linear infinite}
+.loading-text{font-size:.85rem;font-weight:600;color:rgba(255,255,255,.4);animation:pulse 1.5s ease infinite}
+
+#wrapped-page{display:none;padding-top:44px}
+
+.hero-panel{
+  background:radial-gradient(ellipse at 50% 0%,#3a00c8 0%,#2200a0 45%,#1a1870 100%);
+  padding:28px 0;
+  position:relative;overflow:visible;
+}
+.hero-panel::before{
+  content:'';position:absolute;inset:0;overflow:hidden;
+  background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><circle cx="30" cy="30" r="1" fill="white" opacity="0.15"/></svg>') repeat;
+  animation:stars 60s linear infinite;pointer-events:none;
+}
+.hero-panel-inner{position:relative;max-width:1200px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:300px 320px 260px;justify-content:center;gap:48px;align-items:start}
+@media(max-width:1000px){.hero-panel-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.hero-panel-inner{grid-template-columns:1fr}}
+
+.hp-identity{display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.hp-logo{width:72px;filter:drop-shadow(0 0 16px rgba(150,100,255,.7))}
+.hp-title{font-family:'Merriweather',serif;font-size:1.75rem;font-weight:700;color:#fceb38;text-shadow:0 2px 16px rgba(252,235,56,.4);line-height:1.2}
+.hp-sub{font-size:.82rem;color:rgba(255,255,255,.45)}
+.hp-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 24px;margin-top:8px}
+.hp-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.hp-stat-label{font-size:.7rem;color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.hp-stat-value{font-family:'Merriweather',serif;font-size:1.3rem;font-weight:700;color:#fff;line-height:1}
+.hp-stat-sub{font-size:.64rem;color:rgba(255,255,255,.32);font-style:italic}
+
+.hp-art{display:flex;align-items:flex-start;justify-content:center}
+.hp-art-inner{display:flex;flex-direction:column;align-items:center;text-align:center}
+.hp-art img[id="most-played-art"]{width:260px;max-width:100%;filter:drop-shadow(0 6px 24px rgba(0,0,0,.6))}
+.hp-art-header{font-size:.85rem;color:rgba(255,255,255,.5);font-family:'Nunito',sans-serif;margin-bottom:4px}
+.hp-art-name{font-family:'Merriweather',serif;font-size:1.6rem;font-weight:700;color:#fff;margin-bottom:8px}
+
+.hp-right{display:flex;flex-direction:column;gap:12px;min-width:180px}
+.hp-gm-stats{display:flex;flex-direction:column;gap:0}
+.hp-stat-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.06);gap:12px}
+.hp-stat-row:last-child{border-bottom:none}
+.hp-stat-row-name{font-size:.75rem;color:rgba(255,255,255,.5);white-space:nowrap}
+.hp-stat-row-val{font-family:'Merriweather',serif;font-size:.9rem;font-weight:700;color:#fff;text-align:right}
+.hp-top-gms{display:flex;flex-direction:column;gap:3px}
+.hp-top-gm-header{font-size:.7rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.hp-top-gm-item{display:flex;align-items:center;gap:7px;padding:4px 8px;border-radius:6px;background:rgba(255,255,255,.05);font-size:.78rem}
+.hp-top-gm-rank{font-family:'Merriweather',serif;font-weight:700;color:#fceb38;min-width:20px;font-size:.75rem}
+.hp-top-gm-name{font-weight:700;color:#fff;flex:1}
+.hp-top-gm-score{font-size:.68rem;color:rgba(255,255,255,.38)}
+
+.section-divider{
+  background:#22222e;
+  padding:28px 0;
+  border-top:1px solid rgba(255,255,255,.06);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.section-divider-inner{max-width:1100px;margin:0 auto;padding:0 28px}
+.section-divider h2{
+  font-family:'Merriweather',serif;
+  font-size:1.5rem;font-weight:700;color:#fff;
+  text-align:center;
+}
+
+.gm-section{
+  background:#1e1e2a;
+  padding:40px 0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.gm-section-inner{max-width:1100px;margin:0 auto;padding:0 28px}
+.gm-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.gm-header-icon{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;background:#2a2040}
+.gm-header-name{font-family:'Merriweather',serif;font-size:1.6rem;font-weight:700;color:#fff}
+
+.gm-content{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+  align-items:center;
+}
+@media(max-width:700px){.gm-content{grid-template-columns:1fr}}
+
+.gm-art img{width:100%;max-width:360px;filter:drop-shadow(0 8px 28px rgba(0,0,0,.6))}
+
+.gm-stats{display:flex;flex-direction:column;gap:2px}
+.gm-stat{
+  display:flex;flex-direction:column;
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.gm-stat:last-child{border-bottom:none}
+.gm-stat-label{font-size:.8rem;color:rgba(255,255,255,.5);font-weight:600}
+.gm-stat-number{font-family:'Merriweather',serif;font-size:1.25rem;font-weight:700;color:#fff}
+.gm-stat-sub{font-size:.7rem;color:rgba(255,255,255,.38)}
+
+.gm-rank-badge{
+  display:inline-block;
+  background:rgba(126,49,227,.25);border:1px solid rgba(126,49,227,.45);
+  border-radius:4px;padding:1px 7px;
+  font-size:.68rem;font-weight:700;color:#c084fc;
+  margin-left:8px;vertical-align:middle;
+}
+.gm-rank-badge.gold{background:rgba(252,235,56,.18);border-color:rgba(252,235,56,.45);color:#fceb38}
+.gm-rank-badge.silver{background:rgba(200,200,200,.12);border-color:rgba(200,200,200,.3);color:#c8c8c8}
+
+.offline-section{
+  background:linear-gradient(135deg,#1a2240,#1a1540);
+  padding:40px 0;
+}
+
+.share-bar{
+  background:rgba(0,0,0,.3);
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:20px 28px;
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+}
+.share-label{font-size:.82rem;color:rgba(255,255,255,.45);font-weight:600}
+.share-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 16px;border-radius:8px;
+  font-size:.82rem;font-weight:700;
+  transition:all .15s;cursor:pointer;border:none;font-family:'Nunito',sans-serif;
+}
+.share-btn-dl{background:#2a2a38;border:1px solid rgba(255,255,255,.12);color:#fff}
+.share-btn-dl:hover{background:#3a3a4a}
+.share-btn-x{background:#000;color:#fff}
+.share-btn-x:hover{background:#111}
+.share-btn-fb{background:#1877f2;color:#fff}
+.share-btn-fb:hover{background:#1565d8}
+
+#site-footer{
+  background:#0d0d14;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:24px 28px;
+  text-align:center;
+  font-size:.73rem;color:rgba(255,255,255,.28);line-height:1.8;
+}
+#site-footer a{color:rgba(255,255,255,.35);transition:color .15s}
+#site-footer a:hover{color:rgba(255,255,255,.7)}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .4s ease both}
+
+@media(max-width:600px){
+  .landing-title{font-size:1.6rem}
+  .hp-title{font-size:1.1rem}
+  .gm-header-name{font-size:1.2rem}
+  .hero-panel-inner{gap:16px}
+}
+
+#view-toggle-bar{
+  position:sticky;top:44px;z-index:90;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px 16px;
+  background:rgba(10,5,30,0.88);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.vtog-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 18px;border-radius:8px;
+  font-size:.82rem;font-weight:700;font-family:'Nunito',sans-serif;
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(255,255,255,.5);
+  background:rgba(255,255,255,.05);
+  transition:all .15s;cursor:pointer;
+}
+.vtog-btn:hover{color:rgba(255,255,255,.85);border-color:rgba(255,255,255,.25)}
+.vtog-btn.active{
+  background:rgba(126,49,227,.25);
+  border-color:rgba(126,49,227,.55);
+  color:#c084fc;
+}
+.vtog-sep{width:1px;height:20px;background:rgba(255,255,255,.1)}
+
+#stats-view{display:none;background:#18181f;padding-bottom:60px}
+.sv-container{max-width:1200px;margin:0 auto;padding:0 20px}
+.sv-title{font-family:'Nunito',sans-serif;font-size:1.6rem;font-weight:800;color:#fff;padding:24px 0 18px}
+
+.gd-panel{background:#1e1e28;border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.gd-panel__title{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025)}
+.gd-panel__title i{color:rgba(255,255,255,.4);font-size:.9rem}
+.gd-subtitle{font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:700;color:#fff}
+.gd-panel__body{padding:16px}
+.gd-panel__footer{padding:11px 16px;border-top:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.02)}
+
+.sv-profile-layout{display:grid;grid-template-columns:260px 1fr;gap:16px;align-items:start}
+@media(max-width:760px){.sv-profile-layout{grid-template-columns:1fr}}
+
+.gd-user-profile__header{display:flex;flex-direction:column;align-items:center;padding:20px 16px 14px;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);text-align:center}
+.gd-user-profile__header img{width:86px;height:86px;border-radius:12px;border:3px solid rgba(255,255,255,.12);background:#2a2a38}
+.gd-user-profile__header small{font-size:.68rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;display:block}
+.gd-user-profile__header h2{font-family:'Nunito',sans-serif;font-size:1.05rem;font-weight:800;color:#fff}
+.gd-user-profile__header p{font-size:.72rem;color:rgba(255,255,255,.38);margin:0}
+.gd-user-profile__body{padding:12px 16px;display:flex;flex-direction:column;gap:0}
+
+.gd-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.gd-row:last-child{border-bottom:none}
+.gd-row h3{font-size:.79rem;font-weight:700;color:rgba(255,255,255,.62)}
+.gd-row-val{display:flex;align-items:center;gap:7px}
+.gd-row i{color:rgba(255,255,255,.38);font-size:.88rem}
+.gd-level-row{flex-direction:column;align-items:flex-start;gap:3px}
+.gd-level-row .lrow{display:flex;width:100%;justify-content:space-between;align-items:center}
+.gd-level-num{font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:800;color:#fceb38}
+.gd-progress{height:4px;background:rgba(255,255,255,.09);border-radius:99px;overflow:hidden;width:100%;margin-top:4px}
+.gd-progress-fill{height:100%;background:linear-gradient(90deg,#7e31e3,#fceb38);border-radius:99px;transition:width .8s ease}
+
+.gd-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(126,49,227,.18);border:1px solid rgba(126,49,227,.38);border-radius:5px;padding:2px 8px;font-size:.69rem;font-weight:700;color:#c084fc;position:relative}
+.gd-badge--danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#f87171}
+.gd-ranks{display:flex;flex-wrap:wrap;gap:5px;padding:6px 0 2px}
+.gd-rank{position:relative;cursor:default}
+.gd-rank__popup{display:none;position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#1a1a24;border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:7px 11px;white-space:nowrap;z-index:99;box-shadow:0 4px 16px rgba(0,0,0,.5);pointer-events:none}
+.gd-rank:hover .gd-rank__popup{display:block}
+.gd-rank__popup h4{font-size:.72rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:5px}
+
+.gd-friends-list{max-height:240px;overflow-y:auto;margin-top:8px}
+.gd-friends-list::-webkit-scrollbar{width:3px}
+.gd-friends-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:99px}
+.gd-friend-row{display:flex;align-items:center;gap:9px;padding:6px 7px;border-radius:7px;width:100%;text-align:left;transition:background .12s;cursor:pointer;border:none;background:none;font-family:'Nunito',sans-serif}
+.gd-friend-row:hover{background:rgba(255,255,255,.05)}
+.gd-friend-row img{width:28px;height:28px;border-radius:5px;background:#2a2a38;flex-shrink:0}
+.gd-friend-row span{font-size:.79rem;font-weight:600;color:rgba(255,255,255,.72)}
+
+.gd-table-filters{margin-bottom:12px}
+.gd-filter{display:inline-flex;background:#1a1a24;border:1px solid rgba(255,255,255,.08);border-radius:7px;overflow:hidden}
+.gd-filter__option{padding:6px 13px;font-size:.75rem;font-weight:700;color:rgba(255,255,255,.4);transition:all .15s;border-right:1px solid rgba(255,255,255,.06);font-family:'Nunito',sans-serif;cursor:pointer;border-top:none;border-bottom:none;background:none}
+.gd-filter__option:last-child{border-right:none}
+.gd-filter__option:hover{color:rgba(255,255,255,.72)}
+.gd-filter__option.active{background:rgba(126,49,227,.22);color:#c084fc}
+
+.sv-gm-bar{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.sv-gm-btn{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:6px;background:#1e1e28;border:1px solid rgba(255,255,255,.08);font-size:.73rem;font-weight:700;color:rgba(255,255,255,.48);transition:all .15s;font-family:'Nunito',sans-serif;cursor:pointer}
+.sv-gm-btn:hover{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.16)}
+.sv-gm-btn.active{background:rgba(126,49,227,.18);border-color:rgba(126,49,227,.45);color:#c084fc}
+
+.gd-table{width:100%;border-collapse:collapse}
+.gd-table__head tr{border-bottom:1px solid rgba(255,255,255,.08)}
+.gd-table__head th{padding:8px 12px;font-size:.68rem;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;text-align:left;font-family:'Nunito',sans-serif}
+.gd-table__body tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .12s}
+.gd-table__body tr:hover{background:rgba(255,255,255,.025)}
+.gd-table__body tr:last-child{border-bottom:none}
+.gd-table__body td{padding:9px 12px;font-size:.82rem;color:rgba(255,255,255,.75);vertical-align:middle;font-family:'Nunito',sans-serif}
+.gd-table__body td:first-child{width:62px}
+.gd-table__body td .gd-badge{font-size:.74rem;font-weight:800;min-width:34px;justify-content:center}
+.gd-table__body tr[data-rank="1"] .gd-badge{background:rgba(252,235,56,.16);border-color:rgba(252,235,56,.45);color:#fceb38}
+.gd-table__body tr[data-rank="2"] .gd-badge{background:rgba(200,200,200,.1);border-color:rgba(200,200,200,.28);color:#c0c0c0}
+.gd-table__body tr[data-rank="3"] .gd-badge{background:rgba(180,100,50,.16);border-color:rgba(180,100,50,.35);color:#cd7f52}
+.gd-table__body tr[data-rank="-1"] .gd-badge{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.09);color:rgba(255,255,255,.26)}
+.sv-val-top10{color:#fceb38;font-weight:800}
+.sv-val-top50{color:#c084fc;font-weight:800}
+
+.sv-score-card{background:linear-gradient(135deg,rgba(126,49,227,.12),rgba(252,235,56,.05));border:1px solid rgba(126,49,227,.2);border-radius:9px;padding:10px 14px;margin-bottom:10px}
+.sv-score-card h4{font-size:.68rem;font-weight:700;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.sv-score-card p{font-family:'Nunito',sans-serif;font-size:.88rem;font-weight:700;color:#c084fc}
+
+.sv-back-btn{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:7px 14px;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.55);transition:all .15s;font-family:'Nunito',sans-serif;cursor:pointer;margin-bottom:16px}
+.sv-back-btn:hover{background:rgba(255,255,255,.1);color:#fff}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="topbar-left">
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+  </div>
+  <div id="topbar-search" style="display:none;align-items:center;gap:8px">
+    <button onclick="backToSearch()" style="padding:4px 11px;font-size:.75rem;font-weight:700;font-family:'Nunito',sans-serif;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap">← Home</button>
+    <div id="view-toggle" style="display:flex;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:7px;overflow:hidden">
+      <button id="toggle-wrapped" onclick="setView('wrapped')" style="padding:4px 11px;font-size:.75rem;font-weight:700;font-family:'Nunito',sans-serif;color:#fceb38;background:rgba(252,235,56,.15);border:none;cursor:pointer;transition:all .15s">✦ Wrapped</button>
+      <button id="toggle-stats" onclick="setView('stats')" style="padding:4px 11px;font-size:.75rem;font-weight:700;font-family:'Nunito',sans-serif;color:rgba(255,255,255,.5);background:none;border:none;cursor:pointer;transition:all .15s">📊 Stats</button>
+    </div>
+    <input type="text" id="topbar-input" placeholder="Search player…" autocomplete="off" spellcheck="false">
+    <button id="topbar-search-btn" onclick="loadPlayer('topbar')">Search</button>
+  </div>
+  <div class="topbar-right">
+    <a href="https://stats.pika-network.net/" class="topbar-site-btn">Visit the PikaNetwork Website »</a>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div id="sidebar">
+  <div id="sidebar-items"></div>
+</div>
+
+<div id="landing">
+  <img class="landing-logo" src="https://pika-network.net/dist/img/ndzn/HeaderLogo.png" alt="PikaNetwork" onerror="this.style.display='none'">
+  <div class="landing-title">Pika Wrapped <span id="landing-year-display">2026</span></div>
+  <div class="landing-sub">Your yearly recap on PikaNetwork</div>
+  <div class="landing-search-box">
+    <div class="landing-avatar-wrap"><img id="landing-avatar" src="https://visage.surgeplay.com/bust/MHF_Steve" alt=""></div>
+    <div class="landing-input-row">
+      <input type="text" class="landing-input" id="main-input" placeholder="Enter your username…" autocomplete="off" spellcheck="false">
+      <button class="landing-btn" onclick="loadPlayer('main')">View Recap</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:center">
+      <span style="font-size:.72rem;color:rgba(255,255,255,.3)">Try:</span>
+      <button onclick="setExample('Notourconcern')" style="padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:.75rem;font-weight:700;color:rgba(255,255,255,.55);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">Notourconcern</button>
+      <button onclick="setExample('ShadowedLeaves')" style="padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:.75rem;font-weight:700;color:rgba(255,255,255,.55);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">ShadowedLeaves</button>
+      <button onclick="setExample('synxx9999')" style="padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);font-size:.75rem;font-weight:700;color:rgba(255,255,255,.55);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.07)'">synxx9999</button>
+    </div>
+    <div class="landing-year-row">
+      <span class="landing-year-label">Year:</span>
+      <button class="year-btn active" onclick="setYear(2026,this)">2026</button>
+      <button class="year-btn" onclick="setYear(2025,this)">2025</button>
+      <button class="year-btn" onclick="setYear(2024,this)">2024</button>
+    </div>
+    <div class="landing-error" id="error-msg"></div>
+    <div class="landing-note">
+      Requires a local server for live data: <code>npx serve .</code> or <code>python -m http.server</code><br>
+      Public CORS proxies will be tried automatically as fallback.
+    </div>
+    <div style="font-size:.68rem;color:rgba(255,255,255,.22);line-height:1.65;text-align:center;margin-top:6px;max-width:360px">
+      * Year selection is conceptual — PikaNetwork's API does not expose time-filtered data, so all stats reflect your all-time career totals regardless of year chosen.
+    </div>
+  </div>
+</div>
+
+<div id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Fetching profile…</div>
+</div>
+
+<div id="wrapped-page">
+
+  
+  <div class="hero-panel">
+    <div class="hero-panel-inner">
+
+      <div class="hp-identity">
+        <img class="hp-logo" src="https://pika-network.net/dist/img/ndzn/HeaderLogo.png" alt="" onerror="this.style.display='none'">
+        <img id="hp-bust" src="https://visage.surgeplay.com/bust/MHF_Steve" alt="" style="width:96px;height:96px;border-radius:16px;border:2px solid rgba(150,100,255,.35);box-shadow:0 0 24px rgba(100,60,220,.4),0 4px 16px rgba(0,0,0,.5);background:#1a1440;image-rendering:pixelated">
+        <div class="hp-title" id="hero-title">Player's 2026 on</div>
+        <div class="hp-sub" id="hero-sub"></div>
+        <div class="hp-stats" id="hero-stats"></div>
+      </div>
+
+      <div class="hp-art">
+        <div class="hp-art-inner">
+          <div class="hp-art-header">My most played game was</div>
+          <div class="hp-art-name" id="most-played-name">—</div>
+          <img id="most-played-art" src="" alt="">
+          <img id="most-played-icon" src="" alt="" style="width:88px;height:88px;border-radius:18px;object-fit:cover;margin-top:14px;box-shadow:0 6px 24px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08);background:#1a1440;display:none">
+        </div>
+      </div>
+
+      <div class="hp-right">
+        <div class="hp-gm-stats" id="most-played-stats"></div>
+        <div class="hp-top-gms">
+          <div class="hp-top-gm-header">Top Gamemodes</div>
+          <div id="top-gm-list"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  
+  <div class="share-bar">
+    <span class="share-label">Share these stats…</span>
+    <button class="share-btn share-btn-dl" onclick="downloadPage()">⬇ Download</button>
+    <button class="share-btn share-btn-fb" onclick="shareFB()">f Share</button>
+    <button class="share-btn share-btn-x" onclick="shareX()">𝕏 Post</button>
+  </div>
+
+  
+  <div class="section-divider" id="other-section">
+    <div class="section-divider-inner">
+      <h2 id="other-header">Aside from —, I also played…</h2>
+    </div>
+  </div>
+
+  
+  <div id="gm-sections"></div>
+
+  
+  <div id="site-footer">
+    <strong style="color:rgba(255,255,255,.45)">Copyright © CraftiGames B.V. 2026</strong><br>
+    Not affiliated with Mojang or Minecraft ·
+    <a href="https://pika-network.net/help/privacy-policy/">Privacy</a> ·
+    <a href="https://pika-network.net/help/terms/">Terms</a> ·
+    <a href="https://stats.pika-network.net/">Stats Site</a>
+    <div style="margin-top:14px">
+      <a id="footer-api-link" href="https://evilmelytt.github.io/pika-api-guide.html" style="display:inline-flex;align-items:center;gap:7px;background:rgba(91,143,255,.1);border:1px solid rgba(91,143,255,.25);border-radius:8px;padding:7px 16px;color:#93b4ff;font-size:.78rem;font-weight:700;transition:all .18s" onmouseover="this.style.background='rgba(91,143,255,.2)'" onmouseout="this.style.background='rgba(91,143,255,.1)'">🔬 How does this site work? API Guide →</a>
+    </div>
+  </div>
+
+</div>
+
+<div id="stats-page" style="display:none;padding-top:52px;padding-bottom:60px;min-height:100vh;background:#18181f">
+  <div style="max-width:1100px;margin:0 auto;padding:0 18px">
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 0 2px">
+      <button onclick="backToSearch()" style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);border-radius:8px;padding:6px 14px;font-size:.8rem;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s" onmouseover="this.style.background='rgba(255,255,255,.11)'" onmouseout="this.style.background='rgba(255,255,255,.06)'">← Back to Search</button>
+    </div>
+    <h1 class="sv-title">Profile Statistics</h1>
+    <div id="sv-grid"></div>
+  </div>
+</div>
+
+<style>
+
+.sv-title{font-family:'Merriweather',serif;font-size:1.55rem;font-weight:700;color:#fff;padding:18px 0 16px}
+.sv-grid{display:grid;grid-template-columns:260px 1fr 220px;gap:16px;align-items:start}
+@media(max-width:900px){.sv-grid{grid-template-columns:220px 1fr}}
+@media(max-width:620px){.sv-grid{grid-template-columns:1fr}}
+.sv-panel{background:#1e1e28;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden}
+.sv-panel__title{display:flex;align-items:center;gap:9px;padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03)}
+.sv-panel__title i{color:rgba(255,255,255,.4);font-size:.9rem}
+.sv-panel__title h2{font-family:'Nunito',sans-serif;font-size:.92rem;font-weight:700;color:#fff}
+.sv-panel__body{padding:16px}
+.sv-panel__footer{padding:10px 16px;border-top:1px solid rgba(255,255,255,.07)}
+
+.sv-profile-header{display:flex;flex-direction:column;align-items:center;padding:18px 14px 14px;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);text-align:center}
+.sv-profile-header img{width:82px;height:82px;border-radius:10px;border:2px solid rgba(255,255,255,.12);background:#2a2040}
+.sv-profile-header small{font-size:.68rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:2px}
+.sv-profile-header h2{font-family:'Merriweather',serif;font-size:1.05rem;font-weight:700;color:#fff}
+.sv-profile-header p{font-size:.7rem;color:rgba(255,255,255,.38);margin:0}
+.sv-back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:7px;padding:5px 12px;font-size:.73rem;color:rgba(255,255,255,.5);transition:all .15s;width:100%;justify-content:center;cursor:pointer;font-family:'Nunito',sans-serif}
+.sv-back-btn:hover{background:rgba(255,255,255,.09);color:#fff}
+
+.sv-body{padding:10px 14px;display:flex;flex-direction:column;gap:7px}
+.sv-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.sv-row:last-child{border-bottom:none}
+.sv-row h3{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.6)}
+.sv-row-right{display:flex;align-items:center;gap:6px}
+.sv-row i{color:rgba(255,255,255,.4);font-size:.88rem}
+.sv-level-val{font-family:'Merriweather',serif;font-size:.9rem;font-weight:700;color:#fceb38}
+.sv-progress{height:3px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;width:100%;margin-top:3px}
+.sv-progress-fill{height:100%;background:linear-gradient(90deg,#7e31e3,#fceb38);border-radius:99px}
+.sv-ranks{display:flex;flex-wrap:wrap;gap:4px;padding:3px 0}
+.sv-badge{display:inline-flex;align-items:center;background:rgba(126,49,227,.18);border:1px solid rgba(126,49,227,.38);border-radius:5px;padding:2px 7px;font-size:.68rem;font-weight:700;color:#c084fc;position:relative;cursor:default}
+.sv-badge--danger{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#f87171}
+.sv-rank-popup{display:none;position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:#1a1a24;border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:6px 10px;white-space:nowrap;z-index:100;box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.sv-badge:hover .sv-rank-popup{display:block}
+.sv-rank-popup span{font-size:.72rem;color:rgba(255,255,255,.7)}
+
+.sv-scroll{max-height:260px;overflow-y:auto;margin-top:8px}
+.sv-scroll::-webkit-scrollbar{width:3px}
+.sv-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:99px}
+.sv-friends-body{overflow:hidden;max-height:400px;transition:max-height .35s ease, opacity .25s ease;opacity:1}
+.sv-friends-body.collapsed{max-height:0;opacity:0}
+.sv-friends-toggle{cursor:pointer;user-select:none;display:flex;align-items:center;width:100%}
+.sv-friends-toggle:hover{background:rgba(255,255,255,.03)}
+.sv-friends-chevron{margin-left:auto;font-size:.65rem;color:rgba(255,255,255,.3);transition:transform .25s ease}
+.sv-friends-chevron.open{transform:rotate(180deg)}
+.sv-friend{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:6px;width:100%;text-align:left;transition:background .12s;cursor:pointer;border:none;background:none;font-family:inherit}
+.sv-friend:hover{background:rgba(255,255,255,.05)}
+.sv-friend img{width:28px;height:28px;border-radius:5px;background:#2a2040;flex-shrink:0}
+.sv-friend span{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.72)}
+
+.sv-filters{margin-bottom:10px}
+.sv-filter{display:inline-flex;background:#1a1a24;border:1px solid rgba(255,255,255,.08);border-radius:7px;overflow:hidden}
+.sv-filter-btn{padding:5px 12px;font-size:.74rem;font-weight:600;color:rgba(255,255,255,.4);border:none;border-right:1px solid rgba(255,255,255,.06);cursor:pointer;background:none;font-family:'Nunito',sans-serif;transition:all .15s}
+.sv-filter-btn:last-child{border-right:none}
+.sv-filter-btn:hover{color:rgba(255,255,255,.75)}
+.sv-filter-btn.active{background:rgba(126,49,227,.22);color:#c084fc}
+
+.sv-gm-bar{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
+.sv-gm-btn{display:flex;align-items:center;gap:3px;padding:4px 9px;border-radius:6px;background:#1e1e28;border:1px solid rgba(255,255,255,.08);font-size:.72rem;font-weight:700;color:rgba(255,255,255,.48);cursor:pointer;transition:all .15s;font-family:'Nunito',sans-serif}
+.sv-gm-btn:hover{color:rgba(255,255,255,.8)}
+.sv-gm-btn.active{background:rgba(126,49,227,.18);border-color:rgba(126,49,227,.45);color:#c084fc}
+
+.sv-table{width:100%;border-collapse:collapse}
+.sv-table thead tr{border-bottom:1px solid rgba(255,255,255,.08)}
+.sv-table thead th{padding:8px 12px;font-size:.68rem;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;text-align:left}
+.sv-table tbody tr{border-bottom:1px solid rgba(255,255,255,.04);transition:background .12s}
+.sv-table tbody tr:hover{background:rgba(255,255,255,.025)}
+.sv-table tbody tr:last-child{border-bottom:none}
+.sv-table tbody td{padding:8px 12px;font-size:.82rem;color:rgba(255,255,255,.75);vertical-align:middle}
+.sv-table tbody td:first-child{width:60px}
+.sv-table tbody td:last-child{font-family:'Merriweather',serif;font-weight:700;color:#fff}
+.sv-rank-cell{display:inline-flex;align-items:center;justify-content:center;min-width:34px;background:rgba(126,49,227,.18);border:1px solid rgba(126,49,227,.35);border-radius:5px;padding:2px 6px;font-size:.73rem;font-weight:700;color:#c084fc}
+tr[data-rank="1"] .sv-rank-cell{background:rgba(252,235,56,.16);border-color:rgba(252,235,56,.45);color:#fceb38}
+tr[data-rank="2"] .sv-rank-cell{background:rgba(200,200,200,.1);border-color:rgba(200,200,200,.28);color:#c8c8c8}
+tr[data-rank="3"] .sv-rank-cell{background:rgba(180,100,50,.16);border-color:rgba(180,100,50,.36);color:#cd7f52}
+tr[data-rank="-1"] .sv-rank-cell{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.25)}
+
+.sv-gm-card{display:flex;align-items:center;gap:10px;width:100%;padding:9px 11px;border-radius:9px;background:#1e1e28;border:1px solid rgba(255,255,255,.08);margin-bottom:7px;cursor:pointer;transition:all .15s;text-align:left;font-family:'Nunito',sans-serif}
+.sv-gm-card:hover,.sv-gm-card.active{border-color:rgba(126,49,227,.45);background:rgba(126,49,227,.1)}
+.sv-gm-card-icon{width:36px;height:36px;border-radius:7px;overflow:hidden;flex-shrink:0;background:#2a2040;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.sv-gm-card h2{font-size:.82rem;font-weight:700;color:#fff}
+.sv-gm-card small{font-size:.67rem;color:rgba(255,255,255,.38)}
+.sv-gm-desc{font-size:.76rem;color:rgba(255,255,255,.4);line-height:1.6;margin:0}
+</style>
+
+<script>
+
+const API = 'https://stats.pika-network.net/api';
+const PROXIES = [
+  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => u
+];
+
+const GM_META = {
+  bedwars:          { label:'Bed Wars',     keys:['Kills','Final kills','Wins','Losses','Deaths','Beds destroyed','Games played','Highest winstreak reached'] },
+  opprison:         { label:'OP Prison',    keys:['Blocks Broken','Raw Blocks Broken','Prestige','Ascension','Beacons','Tokens'] },
+  classicskyblock:  { label:'Oneblock',     keys:['Player Level','Mobs Killed','Kills','Deaths','Balance'] },
+  skypvp:           { label:'Sky PvP',      keys:['Kills','Deaths','Highest Killstreak','Rank Rating','Balance'] },
+  skymines:         { label:'SkyMines',     keys:['Player Level','Blocks Mined','Kills','Balance','Bosses Killed'] },
+  kitpvp:           { label:'KitPvP',       keys:['Kills','Level','Prestige','Highest Killstreak','Balance'] },
+  survival:         { label:'Survival',     keys:['Player Level','Mobs Killed','EXP Collected','Balance'] },
+  unrankedpractice: { label:'Practice',     keys:['Kills','Wins','Deaths','Games played','Highest winstreak reached'] },
+  opskyblock:       { label:'OP Skyblock',  keys:['Player Level','Kills','Balance','Miner Skill Level','Souls'] },
+  oplifesteal:      { label:'OP Lifesteal', keys:['Player Level','Kills','Deaths','Highest Killstreak','Mobs Killed','Blocks Broken','Blocks Placed','Balance'] },
+  genpvp:           { label:'Gen PvP',      keys:['Kills','Deaths','Level','Highest Killstreak','Balance'] },
+  opfactions:       { label:'OP Factions',  keys:['Kills','Deaths','Player Level','Highest Killstreak','Balance'] },
+};
+
+const GM_ART = {
+  bedwars:          'https://pika-network.net/dist/img/games/bedwars.png',
+  opprison:         'https://pika-network.net/dist/img/games/opprison.png',
+  classicskyblock:  'https://pika-network.net/dist/img/games/skyblock.png',
+  skypvp:           'https://pika-network.net/dist/img/games/skypvp.png',
+  skymines:         'https://pika-network.net/dist/img/games/skymines.png',
+  kitpvp:           'https://pika-network.net/dist/img/games/kitpvp.png',
+  survival:         'https://pika-network.net/dist/img/games/survival.png',
+  unrankedpractice: 'https://pika-network.net/dist/img/games/practice.png',
+  opskyblock:       'https://pika-network.net/dist/img/games/opskyblock.png',
+  oplifesteal:      'https://pika-network.net/dist/img/games/oplifesteal.png',
+  genpvp:           'https://pika-network.net/dist/img/games/genpvp.png',
+  opfactions:       'https://pika-network.net/dist/img/games/opfactions.png',
+};
+
+const GM_ICON = {
+  bedwars:          'https://pika-network.net/dist/img/minigames-125.png',
+  opprison:         'https://pika-network.net/dist/img/prison-125.png',
+  classicskyblock:  'https://pika-network.net/dist/img/classic-skyblock-125.png',
+  skypvp:           'https://cdn.cgsys.net/i/2f540e3a831c4c0ab1ddbe1e4769049f',
+  skymines:         'https://pika-network.net/dist/img/skymines-125.png',
+  kitpvp:           'https://pika-network.net/dist/img/kitpvp-125.png',
+  survival:         'https://pika-network.net/dist/img/survival-125.png',
+  unrankedpractice: 'https://pika-network.net/dist/img/practice-125.png',
+  opskyblock:       'https://pika-network.net/dist/img/opskyblock-125.png',
+  oplifesteal:      'https://store.pika-network.net/_next/image?url=%2Fcategories%2Foplifesteal.png&w=256&q=75',
+  genpvp:           'https://cdn.cgsys.net/i/43c3693b7f2248ffbf42b19b3d6b6565',
+  opfactions:       'https://pika-network.net/dist/img/factions-125.png',
+};
+
+let selectedYear = 2026;
+let lastGmResults = {};
+
+async function pFetch(url) {
+  let lastErr;
+  for (const make of PROXIES) {
+    try {
+      const res = await fetch(make(url), {
+        headers: { 'Accept': 'application/json' },
+        signal: AbortSignal.timeout(9000)
+      });
+      if (res.ok) return JSON.parse(await res.text());
+      if (res.status === 404) throw Object.assign(new Error('404'), { status: 404 });
+      if (res.status === 429) throw Object.assign(new Error('429'), { status: 429 });
+      lastErr = new Error(`HTTP ${res.status}`);
+    } catch(e) {
+      if (e.status === 404 || e.status === 429) throw e;
+      lastErr = e;
+    }
+  }
+  throw lastErr || new Error('All proxies failed');
+}
+
+function fmt(v) {
+  if (v === null || v === undefined || v === '') return '—';
+  const n = typeof v === 'string' ? parseFloat(v) : v;
+  if (isNaN(n)) return String(v);
+  if (n >= 1e9) return (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return (n/1e6).toFixed(2) + 'M';
+  return n.toLocaleString();
+}
+
+function fmtTime(minutes) {
+  if (!minutes) return null;
+  const days = Math.floor(minutes / 1440);
+  const hrs  = Math.floor((minutes % 1440) / 60);
+  const mins = minutes % 60;
+  if (days > 0 && hrs > 0) return `${days} day${days>1?'s':''}, ${hrs} hour${hrs>1?'s':''}`;
+  if (days > 0) return `${days} day${days>1?'s':''}`;
+  if (hrs > 0 && mins > 0) return `${hrs} hour${hrs>1?'s':''}, ${mins} minute${mins>1?'s':''}`;
+  if (hrs > 0) return `${hrs} hour${hrs>1?'s':''}`;
+  return `${mins} minute${mins>1?'s':''}`;
+}
+
+function setYear(y, btn) {
+  selectedYear = y;
+  document.querySelectorAll('.year-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('landing-year-display').textContent = y;
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+  document.getElementById('wrapped-page').style.display = 'none';
+}
+
+function setExample(name) {
+  const input = document.getElementById('main-input');
+  input.value = name;
+  document.getElementById('landing-avatar').src = `https://visage.surgeplay.com/bust/${name}`;
+  input.focus();
+}
+
+(function(){
+  const p = new URLSearchParams(location.search).get('player');
+  if (p) {
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('main-input').value = p;
+      document.getElementById('landing-avatar').src = `https://visage.surgeplay.com/bust/${p}`;
+      loadPlayer('main');
+    });
+  }
+})();
+
+document.getElementById('main-input').addEventListener('input', e => {
+  const v = e.target.value.trim();
+  document.getElementById('landing-avatar').src =
+    v ? `https://visage.surgeplay.com/bust/${v}` : 'https://visage.surgeplay.com/bust/MHF_Steve';
+});
+document.getElementById('main-input').addEventListener('keydown', e => { if (e.key === 'Enter') loadPlayer('main'); });
+document.getElementById('topbar-input').addEventListener('keydown', e => { if (e.key === 'Enter') loadPlayer('topbar'); });
+
+async function loadPlayer(src) {
+  const inputId = src === 'topbar' ? 'topbar-input' : 'main-input';
+  const username = document.getElementById(inputId).value.trim();
+  if (!username) { showError('Please enter a username.'); return; }
+
+  document.getElementById('error-msg').style.display = 'none';
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('wrapped-page').style.display = 'none';
+  document.getElementById('loading').style.display = 'flex';
+  document.getElementById('loading-text').textContent = 'Fetching profile…';
+
+  try {
+    const profile = await pFetch(`${API}/profile/${username}`);
+    document.getElementById('loading-text').textContent = 'Loading gamemode stats…';
+
+    lastGmResults = {};
+    await Promise.allSettled(Object.keys(GM_META).map(async gm => {
+      try {
+        const mode = gm === 'bedwars' ? '&mode=ALL_MODES' : '';
+        lastGmResults[gm] = await pFetch(`${API}/profile/${username}/leaderboard?type=${gm}&interval=total${mode}`);
+      } catch { lastGmResults[gm] = null; }
+    }));
+
+    document.getElementById('loading-text').textContent = 'Building your recap…';
+    await new Promise(r => setTimeout(r, 200));
+    renderWrapped(profile, username);
+
+  } catch(err) {
+    if (err.status === 404 || err.message.includes('404'))
+      showError(`Player "${username}" not found.`);
+    else if (err.status === 429 || err.message.includes('429'))
+      showError('Rate limited — please wait a moment and try again.');
+    else
+      showError(`Failed to load: ${err.message}. Try serving with a local server.`);
+  }
+}
+
+function calcScore(gm) {
+  const d = lastGmResults[gm];
+  if (!d || typeof d !== 'object') return 0;
+  const statObjs = Object.values(d);
+  if (!statObjs.length) return 0;
+  let totalPct = 0, ranked = 0;
+  for (const s of statObjs) {
+    const e = s?.entries?.[0];
+    const t = s?.metadata?.total || 0;
+    if (e && t > 0) { totalPct += Math.max(0, 1 - (e.place / t)); ranked++; }
+  }
+  return Math.round((totalPct / statObjs.length) * 100 * 10) / 10 + ranked;
+}
+
+function getStatVal(gm, statName) {
+  const d = lastGmResults[gm];
+  if (!d) return null;
+  const s = d[statName];
+  if (!s) return null;
+  const e = s.entries?.[0];
+  return e ? { value: e.value, place: e.place, total: s.metadata?.total || 0 } : null;
+}
+
+function rankBadge(place) {
+  if (!place || place < 1) return '';
+  let cls = '';
+  if (place === 1) cls = 'gold';
+  else if (place === 2) cls = 'silver';
+  return `<span class="gm-rank-badge ${cls}">#${place.toLocaleString()}</span>`;
+}
+
+function renderWrapped(profile, username) {
+  const name = profile.username || username;
+  const year = selectedYear;
+
+  
+  document.getElementById('hero-title').textContent = `${name}'s ${year} on`;
+  document.getElementById('hp-bust').src = `https://visage.surgeplay.com/bust/${name}`;
+  const lastSeen = profile.lastSeen ? new Date(profile.lastSeen).toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'}) : '';
+  document.getElementById('hero-sub').textContent = lastSeen ? `Last seen ${lastSeen}` : '';
+
+  
+  const level = profile.rank?.level ?? 0;
+  const ranks = (profile.ranks || []);
+  const friends = (profile.friends || []);
+  const { game: gameRanks, subs: subRanks, top: topGameRank } = splitRanks(ranks);
+  let heroHTML = '';
+  heroHTML += `<div class="hp-stat"><div class="hp-stat-label">Pika Level</div><div class="hp-stat-value">${level}</div></div>`;
+  if (topGameRank) heroHTML += `<div class="hp-stat"><div class="hp-stat-label">Top Rank</div><div class="hp-stat-value" style="font-size:.9rem">${topGameRank.displayName}</div><div class="hp-stat-sub">${topGameRank.server}</div></div>`;
+  if (subRanks.length) heroHTML += `<div class="hp-stat"><div class="hp-stat-label">Subscription</div><div class="hp-stat-value" style="font-size:.9rem;color:#f47fff">${subRanks[0].displayName}</div></div>`;
+  heroHTML += `<div class="hp-stat"><div class="hp-stat-label">Friends</div><div class="hp-stat-value">${friends.length}</div></div>`;
+  if (profile.discord_boosting) heroHTML += `<div class="hp-stat"><div class="hp-stat-label">Discord</div><div class="hp-stat-value" style="font-size:.85rem;color:#f47fff">🚀 Booster</div></div>`;
+  document.getElementById('hero-stats').innerHTML = heroHTML;
+
+  
+  const gmKeys = Object.keys(GM_META);
+  const scores = {};
+  for (const gm of gmKeys) scores[gm] = calcScore(gm);
+  const sortedGms = gmKeys.filter(gm => lastGmResults[gm]).sort((a,b) => scores[b] - scores[a]);
+
+  
+  const topGm = sortedGms[0];
+  const topMeta = topGm ? GM_META[topGm] : null;
+  if (topMeta) {
+    document.getElementById('most-played-name').textContent = topMeta.label;
+    document.getElementById('other-header').textContent = `Aside from ${topMeta.label}, I also played…`;
+
+    
+    const artEl = document.getElementById('most-played-art');
+    artEl.src = GM_ART[topGm] || '';
+    artEl.onerror = () => { artEl.style.display = 'none'; };
+
+    const iconEl = document.getElementById('most-played-icon');
+    const iconSrc = GM_ICON[topGm] || '';
+    if (iconSrc) {
+      iconEl.src = iconSrc;
+      iconEl.style.display = 'block';
+      iconEl.onerror = () => { iconEl.style.display = 'none'; };
+    }
+
+    
+    const d = lastGmResults[topGm] || {};
+    let statsHTML = '';
+    for (const k of topMeta.keys.slice(0, 7)) {
+      const s = d[k];
+      if (!s) continue;
+      const e = s.entries?.[0];
+      const val = e ? fmt(e.value) : '—';
+      const badge = e ? rankBadge(e.place) : '';
+      statsHTML += `<div class="hp-stat-row"><div class="hp-stat-row-name">${k}</div><div class="hp-stat-row-val">${val}${badge}</div></div>`;
+    }
+    document.getElementById('most-played-stats').innerHTML = statsHTML || '<div class="hp-stat-row"><div class="hp-stat-row-name">No ranked stats yet</div></div>';
+  }
+
+  
+  const topListHTML = sortedGms.slice(0, 5).map((gm, i) => {
+    const m = GM_META[gm];
+    const score = scores[gm];
+    return `<div class="hp-top-gm-item">
+      <span class="hp-top-gm-rank">#${i+1}</span>
+      <span class="hp-top-gm-name">${m.label}</span>
+      <span class="hp-top-gm-score">${score.toFixed(0)}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('top-gm-list').innerHTML = topListHTML;
+
+  
+  const sidebarHTML = sortedGms.map((gm, i) => {
+    const m = GM_META[gm];
+    return `<div class="sidebar-item${i===0?' active':''}" onclick="scrollToGm('${gm}');toggleSidebar()">
+      <img src="${GM_ICON[gm]||''}" alt="" onerror="this.style.display='none'">
+      ${m.label}
+    </div>`;
+  }).join('');
+  document.getElementById('sidebar-items').innerHTML = sidebarHTML;
+
+  
+  const otherGms = sortedGms.slice(1);
+  const gmSectionsHTML = otherGms.map(gm => {
+    const m = GM_META[gm];
+    const d = lastGmResults[gm] || {};
+    let statsHTML = '';
+    for (const k of m.keys.slice(0, 6)) {
+      const s = d[k];
+      if (!s) continue;
+      const e = s.entries?.[0];
+      if (!e) continue;
+      const badge = rankBadge(e.place);
+      const pct = e.place && s.metadata?.total ? `<div class="gm-stat-sub">Top ${((e.place/s.metadata.total)*100).toFixed(1)}%</div>` : '';
+      statsHTML += `<div class="gm-stat">
+        <div class="gm-stat-label">${k}</div>
+        <div class="gm-stat-number">${fmt(e.value)}${badge}</div>
+        ${pct}
+      </div>`;
+    }
+    if (!statsHTML) statsHTML = '<div class="gm-stat"><div class="gm-stat-label">No ranked stats yet</div><div class="gm-stat-number">—</div></div>';
+
+    return `<div class="gm-section fade-in" id="gm-${gm}">
+      <div class="gm-section-inner">
+        <div class="gm-header">
+          <img class="gm-header-icon" src="${GM_ICON[gm]||''}" alt="${m.label}" onerror="this.style.display='none'">
+          <div class="gm-header-name">${m.label}</div>
+        </div>
+        <div class="gm-content">
+          <div class="gm-art"><img src="${GM_ART[gm]||''}" alt="${m.label}" onerror="this.style.opacity=0"></div>
+          <div class="gm-stats">${statsHTML}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('gm-sections').innerHTML = gmSectionsHTML;
+
+  
+  document.getElementById('footer-api-link').href = `https://evilmelytt.github.io/pika-api-guide.html?player=${username}`;
+  document.getElementById('topbar-search').style.display = 'flex';
+  document.getElementById('topbar-input').value = '';
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('wrapped-page').style.display = 'block';
+  document.getElementById('stats-page').style.display = 'none';
+  setView('wrapped'); 
+  window.scrollTo(0, 0);
+
+  
+  renderStats(profile, username, scores, sortedGms);
+}
+
+function backToSearch() {
+  document.getElementById('wrapped-page').style.display = 'none';
+  document.getElementById('stats-page').style.display = 'none';
+  document.getElementById('topbar-search').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+function scrollToGm(gm) {
+  const el = document.getElementById('gm-' + gm);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+const RANK_TIER = ['Overlord+++','Divine+++','GodFather+++','Celestial+++','Eternal+++','King+++','Kingpin+++','SkyMaster+++','Ultimate+++','Omega+++','Champion','Emerald','Proton','Gamma','Diamond','Titan'];
+const PIKA_SUBS = new Set(['Pika+','Pika⭐','Pika❤']);
+const isPikaSub = r => PIKA_SUBS.has(r.displayName) || r.displayName.startsWith('Pika');
+function splitRanks(ranks) {
+  const game = (ranks || []).filter(r => !isPikaSub(r)).sort((a,b) => {
+    const ai = RANK_TIER.indexOf(a.displayName), bi = RANK_TIER.indexOf(b.displayName);
+    return (ai===-1?999:ai) - (bi===-1?999:bi);
+  });
+  const subs = (ranks || []).filter(r => isPikaSub(r));
+  return { game, subs, top: game[0] };
+}
+let activeStatsGm = null;
+
+function setView(v) {
+  const isWrapped = v === 'wrapped';
+  document.getElementById('wrapped-page').style.display = isWrapped ? 'block' : 'none';
+  document.getElementById('stats-page').style.display   = isWrapped ? 'none'  : 'block';
+  const tw = document.getElementById('toggle-wrapped');
+  const ts = document.getElementById('toggle-stats');
+  if (isWrapped) {
+    tw.style.color = '#fceb38'; tw.style.background = 'rgba(252,235,56,.15)';
+    ts.style.color = 'rgba(255,255,255,.5)'; ts.style.background = 'none';
+  } else {
+    ts.style.color = '#c084fc'; ts.style.background = 'rgba(126,49,227,.2)';
+    tw.style.color = 'rgba(255,255,255,.5)'; tw.style.background = 'none';
+  }
+  window.scrollTo(0,0);
+}
+
+function renderStats(profile, username, scores, sortedGms) {
+  const name = profile.username || username;
+  const level = profile.rank?.level ?? 0;
+  const pct   = profile.rank?.percentage ?? 0;
+  const ranks = profile.ranks || [];
+  const friends = profile.friends || [];
+  const { game: gameRanks, subs: subRanks, top: topGameRank } = splitRanks(ranks);
+  activeStatsGm = sortedGms[0] || Object.keys(GM_META)[0];
+
+  
+  const emailColor = profile.email_verified ? '#2ecc71' : 'rgba(255,255,255,.2)';
+  const discordColor = profile.discord_boosting ? '#f47fff' : profile.discord_verified ? '#5865f2' : 'rgba(255,255,255,.2)';
+  const rankBadgesHTML = [
+    ...gameRanks.map(r =>
+      `<div class="sv-badge" style="position:relative">${r.displayName}<div class="sv-rank-popup"><span>${r.server}</span></div></div>`
+    ),
+    ...subRanks.map(r =>
+      `<div class="sv-badge" style="position:relative;background:rgba(244,127,255,.12);border-color:rgba(244,127,255,.35);color:#f47fff">${r.displayName}<div class="sv-rank-popup"><span>Subscription</span></div></div>`
+    )
+  ].join('') || '<span style="font-size:.72rem;color:rgba(255,255,255,.25)">No ranks</span>';
+
+  const friendsHTML = friends.length ? friends.map(f => {
+    const fn = f.username || f;
+    return `<button class="sv-friend" onclick="document.getElementById('topbar-input').value='${fn}';loadPlayer('topbar')">
+      <img src="https://visage.surgeplay.com/bust/${fn}" loading="lazy" onerror="this.src='https://visage.surgeplay.com/bust/MHF_Steve'">
+      <span>${fn}</span>
+    </button>`;
+  }).join('') : '<span style="font-size:.75rem;color:rgba(255,255,255,.28)">No friends listed</span>';
+
+  const leftHTML = `
+    <div class="sv-panel">
+      <div class="sv-profile-header">
+        <img src="https://visage.surgeplay.com/bust/${name}" alt="${name}" onerror="this.src='https://visage.surgeplay.com/bust/MHF_Steve'">
+        <div><small>Profile</small><h2>${name}</h2><p>${profile.lastSeen ? 'Last Online: '+new Date(profile.lastSeen).toLocaleDateString('en-US',{month:'numeric',day:'numeric',year:'numeric'}) : ''}</p></div>
+        <button class="sv-back-btn" onclick="backToSearch()">Back To Search &nbsp;🔍</button>
+      </div>
+      <div class="sv-body">
+        <div class="sv-row"><h3>Accounts</h3><div class="sv-row-right"><i class="fa-solid fa-envelope" style="color:${emailColor}"></i><i class="fa-brands fa-discord" style="color:${discordColor}"></i></div></div>
+        <div class="sv-row" style="flex-direction:column;align-items:flex-start;gap:3px">
+          <div style="display:flex;width:100%;justify-content:space-between;align-items:center"><h3>Pika Level</h3><span class="sv-level-val">${level}</span></div>
+          <div class="sv-progress" style="width:100%"><div class="sv-progress-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="sv-ranks">${rankBadgesHTML}</div>
+      </div>
+    </div>
+    ${friends.length ? `
+    <div class="sv-panel" style="margin-top:12px">
+      <div class="sv-panel__title sv-friends-toggle" onclick="toggleFriends()">
+        <i class="fa-solid fa-user-group"></i>
+        <h2>Friends <span class="sv-badge sv-badge--danger">${friends.length}</span></h2>
+        <span class="sv-friends-chevron open" id="friends-chevron">▾</span>
+      </div>
+      <div class="sv-friends-body" id="sv-friends-body">
+        <div class="sv-panel__body" style="padding:10px">
+          <input class="sv-input" type="text" placeholder="Search friends" oninput="filterSvFriends(this.value)" style="width:100%;background:#13131a;border:1px solid rgba(255,255,255,.1);border-radius:6px;padding:6px 10px;font-size:.78rem;color:#e0e0e0;outline:none;font-family:'Nunito',sans-serif">
+          <div class="sv-scroll" id="sv-friends-list">${friendsHTML}</div>
+        </div>
+      </div>
+    </div>` : ''}`;
+
+  
+  const rightHTML = sortedGms.slice(0, 8).map((gm, i) => {
+    const m = GM_META[gm];
+    return `<div class="sv-gm-card${i===0?' active':''}" data-gm="${gm}" onclick="switchSvGm('${gm}',this)">
+      <div class="sv-gm-card-icon"><img src="${GM_ICON[gm]||''}" style="width:100%;height:100%;object-fit:cover;border-radius:7px" onerror="this.style.display='none'"></div>
+      <div style="flex:1"><h2>${m.label}</h2><small>Score: ${scores[gm].toFixed(0)}</small></div>
+      ${i===0?'<span class="sv-badge" style="font-size:.6rem;white-space:nowrap">Top</span>':''}
+    </div>`;
+  }).join('');
+
+  const descM = GM_META[activeStatsGm] || {};
+  const descRight = `<div id="sv-gm-desc" class="sv-panel" style="margin-top:8px">
+    <div class="sv-panel__title"><h2 id="sv-desc-name">${descM.label||'—'}</h2></div>
+    <div class="sv-panel__body"><p class="sv-gm-desc" id="sv-desc-text">${descM.desc||''}</p></div>
+    <div class="sv-panel__footer"><a id="sv-lb-link" href="https://stats.pika-network.net/leaderboards/${activeStatsGm}"><button style="width:100%;display:flex;align-items:center;justify-content:center;gap:7px;background:linear-gradient(135deg,#7e31e3,#4a1fa0);color:#fff;border-radius:7px;padding:9px;font-size:.82rem;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;border:none">🏆 Visit Leaderboards</button></a></div>
+  </div>`;
+
+  
+  const gmBarHTML = sortedGms.map((gm, i) => {
+    const m = GM_META[gm];
+    const iconImg = GM_ICON[gm] ? `<img src="${GM_ICON[gm]}" style="width:16px;height:16px;object-fit:cover;border-radius:3px;flex-shrink:0" onerror="this.style.display='none'">` : '';
+    return `<button class="sv-gm-btn${i===0?' active':''}" data-gm="${gm}" onclick="switchSvGm('${gm}',this)">${iconImg} ${m.label}</button>`;
+  }).join('');
+
+  const midHTML = `
+    <div>
+      <div class="sv-filters"><div class="sv-filter">
+        <button class="sv-filter-btn" onclick="setSvInterval('weekly',this)">Weekly</button>
+        <button class="sv-filter-btn" onclick="setSvInterval('monthly',this)">Monthly</button>
+        <button class="sv-filter-btn active" onclick="setSvInterval('total',this)">All Time</button>
+      </div></div>
+      <div class="sv-gm-bar" id="sv-gm-bar">${gmBarHTML}</div>
+      <div class="sv-panel" id="sv-table-panel">
+        <div class="sv-panel__title"><i class="fa-solid fa-gamepad"></i><h2 id="sv-table-gm-name">${descM.label||'—'}</h2></div>
+        <div style="overflow-x:auto"><table class="sv-table">
+          <thead><tr><th>Rank</th><th>Stat</th><th>Amount</th></tr></thead>
+          <tbody id="sv-table-body"></tbody>
+        </table></div>
+      </div>
+    </div>`;
+
+  document.getElementById('sv-grid').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:0">${leftHTML}</div>
+    ${midHTML}
+    <div class="sv-sticky" style="position:sticky;top:54px">${rightHTML}${descRight}</div>`;
+
+  
+  if (!document.querySelector('link[href*="font-awesome"]')) {
+    const fa = document.createElement('link');
+    fa.rel='stylesheet'; fa.href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
+    document.head.appendChild(fa);
+  }
+
+  renderSvTable(activeStatsGm);
+}
+
+let svInterval = 'total';
+function setSvInterval(iv, btn) {
+  svInterval = iv;
+  document.querySelectorAll('.sv-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSvTable(activeStatsGm);
+}
+
+function switchSvGm(gm, clickedBtn) {
+  activeStatsGm = gm;
+  document.querySelectorAll('.sv-gm-btn, .sv-gm-card').forEach(b => b.classList.toggle('active', b.dataset.gm === gm));
+  const m = GM_META[gm];
+  const nameEl = document.getElementById('sv-table-gm-name');
+  const descNameEl = document.getElementById('sv-desc-name');
+  const descTextEl = document.getElementById('sv-desc-text');
+  const lbLink = document.getElementById('sv-lb-link');
+  if (nameEl) nameEl.textContent = m.label;
+  if (descNameEl) descNameEl.textContent = m.label;
+  if (descTextEl) descTextEl.textContent = m.desc || '';
+  if (lbLink) lbLink.href = `https://stats.pika-network.net/leaderboards/${gm}`;
+  renderSvTable(gm);
+}
+
+function renderSvTable(gm) {
+  const d = lastGmResults[gm] || {};
+  const m = GM_META[gm];
+  const tbody = document.getElementById('sv-table-body');
+  if (!tbody) return;
+  const usedKeys = new Set();
+  const rows = [];
+  for (const k of (m.keys || [])) {
+    const s = d[k]; if (!s) continue;
+    usedKeys.add(k);
+    const e = s.entries?.[0] ?? null;
+    rows.push({ stat:k, value: e?e.value:null, place: e?e.place:null, total: s.metadata?.total??0 });
+  }
+  for (const [k,s] of Object.entries(d)) {
+    if (usedKeys.has(k)) continue;
+    const e = s.entries?.[0] ?? null;
+    rows.push({ stat:k, value: e?e.value:null, place: e?e.place:null, total: s.metadata?.total??0 });
+  }
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:rgba(255,255,255,.28);padding:2rem">No stats available for this gamemode.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r => {
+    const rank = r.place ?? -1;
+    const valColor = rank>0&&rank<=10 ? '#fceb38' : rank>0&&rank<=50 ? '#c084fc' : '#e0e0e0';
+    const pctStr = r.place&&r.total ? `<br><small style="color:rgba(255,255,255,.3);font-size:.66rem">Top ${((r.place/r.total)*100).toFixed(1)}%</small>` : '';
+    const lb = r.total ? `<br><small style="color:rgba(255,255,255,.25);font-size:.64rem">${r.total.toLocaleString()} tracked</small>` : '';
+    return `<tr data-rank="${rank}">
+      <td><span class="sv-rank-cell">${rank>0?rank:'-'}</span></td>
+      <td>${r.stat}${lb}</td>
+      <td style="color:${valColor}">${r.value!==null?fmt(r.value):'—'}${pctStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleFriends() {
+  const body = document.getElementById('sv-friends-body');
+  const chevron = document.getElementById('friends-chevron');
+  if (!body) return;
+  body.classList.toggle('collapsed');
+  chevron.classList.toggle('open');
+}
+
+function filterSvFriends(q) {
+  const listEl = document.getElementById('sv-friends-list');
+  if (!listEl) return;
+  
+  listEl.querySelectorAll('.sv-friend').forEach(btn => {
+    const name = btn.querySelector('span')?.textContent || '';
+    btn.style.display = name.toLowerCase().includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+function downloadPage() {
+  const blob = new Blob([document.documentElement.outerHTML], { type: 'text/html' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'pika-wrapped.html'; a.click();
+}
+function shareX() {
+  const txt = encodeURIComponent(`Check out my #PikaWrapped ${selectedYear} stats on PikaNetwork! 🎮`);
+  window.open(`https://twitter.com/intent/tweet?text=${txt}`, '_blank');
+}
+function shareFB() {
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(location.href)}`, '_blank');
+}
+</script>
+</body>
+</html>
