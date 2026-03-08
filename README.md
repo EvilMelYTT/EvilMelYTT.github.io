@@ -16,6 +16,10 @@
 
 ---
 ## Side Projects
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #ff6b35; margin-bottom: 15px;">
+<h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/CETester">PikaNetwork Custom Enchantment Viewer</a></h3>
+<small>Interactive Minecraft-style UI recreation of the <a href="https://pika-network.net">PikaNetwork</a> enchanter menu. Browse, filter, and sort custom enchantments by type with a scrolling image bar and background customization.</small>
+</div>
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #5000a0; margin-bottom: 15px;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/mc-enchant-tracker.html">Minecraft Enchantment Tracker</a></h3>
 <small>Tracks vanilla and custom server enchants per gear slot. Texture pack support, <a href="https://modrinth.com/mod/yoinkgui">YoinkGUI</a> inventory import, progress bars, auto-saved.</small>
