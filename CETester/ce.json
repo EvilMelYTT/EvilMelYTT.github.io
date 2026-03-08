@@ -1,0 +1,134 @@
+[
+  {
+    "page": 1,
+    "titles": {
+      "main": "Main Inventory - Page 1/9",
+      "hotbar": "Categories - Page 1/9"
+    },
+    "items": [
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 12
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 13
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 21
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 22
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 23
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 30
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 31
+      },
+      {
+        "id": "minecraft:purple_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&o&7Orb is rolling...",
+        "lore": [
+          "&8Click the book in the middle",
+          "&8to reveal the enchantment."
+        ],
+        "icon": "minecraft:purple_stained_glass_pane",
+        "slot": 32
+      }
+    ]
+  },
+  {
+    "page": 2,
+    "titles": {
+      "main": "Main Inventory - Page 2/4",
+      "hotbar": "Categories - Page 2/4"
+    },
+    "items": []
+  },
+  {
+    "page": 3,
+    "titles": {
+      "main": "Main Inventory - Page 3/4",
+      "hotbar": "Categories - Page 3/4"
+    },
+    "items": []
+  },
+  {
+    "page": 4,
+    "titles": {
+      "main": "Main Inventory - Page 4/4",
+      "hotbar": "Categories - Page 4/4"
+    },
+    "items": []
+  }
+]

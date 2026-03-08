@@ -1,0 +1,365 @@
+[
+  {
+    "page": 1,
+    "titles": {
+      "main": "Main Inventory - Page 1/9",
+      "hotbar": "Categories - Page 1/9"
+    },
+    "items": [
+      {
+        "id": "minecraft:enchanted_book",
+        "count": 1,
+        "name_raw": "&d&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛ ꜱʜᴏᴘ",
+        "lore": [
+          "&fPurchase powerful&f enchantments.",
+          "&fAccess unique&f custom effects.",
+          "&fYour Experience: &b121,505",
+          "&d&lFeatures:",
+          "&d▪ &7Custom special enchants",
+          "&d▪ &7Exp based pricing",
+          "&e► Click to open enchanter"
+        ],
+        "icon": "minecraft:enchanted_book",
+        "slot": 0
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 1
+      },
+      {
+        "id": "minecraft:netherite_sword",
+        "count": 1,
+        "name_raw": "<gradient:#BC16FE:#FFFF00>Absolute Solver",
+        "lore": [],
+        "icon": "minecraft:netherite_sword",
+        "slot": 2
+      },
+      {
+        "id": "minecraft:netherite_pickaxe",
+        "count": 1,
+        "name_raw": "<gradient:#FF4FAD:#71043E>Katagiri",
+        "lore": [],
+        "icon": "minecraft:netherite_pickaxe",
+        "slot": 3
+      },
+      {
+        "id": "minecraft:netherite_axe",
+        "count": 1,
+        "name_raw": "<gradient:#2557EF:#837CA6>Abyss Mace",
+        "lore": [],
+        "icon": "minecraft:netherite_axe",
+        "slot": 4
+      },
+      {
+        "id": "minecraft:glass_pane",
+        "count": 1,
+        "name_raw": "&e← Your Items",
+        "lore": [
+          "&dYou Earn →"
+        ],
+        "icon": "minecraft:glass_pane",
+        "slot": 5
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&a&lExperience Bottle&f&l (Throw)",
+        "lore": [
+          "&eValue:&f 1,430 EXP",
+          "&eSigner:&f &e&lTinkerer"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 6
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&a&lExperience Bottle&f&l (Throw)",
+        "lore": [
+          "&eValue:&f 1,380 EXP",
+          "&eSigner:&f &e&lTinkerer"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 7
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&a&lExperience Bottle&f&l (Throw)",
+        "lore": [
+          "&eValue:&f 1,360 EXP",
+          "&eSigner:&f &e&lTinkerer"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 8
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&e&lᴇɴᴄʜᴀɴᴛᴍᴇɴᴛꜱ",
+        "lore": [
+          "&fView all&f enchantments.",
+          "&fExplore abilities&f and rarities&f.",
+          "&e&lFeatures:",
+          "&e▪ &7Browse all available enchants",
+          "&e▪ &7Sort by item type",
+          "&e▪ &7See detailed descriptions",
+          "&e► Click to view"
+        ],
+        "icon": "minecraft:book",
+        "slot": 9
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 10
+      },
+      {
+        "id": "minecraft:glass_pane",
+        "count": 1,
+        "name_raw": "&e← Your Items",
+        "lore": [
+          "&dYou Earn →"
+        ],
+        "icon": "minecraft:glass_pane",
+        "slot": 14
+      },
+      {
+        "id": "minecraft:diamond_chestplate",
+        "count": 1,
+        "name_raw": "&a&lɪᴛᴇᴍ ʀᴇᴘᴀɪʀᴇʀ",
+        "lore": [
+          "&fRepair damaged&f equipment.",
+          "&fSave valuable&f enchanted items.",
+          "&a&lFeatures:",
+          "&a▪ &7Completely fixes damaged items",
+          "&a▪ &7Experience-based cost, works",
+          "&a▪ &7on weapons, tools &7armor",
+          "&e► Click to open repairer"
+        ],
+        "icon": "minecraft:diamond_chestplate",
+        "slot": 18
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 19
+      },
+      {
+        "id": "minecraft:glass_pane",
+        "count": 1,
+        "name_raw": "&e← Your Items",
+        "lore": [
+          "&dYou Earn →"
+        ],
+        "icon": "minecraft:glass_pane",
+        "slot": 23
+      },
+      {
+        "id": "minecraft:iron_ingot",
+        "count": 1,
+        "name_raw": "&6&lɪᴛᴇᴍ ᴛɪɴᴋᴇʀᴇʀ",
+        "lore": [
+          "&fRecycle unwanted&f equipment",
+          "&fConvert items into experience&f.",
+          "&6&lFeatures:",
+          "&6▪ &7Get XP from enchanted items",
+          "&6▪ &7Better items give more rewards",
+          "&e► Click to open tinkerer"
+        ],
+        "icon": "minecraft:iron_ingot",
+        "slot": 27
+      },
+      {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:lime_stained_glass_pane",
+        "slot": 28
+      },
+      {
+        "id": "minecraft:glass_pane",
+        "count": 1,
+        "name_raw": "&e← Your Items",
+        "lore": [
+          "&dYou Earn →"
+        ],
+        "icon": "minecraft:glass_pane",
+        "slot": 32
+      },
+      {
+        "id": "minecraft:purple_dye",
+        "count": 1,
+        "name_raw": "&d&lɪᴛᴇᴍ ᴄᴏᴍʙɪɴᴇʀ",
+        "lore": [
+          "&fMerge items with the same enchantment",
+          "&fCreate higher level gear efficiently",
+          "&d&lFeatures:",
+          "&d▪ &7Combine identical enchantments",
+          "&d▪ &7Upgrade equipment tiers",
+          "&d▪ &7Preserve item durability",
+          "&d▪ &7Cost based on enchant level",
+          "&e► Click to open combiner"
+        ],
+        "icon": "minecraft:purple_dye",
+        "slot": 36
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 37
+      },
+      {
+        "id": "minecraft:glass_pane",
+        "count": 1,
+        "name_raw": "&e← Your Items",
+        "lore": [
+          "&dYou Earn →"
+        ],
+        "icon": "minecraft:glass_pane",
+        "slot": 41
+      },
+      {
+        "id": "minecraft:experience_bottle",
+        "count": 1,
+        "name_raw": "&b&lʙᴏᴏꜱᴛᴇʀꜱ",
+        "lore": [
+          "&fBoosters upon activation increases",
+          "&fyour multiplier on diffrent kind of",
+          "&fthings, making them extremely valuable!",
+          "&fTotal Boosters Owned: &d6",
+          "&b&lFeatures:",
+          "&b▪ &7Current active Boosters",
+          "&b▪ &7Your Boosters",
+          "&b▪ &7Boosters shop",
+          "&e► Click to open boosters"
+        ],
+        "icon": "minecraft:experience_bottle",
+        "slot": 45
+      },
+      {
+        "id": "minecraft:gray_stained_glass_pane",
+        "count": 1,
+        "name_raw": "",
+        "lore": [],
+        "icon": "minecraft:gray_stained_glass_pane",
+        "slot": 46
+      },
+      {
+        "id": "minecraft:book",
+        "count": 1,
+        "name_raw": "&6&lᴍᴏʀᴇ ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
+        "lore": [
+          "&fInstead of trashing your useless",
+          "&fitems, tinker them instead in",
+          "&fexchange for some experience.",
+          "&fHere you can put all your Unwanted:",
+          "&e▪ Enchanted Armor",
+          "&e▪ Weapons",
+          "&e▪ Wools"
+        ],
+        "icon": "minecraft:book",
+        "slot": 49
+      },
+      {
+        "id": "minecraft:lime_stained_glass_pane",
+        "count": 1,
+        "name_raw": "&e► Click to confirm",
+        "lore": [],
+        "icon": "minecraft:lime_stained_glass_pane",
+        "slot": 50
+      },
+      {
+        "id": "minecraft:gold_ingot",
+        "count": 1,
+        "name_raw": "&6&lɢᴏʟᴅ ꜱʜᴏᴘ",
+        "lore": [
+          "&fSpend &6Gold &for &fIron &fto buy",
+          "&fpowerful &cexclusive items&f and perks.",
+          "&ePurchase Gold from:",
+          "&b&nstore.pika-network.net",
+          "&fHere you can find, and buy:",
+          "&6▪ &cRanks&f, &dCrate Keys&f, &eClasses",
+          "&6▪ &bPasses&f and more!",
+          "&e► Click to open goldshop"
+        ],
+        "icon": "minecraft:gold_ingot",
+        "slot": 51
+      },
+      {
+        "id": "minecraft:compass",
+        "count": 1,
+        "name_raw": "&e&lꜱᴡɪᴛᴄʜ ᴍᴇɴᴜꜱ",
+        "lore": [
+          "&e&lFeatures:",
+          "&e▪ &aEnchanter Menu",
+          "&e▪ &7Cosmetics Menu",
+          "&e▪ &7Games Menu",
+          "&e▪ &7Leveling Menu",
+          "&e▪ &7Loadout Menu",
+          "&e▪ &7Shop Menu",
+          "&e▪ &7Teams Menu",
+          "&e▪ &7Gold Shop Menu",
+          "&e► Left click to open next menu",
+          "&e► Right click to open previous menu"
+        ],
+        "icon": "minecraft:compass",
+        "slot": 53
+      },
+      {
+        "id": "minecraft:crossbow",
+        "count": 1,
+        "name_raw": "<color:#93E752>&lEᴘɪᴄ Cʀᴏssʙᴏᴡ",
+        "lore": [],
+        "icon": "minecraft:crossbow",
+        "slot": 57
+      },
+      {
+        "id": "minecraft:netherite_axe",
+        "count": 1,
+        "name_raw": "\"<gradient:#950606:#EE4B2B>&lᴅɪꜱᴄᴏʀᴅ.ɢɢ/ᴏᴘʟɪꜰᴇꜱᴛᴇᴀʟ\"",
+        "lore": [],
+        "icon": "minecraft:netherite_axe",
+        "slot": 58
+      }
+    ]
+  },
+  {
+    "page": 2,
+    "titles": {
+      "main": "Main Inventory - Page 2/4",
+      "hotbar": "Categories - Page 2/4"
+    },
+    "items": []
+  },
+  {
+    "page": 3,
+    "titles": {
+      "main": "Main Inventory - Page 3/4",
+      "hotbar": "Categories - Page 3/4"
+    },
+    "items": []
+  },
+  {
+    "page": 4,
+    "titles": {
+      "main": "Main Inventory - Page 4/4",
+      "hotbar": "Categories - Page 4/4"
+    },
+    "items": []
+  }
+]
