@@ -5,709 +5,484 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft Item Rename Parser</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
         body {
             background: linear-gradient(135deg, #2a1a2e 0%, #1a162e 50%, #0f1a34 100%);
-            color: #e6e6e6;
-            min-height: 100vh;
-            padding: 20px;
+            color: #e6e6e6; min-height: 100vh; padding: 20px;
             transition: background 0.44s ease;
         }
-        
-        body.blue-theme {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        }
-        
+        body.blue-theme { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+
         .theme-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            width: 50px;
-            height: 50px;
-            cursor: pointer;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: fixed; top: 20px; left: 20px; z-index: 100;
+            width: 50px; height: 50px; cursor: pointer;
+            border-radius: 50%; overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             transition: transform 0.3s ease;
         }
-        
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-        
-        .theme-toggle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
+        .theme-toggle:hover { transform: scale(1.1); }
+        .theme-toggle img { width: 100%; height: 100%; object-fit: cover; }
+
+        .container { max-width: 1200px; margin: 0 auto; }
+
         header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            text-align: center; margin-bottom: 30px; padding: 20px;
+            background: rgba(0,0,0,0.3); border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #b84dff;
-            text-shadow: 0 0 10px rgba(184, 77, 255, 0.5);
+            font-size: 2.5rem; margin-bottom: 10px; color: #b84dff;
+            text-shadow: 0 0 10px rgba(184,77,255,0.5);
             transition: color 0.44s ease, text-shadow 0.44s ease;
         }
-        
-        body.blue-theme h1 {
-            color: #4db8ff;
-            text-shadow: 0 0 10px rgba(77, 184, 255, 0.5);
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            color: #a6a6a6;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        
+        body.blue-theme h1 { color: #4db8ff; text-shadow: 0 0 10px rgba(77,184,255,0.5); }
+        .subtitle { font-size: 1.1rem; color: #a6a6a6; max-width: 800px; margin: 0 auto; }
+
+        .content { display: flex; flex-wrap: wrap; gap: 20px; }
+
         .input-section {
-            flex: 1;
-            min-width: 300px;`
-            background: rgba(20, 30, 48, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            flex: 1; min-width: 300px;
+            background: rgba(20,30,48,0.8); padding: 20px;
+            border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        
         .output-section {
-            flex: 2;
-            min-width: 500px;
-            background: rgba(20, 30, 48, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            flex: 2; min-width: 500px;
+            background: rgba(20,30,48,0.8); padding: 20px;
+            border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        
+
         h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            color: #d65ce6;
-            border-bottom: 2px solid #d65ce6;
-            padding-bottom: 5px;
+            font-size: 1.5rem; margin-bottom: 15px; color: #d65ce6;
+            border-bottom: 2px solid #d65ce6; padding-bottom: 5px;
             transition: color 0.44s ease, border-color 0.44s ease;
         }
-        
-        body.blue-theme h2 {
-            color: #5ce1e6;
-            border-bottom: 2px solid #5ce1e6;
-        }
-        
+        body.blue-theme h2 { color: #5ce1e6; border-color: #5ce1e6; }
+
         textarea {
-            width: 100%;
-            height: 150px;
-            background: #0d1525;
-            color: #e6e6e6;
-            border: 1px solid #3a5a78;
-            border-radius: 5px;
-            padding: 10px;
-            font-family: monospace;
-            resize: vertical;
-            margin-bottom: 15px;
+            width: 100%; height: 150px; background: #0d1525; color: #e6e6e6;
+            border: 1px solid #3a5a78; border-radius: 5px; padding: 10px;
+            font-family: monospace; resize: vertical; margin-bottom: 15px;
         }
-        
-        .file-upload {
-            margin-bottom: 15px;
-        }
-        
-        
+
+        .file-upload { margin-bottom: 15px; }
         .file-upload-label {
-            display: block;
-            padding: 10px 15px;
-            background: rgba(184, 77, 255, 0.2);
-            border: 1px dashed #b84dff;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.44s ease;
+            display: block; padding: 10px 15px; background: rgba(184,77,255,0.2);
+            border: 1px dashed #b84dff; border-radius: 5px;
+            text-align: center; cursor: pointer; transition: all 0.44s ease;
         }
-        
-        body.blue-theme .file-upload-label {
-            background: rgba(77, 184, 255, 0.2);
-            border: 1px dashed #4db8ff;
-        }
-        
-        .file-upload-label:hover {
-            background: rgba(184, 77, 255, 0.4);
-        }
-        
-        body.blue-theme .file-upload-label:hover {
-            background: rgba(77, 184, 255, 0.4);
-        }
-        
-        input[type="file"] {
-            display: none;
-        }
-        
+        body.blue-theme .file-upload-label { background: rgba(77,184,255,0.2); border-color: #4db8ff; }
+        .file-upload-label:hover { background: rgba(184,77,255,0.4); }
+        body.blue-theme .file-upload-label:hover { background: rgba(77,184,255,0.4); }
+        input[type="file"] { display: none; }
+
         button {
             background: linear-gradient(to right, #b84dff, #d65ce6);
-            color: #0d1525;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.44s ease;
-            display: block;
-            width: 100%;
+            color: #0d1525; border: none; padding: 10px 20px;
+            border-radius: 5px; font-weight: bold; cursor: pointer;
+            transition: all 0.44s ease; display: block; width: 100%;
         }
-        
-        body.blue-theme button {
-            background: linear-gradient(to right, #4db8ff, #5ce1e6);
-        }
-        
-        button:hover {
-            background: linear-gradient(to right, #d65ce6, #b84dff);
-            box-shadow: 0 0 10px rgba(214, 92, 230, 0.5);
-        }
-        
-        body.blue-theme button:hover {
-            background: linear-gradient(to right, #5ce1e6, #4db8ff);
-            box-shadow: 0 0 10px rgba(92, 225, 230, 0.5);
-        }
-        
-        .instructions {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            font-size: 0.9rem;
-        }
-        
-        .instructions h3 {
-            margin-bottom: 10px;
-            color: #b84dff;
-            transition: color 0.44s ease;
-        }
-        
-        body.blue-theme .instructions h3 {
-            color: #4db8ff;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 5px;
-        }
-        
+        body.blue-theme button { background: linear-gradient(to right, #4db8ff, #5ce1e6); }
+        button:hover { background: linear-gradient(to right, #d65ce6, #b84dff); box-shadow: 0 0 10px rgba(214,92,230,0.5); }
+        body.blue-theme button:hover { background: linear-gradient(to right, #5ce1e6, #4db8ff); box-shadow: 0 0 10px rgba(92,225,230,0.5); }
+
+        .options { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .options label { font-size: 0.9rem; color: #e6e6e6; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+
+        .instructions { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 5px; font-size: 0.9rem; }
+        .instructions h3 { margin-bottom: 10px; color: #b84dff; transition: color 0.44s ease; }
+        body.blue-theme .instructions h3 { color: #4db8ff; }
+        .instructions ul { padding-left: 20px; }
+        .instructions li { margin-bottom: 5px; }
+
         .item-card {
-            background: rgba(13, 21, 37, 0.7);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #b84dff;
-            transition: border-color 0.44s ease;
+            background: rgba(13,21,37,0.7); border-radius: 8px;
+            padding: 15px; margin-bottom: 15px;
+            border-left: 4px solid #b84dff; transition: border-color 0.44s ease;
         }
-        
-        body.blue-theme .item-card {
-            border-left: 4px solid #4db8ff;
-        }
-        
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .item-id {
-            font-size: 0.9rem;
-            color: #a6a6a6;
-            font-family: monospace;
-        }
-        
+        body.blue-theme .item-card { border-color: #4db8ff; }
+
+        .item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .item-id { font-size: 0.9rem; color: #a6a6a6; font-family: monospace; }
+
         .item-name {
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            padding: 8px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            overflow-x: auto;
-            white-space: nowrap;
+            font-weight: bold; font-size: 1.2rem; margin-bottom: 6px;
+            padding: 8px; background: rgba(0,0,0,0.2);
+            border-radius: 5px; overflow-x: auto; white-space: nowrap;
         }
-        
+
+        /* Lore preview — styled like a Minecraft tooltip */
+        .item-lore {
+            padding: 8px 10px; background: rgba(0,0,0,0.25);
+            border-radius: 5px; margin-bottom: 6px;
+            border-left: 3px solid #5a2e7a;
+            font-size: 0.88rem; line-height: 1.65;
+        }
+        body.blue-theme .item-lore { border-left-color: #1e5080; }
+        .lore-line { display: block; white-space: nowrap; overflow-x: auto; min-height: 0; line-height: 1.65; }
+        .lore-line:empty { min-height: 0.6em; }
+
         .raw-name {
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #a6a6a6;
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 5px;
-            overflow-x: auto;
+            font-family: monospace; font-size: 0.9rem; color: #a6a6a6;
+            margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.2);
+            border-radius: 5px; overflow-x: auto;
         }
-        
-        .formatted-output {
-            margin-top: 15px;
-        }
-        
+
+        .formatted-output { margin-top: 15px; }
         .formatted-output pre {
-            background: #0d1525;
-            padding: 10px;
-            border-radius: 5px;
-            overflow-x: auto;
-            font-family: monospace;
-            color: #e6e6e6;
+            background: #0d1525; padding: 10px; border-radius: 5px;
+            overflow-x: auto; font-family: monospace; color: #e6e6e6;
         }
-        
+
         .copy-btn {
-            background: rgba(184, 77, 255, 0.2);
-            color: #b84dff;
-            border: 1px solid #b84dff;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-            margin-top: 5px;
+            background: rgba(184,77,255,0.2); color: #b84dff;
+            border: 1px solid #b84dff; padding: 5px 10px;
+            border-radius: 4px; font-size: 0.8rem; cursor: pointer;
+            margin-top: 5px; width: auto; display: inline-block;
             transition: all 0.44s ease;
         }
-        
-        body.blue-theme .copy-btn {
-            background: rgba(77, 184, 255, 0.2);
-            color: #4db8ff;
-            border: 1px solid #4db8ff;
-        }
-        
-        .copy-btn:hover {
-            background: rgba(184, 77, 255, 0.4);
-        }
-        
-        body.blue-theme .copy-btn:hover {
-            background: rgba(77, 184, 255, 0.4);
-        }
-        
-        .no-items {
-            text-align: center;
-            padding: 20px;
-            color: #a6a6a6;
-        }
-        
-        .item-count {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
-            color: #d65ce6;
-            transition: color 0.44s ease;
-        }
-        
-        body.blue-theme .item-count {
-            color: #5ce1e6;
-        }
-        
-        .file-name {
-            margin-top: 5px;
-            font-size: 0.9rem;
-            color: #a6a6a6;
-            text-align: center;
-        }
+        body.blue-theme .copy-btn { background: rgba(77,184,255,0.2); color: #4db8ff; border-color: #4db8ff; }
+        .copy-btn:hover { background: rgba(184,77,255,0.4); }
+        body.blue-theme .copy-btn:hover { background: rgba(77,184,255,0.4); }
+
+        .no-items { text-align: center; padding: 20px; color: #a6a6a6; }
+        .item-count { margin-bottom: 15px; font-size: 1.1rem; color: #d65ce6; transition: color 0.44s ease; }
+        body.blue-theme .item-count { color: #5ce1e6; }
+        .file-name { margin-top: 5px; font-size: 0.9rem; color: #a6a6a6; text-align: center; }
+
+        .section-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.07em; color: #7a8aaa; margin: 10px 0 4px; }
     </style>
 </head>
 <body>
     <div class="theme-toggle" id="themeToggle">
         <img src="https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purple.png" alt="Toggle theme" id="themeToggleImg">
     </div>
-    
     <div class="container">
         <header>
             <h1>Minecraft Item Rename Parser</h1>
-            <p class="subtitle">Parse Minecraft NBT data to extract and format custom item names. Paste your NBT data or upload a file to see the formatted renames.</p>
+            <p class="subtitle">Parse Minecraft NBT data to extract and format custom item names and lore. Paste your NBT data or upload a file.</p>
         </header>
-        
         <div class="content">
             <div class="input-section">
                 <h2>Input NBT Data</h2>
                 <textarea id="nbtInput" placeholder="Paste your NBT data here..."></textarea>
-                
                 <div class="file-upload">
-                    <label for="fileInput" class="file-upload-label">
-                        📁 Upload NBT File (TXT/JSON)
-                    </label>
+                    <label for="fileInput" class="file-upload-label">📁 Upload NBT File (TXT/JSON)</label>
                     <input type="file" id="fileInput" accept=".txt,.json">
                     <div id="fileName" class="file-name"></div>
                 </div>
-                
                 <button id="parseBtn">Parse Items</button>
-                <label style="display: block; margin-top: 10px; font-size: 0.9rem; color: #e6e6e6;">
-<input type="checkbox" id="ampersandToggle"> Use &amp; prefix (&amp;#hexcode)</label>
-                
+                <div class="options">
+                    <label><input type="checkbox" id="ampersandToggle"> Use &amp; prefix for hex (&amp;#rrggbb)</label>
+                    <label><input type="checkbox" id="loreToggle" checked> Show lore</label>
+                </div>
                 <div class="instructions">
                     <h3>How to use:</h3>
                     <ul>
                         <li>Paste NBT data into the text area or upload a file</li>
                         <li>Click "Parse Items" to extract custom item names</li>
+                        <li>Toggle lore display on/off as needed</li>
                         <li>Copy the formatted output for use in Minecraft</li>
-                        <li>Look for items with "minecraft:custom_name" components</li>
                     </ul>
                 </div>
             </div>
-            
             <div class="output-section">
                 <h2>Parsed Items</h2>
                 <div class="item-count">Items found: <span id="itemCount">0</span></div>
-                <div id="itemsContainer" class="items-container">
+                <div id="itemsContainer">
                     <div class="no-items">No items parsed yet. Paste NBT data and click "Parse Items".</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        const themeToggle = document.getElementById('themeToggle');
-        const themeToggleImg = document.getElementById('themeToggleImg');
-        const body = document.body;
-        
-        let isBlueTheme = false;
-        let isAnimating = false;
-        
-        const purpleImg = new Image();
-        purpleImg.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purple.png";
-        
-        const blueImg = new Image();
-        blueImg.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/blue.png";
-        
-        const purpleToBlueGif = new Image();
-        purpleToBlueGif.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purpletoblue.gif";
-        
-        const blueToPurpleGif = new Image();
-        blueToPurpleGif.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/bluetopurple.gif";
+<script>
+// ─── Theme toggle ─────────────────────────────────────────────────────────────
+(function () {
+    const toggle = document.getElementById('themeToggle');
+    const img    = document.getElementById('themeToggleImg');
+    const body   = document.body;
+    const IMGS = {
+        purple: 'https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purple.png',
+        blue:   'https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/blue.png',
+        p2b:    'https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purpletoblue.gif',
+        b2p:    'https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/bluetopurple.gif',
+    };
+    Object.values(IMGS).forEach(src => { const i = new Image(); i.src = src; });
+    let blue = false, animating = false;
+    toggle.addEventListener('click', () => {
+        if (animating) return;
+        animating = true;
+        if (blue) {
+            img.src = IMGS.b2p;
+            body.classList.remove('blue-theme');
+            setTimeout(() => { img.src = IMGS.purple; blue = false; animating = false; }, 440);
+        } else {
+            img.src = IMGS.p2b;
+            body.classList.add('blue-theme');
+            setTimeout(() => { img.src = IMGS.blue; blue = true; animating = false; }, 440);
+        }
+    });
+})();
 
-        themeToggle.addEventListener('click', function() {
-            if (isAnimating) return;
-            
-            isAnimating = true;
-            
-            if (isBlueTheme) {
-                themeToggleImg.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/bluetopurple.gif";
-                
-                body.classList.remove('blue-theme');
-                
-                setTimeout(() => {
-                    themeToggleImg.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purple.png";
-                    isBlueTheme = false;
-                    isAnimating = false;
-                }, 440);
-                
-            } else {
-                themeToggleImg.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/purpletoblue.gif";
-                
-                body.classList.add('blue-theme');
-                
-                setTimeout(() => {
-                    themeToggleImg.src = "https://raw.githubusercontent.com/EvilMelYTT/EvilMelYTT.github.io/refs/heads/main/blue.png";
-                    isBlueTheme = true;
-                    isAnimating = false;
-                }, 440);
-            }
-        });
+// ─── Colour maps ──────────────────────────────────────────────────────────────
+const COLOR_MAP = {
+    black:'&0', dark_blue:'&1', dark_green:'&2', dark_aqua:'&3',
+    dark_red:'&4', dark_purple:'&5', gold:'&6', gray:'&7',
+    dark_gray:'&8', blue:'&9', green:'&a', aqua:'&b',
+    red:'&c', light_purple:'&d', yellow:'&e', white:'&f',
+    minecoin_gold:'&g', material_quartz:'&h', material_iron:'&i',
+    material_netherite:'&j', material_redstone:'&m', material_copper:'&n',
+    material_gold:'&p', material_emerald:'&q', material_diamond:'&s',
+    material_lapis:'&t', material_amethyst:'&u', material_resin:'&v'
+};
+const CODE_TO_HEX = {
+    '&0':'#000000','&1':'#0000AA','&2':'#00AA00','&3':'#00AAAA',
+    '&4':'#AA0000','&5':'#AA00AA','&6':'#FFAA00','&7':'#AAAAAA',
+    '&8':'#555555','&9':'#5555FF','&a':'#55FF55','&b':'#55FFFF',
+    '&c':'#FF5555','&d':'#FF55FF','&e':'#FFFF55','&f':'#FFFFFF'
+};
 
-        const colorMap = {
-            'black': '&0',
-            'dark_blue': '&1',
-            'dark_green': '&2',
-            'dark_aqua': '&3',
-            'dark_red': '&4',
-            'dark_purple': '&5',
-            'gold': '&6',
-            'gray': '&7',
-            'dark_gray': '&8',
-            'blue': '&9',
-            'green': '&a',
-            'aqua': '&b',
-            'red': '&c',
-            'light_purple': '&d',
-            'yellow': '&e',
-            'white': '&f',
-            'minecoin_gold': '&g',
-            'material_quartz': '&h',
-            'material_iron': '&i',
-            'material_netherite': '&j',
-            'material_redstone': '&m',
-            'material_copper': '&n',
-            'material_gold': '&p',
-            'material_emerald': '&q',
-            'material_diamond': '&s',
-            'material_lapis': '&t',
-            'material_amethyst': '&u',
-            'material_resin': '&v'
-        };
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function escapeHtml(text) {
+    if (typeof text !== 'string') return '';
+    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+               .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+function getHexFromCode(code) { return CODE_TO_HEX[code] || '#FFFFFF'; }
 
-        document.getElementById('parseBtn').addEventListener('click', function() {
-            const nbtInput = document.getElementById('nbtInput').value;
-            const itemsContainer = document.getElementById('itemsContainer');
-            const itemCount = document.getElementById('itemCount');
-            
-            itemsContainer.innerHTML = '';
-            
-            if (!nbtInput.trim()) {
-                itemsContainer.innerHTML = '<div class="no-items">Please paste NBT data first.</div>';
-                itemCount.textContent = '0';
-                return;
+// ─── Render JSON text component → HTML ───────────────────────────────────────
+// Used for both name and lore lines — same component format in both cases.
+function renderComponentToHtml(comp) {
+    if (!comp) return '';
+    const parts = comp.extra || (comp.text !== undefined ? [comp] : []);
+    return parts.map(part => {
+        if (typeof part === 'string') return escapeHtml(part);
+        let style = '';
+        if (part.bold)          style += 'font-weight:bold;';
+        if (part.italic)        style += 'font-style:italic;';
+        if (part.underlined)    style += 'text-decoration:underline;';
+        if (part.strikethrough) style += 'text-decoration:line-through;';
+        if (part.obfuscated)    style += 'filter:blur(1px);';
+        if (part.color) {
+            if (part.color.startsWith('#')) {
+                style += `color:${part.color};`;
+            } else if (COLOR_MAP[part.color]) {
+                style += `color:${getHexFromCode(COLOR_MAP[part.color])};`;
             }
-            
-            const items = parseNBTData(nbtInput);
-            itemCount.textContent = items.length;
-            
-            if (items.length === 0) {
-                itemsContainer.innerHTML = '<div class="no-items">No items with custom names found in the NBT data.</div>';
-                return;
+        }
+        return `<span style="${style}">${escapeHtml(part.text || '')}</span>`;
+    }).join('');
+}
+
+// ─── Convert JSON text component → formatted string ──────────────────────────
+function componentToFormattedString(comp, useAmpersand) {
+    if (!comp) return '';
+    const parts = comp.extra || (comp.text !== undefined ? [comp] : []);
+    return parts.map(part => {
+        if (typeof part === 'string') return part;
+        let out = '';
+        if (part.color) {
+            if (part.color.startsWith('#')) {
+                out += useAmpersand ? `&#${part.color.slice(1)}` : part.color;
+            } else if (COLOR_MAP[part.color]) {
+                out += COLOR_MAP[part.color];
             }
-            
-            items.forEach((item, index) => {
-                const itemCard = document.createElement('div');
-                itemCard.className = 'item-card';
-                
-                const itemHeader = document.createElement('div');
-                itemHeader.className = 'item-header';
-                itemHeader.innerHTML = `
-                    <span>Item ${index + 1}</span>
-                    <span class="item-id">${item.id}</span>
-                `;
-                
-                const itemName = document.createElement('div');
-                itemName.className = 'item-name';
-                itemName.innerHTML = formatCustomName(item.customName);
-                
-                const rawName = document.createElement('div');
-                rawName.className = 'raw-name';
-                rawName.textContent = JSON.stringify(item.customName, null, 2);
-                
-                const useAmpersand = document.getElementById('ampersandToggle')?.checked || false;
-                const formattedText = generateFormattedOutput(item.customName, useAmpersand);
-                
-                const formattedOutput = document.createElement('div');
-                formattedOutput.className = 'formatted-output';
-                formattedOutput.innerHTML = `
-                    <div>Formatted output:</div>
-                    <pre>${escapeHtml(formattedText)}</pre>
-                    <button class="copy-btn" data-text="${escapeHtml(formattedText)}">Copy Formatted Name</button>
-                `;
-                
-                itemCard.appendChild(itemHeader);
-                itemCard.appendChild(itemName);
-                itemCard.appendChild(rawName);
-                itemCard.appendChild(formattedOutput);
-                
-                itemsContainer.appendChild(itemCard);
+        }
+        if (part.bold)          out += '&l';
+        if (part.italic)        out += '&o';
+        if (part.underlined)    out += '&n';
+        if (part.strikethrough) out += '&m';
+        if (part.obfuscated)    out += '&k';
+        out += part.text || '';
+        return out;
+    }).join('');
+}
+
+// ─── NBT parser ───────────────────────────────────────────────────────────────
+function extractNbtSingleQuotedField(nbt, fieldName) {
+    const key = `"${fieldName}":`;
+    const keyIdx = nbt.indexOf(key);
+    if (keyIdx === -1) return null;
+    let i = keyIdx + key.length;
+    while (i < nbt.length && nbt[i] !== "'") i++;
+    if (i >= nbt.length) return null;
+    i++;
+    let content = '';
+    while (i < nbt.length) {
+        if (nbt[i] === '\\' && nbt[i + 1] === "'") { content += "'"; i += 2; continue; }
+        if (nbt[i] === "'") break;
+        content += nbt[i++];
+    }
+    return content;
+}
+
+
+function parseLoreBlock(loreLines) {
+    return loreLines.map(line => {
+        const t = line.trim();
+        if (t === '""' || t === '') return null;
+        try { return JSON.parse(t); }
+        catch (e) { console.error('Lore line parse failed:', e, t); return null; }
+    });
+}
+
+function parseNBTData(nbtData) {
+    const items = [];
+    const lines = nbtData.split('\n');
+    let currentItem = null;
+    let rawNbtBuffer = '';
+    let inLore = false;
+    let loreLines = [];
+
+    const finaliseItem = () => {
+        if (!currentItem) return;
+        if (rawNbtBuffer && !currentItem.customName) {
+            const jsonStr = extractNbtSingleQuotedField(rawNbtBuffer, 'minecraft:custom_name');
+            if (jsonStr) {
+                try { currentItem.customName = JSON.parse(jsonStr); }
+                catch (e) { console.error('Buffer parse failed:', e); }
+            }
+        }
+        if (loreLines.length > 0) {
+            currentItem.lore = parseLoreBlock(loreLines);
+        }
+        if (currentItem.customName) items.push(currentItem);
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+
+        if (trimmed.startsWith('=== ITEM')) {
+            finaliseItem();
+            currentItem = { id: '', customName: null, lore: [] };
+            rawNbtBuffer = '';
+            inLore = false;
+            loreLines = [];
+            continue;
+        }
+
+        if (!currentItem) continue;
+
+        // Detect start of lore block
+        if (trimmed === 'Lore:') { inLore = true; continue; }
+
+        // Detect end of lore block (separator or new section)
+        if (trimmed.startsWith('===') || trimmed.startsWith('Name:') || trimmed === '==================================================') {
+            inLore = false;
+        }
+
+        if (inLore) {
+            const m = trimmed.match(/^Raw\s+(\d+):\s*([\s\S]*)$/);
+            if (m) { loreLines.push(m[2]); }
+            continue;
+        }
+
+        // Accumulate NBT buffer (non-lore lines)
+        rawNbtBuffer += line + '\n';
+
+        if (!currentItem.id) {
+            const m = trimmed.match(/\bid:"minecraft:([^"]+)"/);
+            if (m) currentItem.id = m[1];
+        }
+
+        if (trimmed.includes('"minecraft:custom_name"') && !currentItem.customName) {
+            const m = trimmed.match(/"minecraft:custom_name":\s*'((?:[^'\\]|\\.)*)'/);
+            if (m) {
+                try { currentItem.customName = JSON.parse(m[1].replace(/\\'/g, "'")); }
+                catch (e) { console.error('custom_name fast-path parse failed:', e); }
+            }
+        }
+    }
+
+    finaliseItem();
+    return items;
+}
+
+// ─── Lore toggle: show/hide all lore blocks without re-parsing ────────────────
+document.getElementById('loreToggle').addEventListener('change', function () {
+    document.querySelectorAll('.item-lore').forEach(el => {
+        el.style.display = this.checked ? '' : 'none';
+    });
+});
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+document.getElementById('parseBtn').addEventListener('click', () => {
+    const nbtInput    = document.getElementById('nbtInput').value;
+    const container   = document.getElementById('itemsContainer');
+    const itemCount   = document.getElementById('itemCount');
+    const useAmpersand = document.getElementById('ampersandToggle').checked;
+    const showLore    = document.getElementById('loreToggle').checked;
+
+    container.innerHTML = '';
+
+    if (!nbtInput.trim()) {
+        container.innerHTML = '<div class="no-items">Please paste NBT data first.</div>';
+        itemCount.textContent = '0';
+        return;
+    }
+
+    const items = parseNBTData(nbtInput);
+    itemCount.textContent = items.length;
+
+    if (items.length === 0) {
+        container.innerHTML = '<div class="no-items">No items with custom names found in the NBT data.</div>';
+        return;
+    }
+
+    items.forEach((item, index) => {
+        const nameFormatted = componentToFormattedString(item.customName, useAmpersand);
+        const nameHtml      = renderComponentToHtml(item.customName);
+
+        // Build lore HTML preview
+        let lorePreviewHtml = '';
+        if (item.lore && item.lore.length > 0) {
+            const loreLineHtml = item.lore.map(comp => {
+                const inner = comp ? renderComponentToHtml(comp) : '';
+                return `<span class="lore-line">${inner}</span>`;
+            }).join('');
+            lorePreviewHtml = `<div class="item-lore" style="display:${showLore ? '' : 'none'}">${loreLineHtml}</div>`;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+            <div class="item-header">
+                <span>Item ${index + 1}</span>
+                <span class="item-id">${escapeHtml(item.id)}</span>
+            </div>
+            <div class="item-name">${nameHtml}</div>
+            ${lorePreviewHtml}
+            <div class="raw-name">${escapeHtml(JSON.stringify(item.customName, null, 2))}</div>
+            <div class="formatted-output">
+                <div>Formatted output:</div>
+                <pre>${escapeHtml(nameFormatted)}</pre>
+                <button class="copy-btn" data-text="${escapeHtml(nameFormatted)}">Copy Formatted Name</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+
+    container.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            navigator.clipboard.writeText(this.dataset.text).then(() => {
+                const orig = this.textContent;
+                this.textContent = 'Copied!';
+                setTimeout(() => { this.textContent = orig; }, 2000);
             });
-            
-            document.querySelectorAll('.copy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const text = this.getAttribute('data-text');
-                    navigator.clipboard.writeText(text).then(() => {
-                        const originalText = this.textContent;
-                        this.textContent = 'Copied!';
-                        setTimeout(() => {
-                            this.textContent = originalText;
-                        }, 2000);
-                    });
-                });
-            });
         });
-        
-        document.getElementById('fileInput').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            document.getElementById('fileName').textContent = file.name;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('nbtInput').value = e.target.result;
-            };
-            reader.readAsText(file);
-        });
-        
-        function parseNBTData(nbtData) {
-            const items = [];
-            const lines = nbtData.split('\n');
-            let currentItem = null;
-            
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                
-                if (line.startsWith('=== ITEM')) {
-                    if (currentItem) {
-                        items.push(currentItem);
-                    }
-                    currentItem = { id: '', customName: null };
-                }
-                
-                if (line.includes('id:"minecraft:')) {
-                    const match = line.match(/id:"minecraft:([^"]+)"/);
-                    if (match && currentItem) {
-                        if (!currentItem.id || line.includes('Raw NBT:')) {
-                            currentItem.id = match[1];
-                        }
-                    }
-                }
-                
-                if (line.includes('"minecraft:custom_name"')) {
-                    const jsonMatch = line.match(/"minecraft:custom_name":\s*'({.*?})'/);
-                    if (jsonMatch && jsonMatch[1]) {
-                        try {
-                            let jsonStr = jsonMatch[1].replace(/\\'/g, "'");
-                            const customNameData = JSON.parse(jsonStr);
-                            currentItem.customName = customNameData;
-                        } catch (e) {
-                            console.error('Error parsing custom name:', e, 'Content:', jsonMatch[1]);
-                        }
-                    } else {
-                        let jsonContent = line.substring(line.indexOf("'") + 1);
-                        let bracketCount = (jsonContent.match(/{/g) || []).length - (jsonContent.match(/}/g) || []).length;
-                        
-                        let j = i;
-                        while (bracketCount > 0 && j < lines.length - 1) {
-                            j++;
-                            const nextLine = lines[j].trim();
-                            jsonContent += nextLine;
-                            bracketCount += (nextLine.match(/{/g) || []).length - (nextLine.match(/}/g) || []).length;
-                            
-                            if (bracketCount <= 0 && jsonContent.includes("'")) {
-                                jsonContent = jsonContent.substring(0, jsonContent.lastIndexOf("'"));
-                                break;
-                            }
-                        }
-                        
-                        try {
-                            jsonContent = jsonContent.replace(/\\'/g, "'");
-                            const customNameData = JSON.parse(jsonContent);
-                            currentItem.customName = customNameData;
-                            i = j; 
-                        } catch (e) {
-                            console.error('Error parsing multi-line custom name:', e, 'Content:', jsonContent);
-                        }
-                    }
-                }
-            }
-            
-            if (currentItem) {
-                items.push(currentItem);
-            }
-            
-            return items;
-        }
-        
-        function formatCustomName(customName) {
-            if (!customName || !customName.extra) return '';
-            
-            let formatted = '';
-            for (const part of customName.extra) {
-                if (typeof part === 'string') {
-                    formatted += `<span>${escapeHtml(part)}</span>`;
-                    continue;
-                }
-                
-                let style = '';
-                if (part.bold) style += 'font-weight: bold;';
-                if (part.italic) style += 'font-style: italic;';
-                if (part.underlined) style += 'text-decoration: underline;';
-                if (part.strikethrough) style += 'text-decoration: line-through;';
-                if (part.obfuscated) style += 'filter: blur(1px);';
-                
-                if (part.color) {
-                    if (part.color.startsWith('#')) {
-                        style += `color: ${part.color};`;
-                    } else if (colorMap[part.color]) {
-                        style += `color: ${getColorFromCode(colorMap[part.color])};`;
-                    }
-                }
-                
-                formatted += `<span style="${style}">${escapeHtml(part.text || '')}</span>`;
-            }
-            
-            return formatted;
-        }
-        
-function generateFormattedOutput(customName, useAmpersandPrefix = false) {
-            if (!customName || !customName.extra) return '';
-            
-            let output = '';
-            for (const part of customName.extra) {
-                if (typeof part === 'string') {
-                    output += part;
-                    continue;
-                }
-                
-                if (part.color) {
-                    if (part.color.startsWith('#')) {
-                        output += useAmpersandPrefix ? '&' + part.color : part.color;
-                    } else if (colorMap[part.color]) {
-                        output += colorMap[part.color];
-                    }
-                    
-                    if (part.bold) output += '&l';
-                    if (part.italic) output += '&o';
-                    if (part.underlined) output += '&n';
-                    if (part.strikethrough) output += '&m';
-                    if (part.obfuscated) output += '&k';
-                }
-                output += part.text || '';
-            }
-            
-            return output;
-        }
-        
-        function getColorFromCode(code) {
-            const codeToColor = {
-                '&0': '#000000', // black
-                '&1': '#0000AA', // dark_blue
-                '&2': '#00AA00', // dark_green
-                '&3': '#00AAAA', // dark_aqua
-                '&4': '#AA0000', // dark_red
-                '&5': '#AA00AA', // dark_purple
-                '&6': '#FFAA00', // gold
-                '&7': '#AAAAAA', // gray
-                '&8': '#555555', // dark_gray
-                '&9': '#5555FF', // blue
-                '&a': '#55FF55', // green
-                '&b': '#55FFFF', // aqua
-                '&c': '#FF5555', // red
-                '&d': '#FF55FF', // light_purple
-                '&e': '#FFFF55', // yellow
-                '&f': '#FFFFFF'  // white
-            };
-            
-            return codeToColor[code] || '#FFFFFF';
-        }
-        
-        function escapeHtml(text) {
-            if (typeof text !== 'string') return text;
-            return text
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
-    </script>
+    });
+});
+
+document.getElementById('fileInput').addEventListener('change', function (e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('fileName').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = e => { document.getElementById('nbtInput').value = e.target.result; };
+    reader.readAsText(file);
+});
+</script>
 </body>
 </html>
