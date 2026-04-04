@@ -1,4 +1,3 @@
-/* Snow */
 (function () {
   const container = document.getElementById('snow');
   const chars = ['❄', '❅', '❆', '✦', '·'];
@@ -15,7 +14,6 @@
   }
 })();
 
-/* Click gate */
 const gate = document.getElementById('gate');
 gate.addEventListener('click', function () {
   gate.classList.add('hidden');
@@ -23,7 +21,6 @@ gate.addEventListener('click', function () {
   setPlaying(true);
 });
 
-/* Audio */
 const bgm = document.getElementById('bgm');
 const btn = document.getElementById('soundBtn');
 const iconOn = document.getElementById('iconOn');
