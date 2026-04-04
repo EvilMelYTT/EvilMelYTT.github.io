@@ -16,6 +16,104 @@
 })();
 
 
+const openMeBtn = document.getElementById('openMeBtn');
+const drawer = document.getElementById('drawer');
+const drawerBackdrop = document.getElementById('drawerBackdrop');
+const drawerClose = document.getElementById('drawerClose');
+
+function openDrawer() {
+  drawer.classList.add('open');
+  drawerBackdrop.classList.add('open');
+  fetchAnime();
+}
+function closeDrawer() {
+  drawer.classList.remove('open');
+  drawerBackdrop.classList.remove('open');
+}
+
+openMeBtn.addEventListener('click', openDrawer);
+drawerClose.addEventListener('click', closeDrawer);
+drawerBackdrop.addEventListener('click', closeDrawer);
+
+document.querySelectorAll('.dtab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.dtab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dtab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+let malFetched = false;
+async function fetchAnime() {
+  if (malFetched) return;
+  malFetched = true;
+  const grid = document.getElementById('animeGrid');
+  const loading = document.getElementById('animeLoading');
+  try {
+    const r = await fetch('./animelist.json');
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    loading.style.display = 'none';
+    data.forEach(a => {
+      const link = document.createElement('a');
+      link.className = 'anime-item';
+      link.href = a.url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      const img = document.createElement('img');
+      img.src = a.image;
+      img.alt = a.title;
+      img.loading = 'lazy';
+      const score = document.createElement('span');
+      score.className = 'anime-score';
+      score.textContent = '★ ' + a.score;
+      const name = document.createElement('span');
+      name.className = 'anime-name';
+      name.textContent = a.title;
+      link.appendChild(img);
+      link.appendChild(score);
+      link.appendChild(name);
+      grid.appendChild(link);
+    });
+    if (data.length === 0) loading.textContent = 'Nothing here yet ᓚᘏᗢ';
+  } catch {
+    loading.innerHTML = 'Anime list not generated yet.<br><a href="https://myanimelist.net/profile/EvilMel" target="_blank" style="color:var(--accent)">View on MAL ↗</a>';
+  }
+}
+
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+const lbClose = document.getElementById('lbClose');
+const lbPrev = document.getElementById('lbPrev');
+const lbNext = document.getElementById('lbNext');
+let lbIndex = 0;
+let lbUrls = [];
+
+function openLightbox(urls, index) {
+  lbUrls = urls;
+  lbIndex = index;
+  lbImg.src = lbUrls[lbIndex];
+  lightbox.classList.add('open');
+}
+function closeLightbox() { lightbox.classList.remove('open'); }
+function lbGo(dir) {
+  lbIndex = (lbIndex + dir + lbUrls.length) % lbUrls.length;
+  lbImg.src = lbUrls[lbIndex];
+}
+
+lbClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+lbPrev.addEventListener('click', e => { e.stopPropagation(); lbGo(-1); });
+lbNext.addEventListener('click', e => { e.stopPropagation(); lbGo(1); });
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'ArrowLeft') lbGo(-1);
+  if (e.key === 'ArrowRight') lbGo(1);
+  if (e.key === 'Escape') closeLightbox();
+});
+
+
 const gate = document.getElementById('gate');
 gate.addEventListener('click', function () {
   gate.classList.add('hidden');
@@ -141,6 +239,16 @@ const imageUrls = [
     loading.style.display = 'none';
     imgs.forEach(img => track.appendChild(img));
     imgs.forEach(img => track.appendChild(img.cloneNode()));
+
+    track.style.cursor = 'pointer';
+    track.addEventListener('click', e => {
+      const clickedImg = e.target.closest('img');
+      if (!clickedImg) return;
+      const allImgs = [...track.querySelectorAll('img')].slice(0, imageUrls.length);
+      const idx = allImgs.indexOf(clickedImg);
+      if (idx !== -1) openLightbox(imageUrls, idx);
+    });
+
     let scroll = 0;
     function animate() {
       scroll += 0.5;

@@ -21,8 +21,6 @@ html, body {
   font-family: 'Shippori Mincho', 'IM Fell English', Georgia, serif;
   overflow-x: hidden;
 }
-
-
 .banner-wrap {
   position: fixed;
   top: 0; left: 0;
@@ -43,8 +41,6 @@ html, body {
   inset: 0;
   background: radial-gradient(ellipse at center, transparent 30%, var(--bg) 80%);
 }
-
-
 .snow {
   position: fixed;
   inset: 0;
@@ -67,8 +63,6 @@ html, body {
   95%  { opacity: 0.6; }
   100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
-
-
 .sound-btn {
   position: fixed;
   top: 18px; left: 18px;
@@ -85,8 +79,6 @@ html, body {
 }
 .sound-btn:hover { border-color: var(--border-h); color: var(--taken); }
 .sound-btn svg { width: 18px; height: 18px; }
-
-
 .now-playing {
   position: fixed;
   top: 22px; left: 68px;
@@ -110,8 +102,6 @@ html, body {
   0%, 100% { transform: scale(1); opacity: 1; }
   50%       { transform: scale(1.5); opacity: 0.5; }
 }
-
-
 .main {
   position: relative;
   z-index: 2;
@@ -123,8 +113,6 @@ html, body {
   padding: 100px 20px 60px;
   gap: 0;
 }
-
-
 .avatar-wrap {
   position: relative;
   width: 108px; height: 108px;
@@ -138,8 +126,6 @@ html, body {
   box-shadow: 0 0 0 5px rgba(150, 80, 160, 0.12), 0 0 30px rgba(180, 100, 180, 0.18);
   display: block;
 }
-
-
 .username {
   font-family: 'IM Fell English', Georgia, serif;
   font-size: 2rem;
@@ -149,8 +135,6 @@ html, body {
   text-shadow: 0 0 28px rgba(180, 100, 200, 0.4);
   margin-bottom: 12px;
 }
-
-
 .rose-divider {
   display: flex;
   align-items: center;
@@ -168,8 +152,6 @@ html, body {
   font-size: 13px;
   line-height: 1;
 }
-
-
 .bio-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -212,15 +194,33 @@ html, body {
   color: #d4b8e8;
   font-size: 13px;
 }
-
+.content-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 620px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.content-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+}
+.content-right {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 130px;
+  flex-shrink: 0;
+}
 
 .links {
   display: flex;
   flex-direction: column;
   gap: 9px;
-  width: 100%;
-  max-width: 340px;
-  margin-bottom: 24px;
 }
 .link-btn {
   display: flex;
@@ -247,11 +247,35 @@ html, body {
 .link-btn svg { opacity: 0.7; flex-shrink: 0; }
 .link-btn:hover svg { opacity: 1; }
 
+.openme-tile {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  color: var(--text);
+  font-family: 'Shippori Mincho', serif;
+}
+.openme-tile:hover {
+  border-color: var(--border-h);
+  background: rgba(130, 70, 150, 0.14);
+  transform: translateY(-2px);
+}
+.openme-text { font-size: 13px; font-weight: 600; color: #f0e6ff; letter-spacing: 0.02em; }
+.openme-sub { font-size: 9.5px; color: var(--muted); letter-spacing: 0.05em; }
 
 .imgboard-card {
   display: block;
   width: 100%;
-  max-width: 340px;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -259,44 +283,153 @@ html, body {
   background: var(--surface);
   backdrop-filter: blur(8px);
   transition: border-color 0.2s, transform 0.15s;
-  margin-bottom: 24px;
 }
-.imgboard-card:hover {
-  border-color: var(--border-h);
-  transform: translateY(-2px);
-}
-.imgboard-thumb {
-  width: 100%;
-  height: 160px;
-  overflow: hidden;
-  position: relative;
-}
+.imgboard-card:hover { border-color: var(--border-h); transform: translateY(-2px); }
+.imgboard-thumb { width: 100%; height: 90px; overflow: hidden; }
 .imgboard-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center; display: block;
   transition: transform 0.3s ease;
 }
-.imgboard-card:hover .imgboard-thumb img {
-  transform: scale(1.04);
-}
+.imgboard-card:hover .imgboard-thumb img { transform: scale(1.04); }
 .imgboard-label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 14px;
-  font-family: 'Shippori Mincho', serif;
-  font-size: 13px;
-  color: var(--muted);
-  border-top: 1px solid var(--border);
-  transition: color 0.2s;
+  display: flex; align-items: center; gap: 5px;
+  padding: 7px 10px;
+  font-family: 'Shippori Mincho', serif; font-size: 11px;
+  color: var(--muted); border-top: 1px solid var(--border); transition: color 0.2s;
 }
 .imgboard-card:hover .imgboard-label { color: var(--accent); }
 .imgboard-label svg { opacity: 0.6; flex-shrink: 0; }
 
+.drawer-backdrop {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.drawer-backdrop.open { opacity: 1; pointer-events: all; }
 
+.drawer {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 51;
+  height: 65vh;
+  background: rgba(14, 9, 20, 0.97);
+  border-top: 1px solid var(--border-h);
+  border-radius: 18px 18px 0 0;
+  display: flex; flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  backdrop-filter: blur(16px);
+}
+.drawer.open { transform: translateY(0); }
+
+.drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 0; flex-shrink: 0;
+}
+.drawer-tabs { display: flex; gap: 4px; }
+.dtab {
+  background: none; border: 1px solid transparent; border-radius: 8px;
+  padding: 6px 14px;
+  font-family: 'Shippori Mincho', serif; font-size: 12px;
+  color: var(--muted); cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  letter-spacing: 0.03em;
+}
+.dtab:hover { color: var(--text); }
+.dtab.active { color: var(--accent); border-color: var(--border); background: rgba(130, 70, 150, 0.12); }
+.drawer-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 16px; cursor: pointer; padding: 4px 8px; transition: color 0.2s;
+}
+.drawer-close:hover { color: var(--text); }
+
+.drawer-body { flex: 1; overflow: hidden; padding: 16px 20px 20px; position: relative; }
+.dtab-content { display: none; height: 100%; overflow-y: auto; }
+.dtab-content.active { display: block; }
+.dtab-content::-webkit-scrollbar { width: 3px; }
+.dtab-content::-webkit-scrollbar-track { background: transparent; }
+.dtab-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.drawer-text { font-family: 'Shippori Mincho', serif; font-size: 13.5px; line-height: 1.75; color: var(--text); }
+
+.music-list { display: flex; flex-direction: column; gap: 8px; }
+.music-card {
+  display: flex; align-items: center; gap: 12px; padding: 8px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+  border-radius: 10px; text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.music-card:hover { border-color: var(--border-h); background: rgba(130, 70, 150, 0.1); }
+.music-card img { width: 46px; height: 46px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+.music-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.music-title { font-family: 'Shippori Mincho', serif; font-size: 12.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.music-artist { font-size: 11px; color: var(--muted); }
+.music-src { font-size: 9.5px; padding: 1px 6px; border-radius: 4px; width: fit-content; letter-spacing: 0.05em; }
+.music-src.sc { background: rgba(255,85,0,0.15); color: #ff8844; }
+.music-src.sp { background: rgba(30,215,96,0.12); color: #1ed760; }
+
+.anime-loading { font-family: 'Shippori Mincho', serif; font-size: 13px; color: var(--muted); text-align: center; padding: 20px; }
+.anime-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
+.anime-item { display: flex; flex-direction: column; gap: 4px; text-decoration: none; }
+.anime-item img { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); transition: border-color 0.2s; }
+.anime-item:hover img { border-color: var(--border-h); }
+.anime-score { font-size: 10px; color: var(--taken); text-align: center; font-family: 'Shippori Mincho', serif; }
+.anime-name { font-size: 9.5px; color: var(--muted); text-align: center; font-family: 'Shippori Mincho', serif; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
+
+.games-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.game-card { display: flex; flex-direction: column; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); text-decoration: none; transition: border-color 0.2s, transform 0.15s; background: var(--surface); }
+.game-card:hover { border-color: var(--border-h); transform: translateY(-2px); }
+.game-card-img { width: 100%; aspect-ratio: 460/215; overflow: hidden; flex-shrink: 0; }
+.game-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+.game-card:hover .game-card-img img { transform: scale(1.03); }
+.game-card img { width: 100%; aspect-ratio: 460/215; object-fit: cover; display: block; flex-shrink: 0; max-height: none; }
+.game-title { font-family: 'Shippori Mincho', serif; font-size: 10.5px; color: var(--muted); padding: 5px 8px; line-height: 1.3; }
+.game-card:hover .game-title { color: var(--accent); }
+.osu-card-img { width: 100%; aspect-ratio: 460/215; background: #ff66aa; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.osu-logo { width: 100%; height: 100%; object-fit: cover; }
+.mc-split-img { width: 100%; aspect-ratio: 460/215; position: relative; overflow: hidden; flex-shrink: 0; }
+.mc-split-left {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center 35%;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.mc-split-right {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: 25% center;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+.mc-split-divider {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent calc(50% - 1px), rgba(255,255,255,0.25) calc(50% - 1px), rgba(255,255,255,0.25) calc(50% + 1px), transparent calc(50% + 1px));
+  pointer-events: none;
+}
+
+.lightbox {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+}
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lb-img { max-width: 90vw; max-height: 85vh; object-fit: contain; border-radius: 6px; display: block; }
+.lb-close { position: absolute; top: 18px; right: 22px; background: none; border: none; color: rgba(255,255,255,0.6); font-size: 22px; cursor: pointer; transition: color 0.2s; }
+.lb-close:hover { color: white; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; color: rgba(255,255,255,0.7); font-size: 28px; width: 44px; height: 60px; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; }
+.lb-nav:hover { background: rgba(255,255,255,0.14); color: white; }
+.lb-prev { left: 16px; }
+.lb-next { right: 16px; }
+
+@media (max-width: 600px) {
+  .content-row { flex-direction: column; }
+  .content-right { width: 100%; flex-direction: row; }
+  .openme-tile { flex: 1; }
+  .imgboard-card { flex: 1; }
+  .imgboard-thumb { height: 70px; }
+  .drawer { height: 75vh; }
+  .games-grid { grid-template-columns: repeat(2, 1fr); }
+  .anime-grid { grid-template-columns: repeat(auto-fill, minmax(75px, 1fr)); }
+}
 #bottom-bar {
   position: relative;
   z-index: 2;
@@ -379,14 +512,10 @@ html, body {
   background: rgba(0,0,0,0.5);
   z-index: 10;
 }
-
-
 .visitor-row {
   margin-top: 8px;
   opacity: 0.85;
 }
-
-
 @media (max-width: 600px) {
   html { font-size: 15px; }
   .username { font-size: 1.5rem; }
@@ -440,8 +569,6 @@ html, body {
   letter-spacing: 0.12em;
   text-transform: lowercase;
 }
-
-
 @media (max-width: 500px) {
   .username { font-size: 1.6rem; }
   .bio-card { padding: 14px 16px; }
