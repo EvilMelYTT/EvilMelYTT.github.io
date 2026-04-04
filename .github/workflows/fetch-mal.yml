@@ -1,0 +1,50 @@
+name: Fetch MAL List
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and filter animelist
+        run: |
+          curl -s "https://myanimelist.net/animelist/EvilMel/load.json?status=2&order=4&offset=0" \
+            -H "User-Agent: Mozilla/5.0" \
+            -o raw.json
+
+          python3 - <<'EOF'
+          import json, sys
+
+          with open("raw.json") as f:
+            data = json.load(f)
+
+          out = []
+          for a in data:
+            score = a.get("score", 0)
+            if score >= 7:
+              out.append({
+                "title": a.get("anime_title", ""),
+                "score": score,
+                "url": "https://myanimelist.net/anime/" + str(a.get("anime_id", "")),
+                "image": a.get("anime_image_path", "")
+              })
+
+          out.sort(key=lambda x: x["score"], reverse=True)
+
+          with open("skiddedgunslolaboutme/animelist.json", "w") as f:
+            json.dump(out, f)
+
+          print(f"Written {len(out)} entries")
+          EOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add skiddedgunslolaboutme/animelist.json
+          git diff --staged --quiet || git commit -m "chore: update animelist.json"
+          git push
