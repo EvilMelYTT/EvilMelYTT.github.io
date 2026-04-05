@@ -13,6 +13,10 @@
 <h2 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkRenameConverterV2">PikaNetwork Rename Converter V2</a></h2>
 <small>Rename Conversion tool for <a href="https://pika-network.net">PikaNetwork</a>'s OpLifesteal and other gamemodes with /rename restrictions</small>
 </div>
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
+<h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/skiddedgunslolaboutme">skidded gunslol - About Me</a></h3>
+<small>i CTRL+U'd a guns.lol page and prayed it worked</small>
+</div>
 
 ---
 ## Side Projects
@@ -32,7 +36,15 @@
 <h4 style="margin-top: 0;"><a href="https://evilmelytt.github.io/pika-api-guide.html">PikaNetwork API Guide</a></h4>
 <small>Shows(regurgitates) what the <a href="https://stats.pika-network.net">PikaNetwork</a> <a href="https://pika-network.net/threads/pikanetwork-api.556900">API</a> actually spits back and where each variable goes into the main wrapped site thingy.</small>
 </div>
-<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #d0d7de;">
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #d0d7de; margin-bottom: 15px;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/YoinkGUI2GUI.html">YoinkGUI2GUI</a></h3>
 <small>Turns <a href="https://modrinth.com/mod/yoinkgui">YoinkGui</a> output files into readable previews and rename's</small>
+</div>
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #d0d7de; margin-bottom: 15px;">
+<h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/YTThumbnailGUI">YT Thumbnail GUI</a></h3>
+<small>YouTube thumbnail generator</small>
+</div>
+<div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #d0d7de; margin-bottom: 15px;">
+<h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/YTThumbnailLite">YT Thumbnail Lite</a></h3>
+<small>ditto but not an ounce of UI</small>
 </div>
