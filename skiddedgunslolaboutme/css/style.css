@@ -387,8 +387,8 @@ html, body {
 .game-card img { width: 100%; aspect-ratio: 460/215; object-fit: cover; display: block; flex-shrink: 0; max-height: none; }
 .game-title { font-family: 'Shippori Mincho', serif; font-size: 10.5px; color: var(--muted); padding: 5px 8px; line-height: 1.3; }
 .game-card:hover .game-title { color: var(--accent); }
-.osu-card-img { width: 100%; aspect-ratio: 460/215; background: #ff66aa; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.osu-logo { width: 56px; height: 56px; object-fit: contain; }
+.osu-card-img { width: 100%; aspect-ratio: 460/215; background: #ff66aa; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+.osu-logo { height: 100%; width: auto; object-fit: contain; display: block; }
 .ssf2-card-img { width: 100%; aspect-ratio: 460/215; background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 50%, #0d1a3a 100%); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-bottom: 1px solid rgba(180,60,60,0.3); }
 .ssf2-label { font-family: Impact, 'Arial Black', sans-serif; font-size: 15px; letter-spacing: 0.08em; color: #e8c840; text-shadow: 0 0 12px rgba(232,200,64,0.5), 2px 2px 0 rgba(0,0,0,0.8); text-transform: uppercase; text-align: center; padding: 0 8px; }
 .mc-split-img { width: 100%; aspect-ratio: 460/215; position: relative; overflow: hidden; flex-shrink: 0; }
