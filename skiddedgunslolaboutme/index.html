@@ -64,12 +64,12 @@
             then I have zero clue why you're here.
           </p>
           <p class="bio-text" style="margin-top:10px;">
-            I'm <span class="taken">TAKEN</span>, skid mods for niche cases like inventory item highlighting,
+            I'm <span class="taken"><s>TAKEN</s></span>a chud😭😭, skid mods for niche cases like inventory item highlighting,
             and often spend a majority of my time working on
             <a href="https://evilmelytt.github.io" target="_blank" rel="noopener">Pikanetwork related projects</a>.
           </p>
           <p class="bio-text wife">
-            She may be my partner but Kuroneko is my wife‼️‼️‼️
+            Kuroneko is my wife‼️‼️‼️
           </p>
         </div>
 
@@ -130,134 +130,259 @@
     <div class="drawer-body">
 
       <div class="dtab-content active" id="tab-music">
-        <div class="music-list">
-          <a class="music-card" href="https://soundcloud.com/thaira-calle-de-sweeto/jordan-sweeto-evil-little" target="_blank" rel="noopener">
+        <div class="music-filters">
+          <div class="mf-group">
+            <button class="mf-btn active" data-filter="all">All</button>
+            <button class="mf-btn" data-filter="sc">SoundCloud</button>
+            <button class="mf-btn" data-filter="sp">Spotify</button>
+            <button class="mf-btn" data-filter="yt">YouTube</button>
+          </div>
+          <div class="mf-group">
+            <button class="mf-sort active" data-sort="default">Default</button>
+            <button class="mf-sort" data-sort="asc">A→Z</button>
+            <button class="mf-sort" data-sort="desc">Z→A</button>
+          </div>
+        </div>
+        <div class="music-list" id="musicList">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/thaira-calle-de-sweeto/jordan-sweeto-evil-little" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-000210511456-wcv5ey-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">Evil Little Genius</span>
-              <span class="music-artist">Jordan Sweeto</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Evil Little Genius</span><span class="music-artist">Jordan Sweeto</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/katagiri/ao-to-natsu" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/katagiri/ao-to-natsu" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-000530600403-di4b80-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">青と夏 (katagiri Bootleg)</span>
-              <span class="music-artist">katagiri</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">青と夏 (katagiri Bootleg)</span><span class="music-artist">katagiri</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/dj-slax/loli-bomb" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/dj-slax/loli-bomb" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-2qY9tvnfDtrTzwr2-8JzNrw-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">Loli Bomb</span>
-              <span class="music-artist">Slax</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Loli Bomb</span><span class="music-artist">Slax</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/burstlimit1/katagiri-wa-denki-kitsune-no-yume-o-miru-ka" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/burstlimit1/katagiri-wa-denki-kitsune-no-yume-o-miru-ka" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-cczy7f4EtOnfrQG5-xZhTyg-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">katagiri wa Denki Kitsune no Yume o Miru ka?</span>
-              <span class="music-artist">katagiri</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">katagiri wa Denki Kitsune no Yume o Miru ka?</span><span class="music-artist">katagiri</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://open.spotify.com/track/6TrGlTMU6LvXIiVupzfLmJ" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sp" href="https://open.spotify.com/track/6TrGlTMU6LvXIiVupzfLmJ" target="_blank" rel="noopener">
             <img src="https://i.scdn.co/image/ab67616d00001e0256c3a5a3ee9157b041756ad4" alt="" />
-            <div class="music-info">
-              <span class="music-title">Not the One</span>
-              <span class="music-artist">Lieless</span>
-              <span class="music-src sp">Spotify</span>
-            </div>
+            <div class="music-info"><span class="music-title">Not the One</span><span class="music-artist">Lieless</span><span class="music-src sp">Spotify</span></div>
           </a>
-          <a class="music-card" href="https://open.spotify.com/track/7385T9Xs1xDi4KG9TuqXNn" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sp" href="https://open.spotify.com/track/7385T9Xs1xDi4KG9TuqXNn" target="_blank" rel="noopener">
             <img src="https://i.scdn.co/image/ab67616d00001e02b774df6a23357c7bfcb5056b" alt="" />
-            <div class="music-info">
-              <span class="music-title">OUT OF TIME</span>
-              <span class="music-artist">Senua, inoqx, CTRN, Lieless</span>
-              <span class="music-src sp">Spotify</span>
-            </div>
+            <div class="music-info"><span class="music-title">OUT OF TIME</span><span class="music-artist">Senua, inoqx, CTRN, Lieless</span><span class="music-src sp">Spotify</span></div>
           </a>
-          <a class="music-card" href="https://open.spotify.com/track/3eEJoLGTn7d7PLbcVEIhrd" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sp" href="https://open.spotify.com/track/3eEJoLGTn7d7PLbcVEIhrd" target="_blank" rel="noopener">
             <img src="https://i.scdn.co/image/ab67616d00001e02edf1b6e8a27c1921aec52f1a" alt="" />
-            <div class="music-info">
-              <span class="music-title">For Us</span>
-              <span class="music-artist">AGONY, 4GET</span>
-              <span class="music-src sp">Spotify</span>
-            </div>
+            <div class="music-info"><span class="music-title">For Us</span><span class="music-artist">AGONY, 4GET</span><span class="music-src sp">Spotify</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/dj-slax/lunaticon" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/dj-slax/lunaticon" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-uP1fGkSKlVUZT2K9-l9N83w-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">Lunaticon</span>
-              <span class="music-artist">Slax</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Lunaticon</span><span class="music-artist">Slax</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/juztan/hyper-busy-loli-life-slax-x-juztan" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/juztan/hyper-busy-loli-life-slax-x-juztan" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-Ot0ryUvgfotoqiXW-ErgF5g-t300x300.png" alt="" />
-            <div class="music-info">
-              <span class="music-title">Hyper Busy Loli Life! >⩊< (Slax X Juztan Remix)</span>
-              <span class="music-artist">Slax, Juztan</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Hyper Busy Loli Life! >⩊< (Slax X Juztan Remix)</span><span class="music-artist">Slax, Juztan</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/david-milanese/goreshit-satori-de-pon" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/david-milanese/goreshit-satori-de-pon" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-000089064368-p8eme4-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">Satori De Pon!</span>
-              <span class="music-artist">goreshit</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Satori De Pon!</span><span class="music-artist">goreshit</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://open.spotify.com/track/4NKQPOYkcJUKRb6cbq9N5I" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sp" href="https://open.spotify.com/track/4NKQPOYkcJUKRb6cbq9N5I" target="_blank" rel="noopener">
             <img src="https://i.scdn.co/image/ab67616d00001e027e297aef73447965748f786f" alt="" />
-            <div class="music-info">
-              <span class="music-title">Angreifer</span>
-              <span class="music-artist">Unlucky Morpheus</span>
-              <span class="music-src sp">Spotify</span>
-            </div>
+            <div class="music-info"><span class="music-title">Angreifer</span><span class="music-artist">Unlucky Morpheus</span><span class="music-src sp">Spotify</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/leaf-7/calamity-fortune" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/leaf-7/calamity-fortune" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-000043724466-uc0ps2-t300x300.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">Calamity Fortune</span>
-              <span class="music-artist">LeaF</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Calamity Fortune</span><span class="music-artist">LeaF</span><span class="music-src sc">SoundCloud</span></div>
           </a>
-          <a class="music-card" href="https://open.spotify.com/track/0AXwxBba7qz9m2spAoIy98" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sp" href="https://open.spotify.com/track/0AXwxBba7qz9m2spAoIy98" target="_blank" rel="noopener">
             <img src="https://i.scdn.co/image/ab67616d00001e021e492fde7d62b668daf75fd6" alt="" />
-            <div class="music-info">
-              <span class="music-title">Humiliation Supreme</span>
-              <span class="music-artist">Manticora</span>
-              <span class="music-src sp">Spotify</span>
-            </div>
+            <div class="music-info"><span class="music-title">Humiliation Supreme</span><span class="music-artist">Manticora</span><span class="music-src sp">Spotify</span></div>
           </a>
-          <a class="music-card" href="https://www.youtube.com/watch?v=9bu01B_ZikE" target="_blank" rel="noopener">
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=9bu01B_ZikE" target="_blank" rel="noopener">
             <img src="https://i.ytimg.com/vi/9bu01B_ZikE/mqdefault.jpg" alt="" />
-            <div class="music-info">
-              <span class="music-title">ne uchi (Short osu! Ver.)</span>
-              <span class="music-artist">kis-kis</span>
-              <span class="music-src yt">YouTube</span>
-            </div>
+            <div class="music-info"><span class="music-title">ne uchi (Short osu! Ver.)</span><span class="music-artist">kis-kis</span><span class="music-src yt">YouTube</span></div>
           </a>
-          <a class="music-card" href="https://open.spotify.com/track/0DSh5LIylv8SOVLef2rwpK" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sp" href="https://open.spotify.com/track/0DSh5LIylv8SOVLef2rwpK" target="_blank" rel="noopener">
             <img src="https://i.scdn.co/image/ab67616d00001e02c8e4d99b1de59228259bb42f" alt="" />
-            <div class="music-info">
-              <span class="music-title">clarity rmx</span>
-              <span class="music-artist">lucifer</span>
-              <span class="music-src sp">Spotify</span>
-            </div>
+            <div class="music-info"><span class="music-title">clarity rmx</span><span class="music-artist">lucifer</span><span class="music-src sp">Spotify</span></div>
           </a>
-          <a class="music-card" href="https://soundcloud.com/thecollector123/clarity-rmx-hayakou-bootleg" target="_blank" rel="noopener">
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/thecollector123/clarity-rmx-hayakou-bootleg" target="_blank" rel="noopener">
             <img src="https://i1.sndcdn.com/artworks-AQbijlJUzg8olgHU-DicmhA-t300x300.png" alt="" />
-            <div class="music-info">
-              <span class="music-title">Clarity rmx (hayakou bootleg)</span>
-              <span class="music-artist">hayakou</span>
-              <span class="music-src sc">SoundCloud</span>
-            </div>
+            <div class="music-info"><span class="music-title">Clarity rmx (hayakou bootleg)</span><span class="music-artist">hayakou</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=hKFE7qnZc7M" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/hKFE7qnZc7M/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">OVERDOSE</span><span class="music-artist">Lieless</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/user-483951846/davay-rasskazhem" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-IyMfbKDAAG902196-LXrUcw-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Давай расскажем</span><span class="music-artist">ily</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/anguishvx/navsegda" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-IB70cYwdLuQmnmGk-HY2S6g-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Navsegda</span><span class="music-artist">ANGUISH, Lieless, Тая из Хентая, ily</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=1TWzMSHGaAI" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/1TWzMSHGaAI/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Nightmare (Nightcore)</span><span class="music-artist">Set It Off / Cherry 葵</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=0D2yjFYUBKA" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/0D2yjFYUBKA/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Why Worry (Nightcore)</span><span class="music-artist">Set It Off / Cherry 葵</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=7aQbscFC88E" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/7aQbscFC88E/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Kill The Lights (Nightcore)</span><span class="music-artist">Set It Off / Cherry 葵</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=xnSOc0O5SsU" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/xnSOc0O5SsU/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">I'd Rather Drown (Nightcore)</span><span class="music-artist">Set It Off / Cherry 葵</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=HeJbGMy1nhY" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/HeJbGMy1nhY/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">I Like The Way You Kiss Me (Frenchcore Edit)</span><span class="music-artist">Artemas / DΞTHVΞDΛ</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=h-Krxh0xW0Q&pp=ygUNaSBsb3ZlIHlvdSBzbw%3D%3D" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/h-Krxh0xW0Q/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">i love you so</span><span class="music-artist">The Walters</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=dGAH2rI7OAA" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/dGAH2rI7OAA/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">FIRST SIGHT</span><span class="music-artist">Lieless</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=bAMbi0E3AkI" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/bAMbi0E3AkI/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">WINX CLUB ⚠️ epilepsy warning</span><span class="music-artist">Lieless</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=zg1jfxLtMIE" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/zg1jfxLtMIE/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">橙ゲノム (Daidai Genome)</span><span class="music-artist">*namirin</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=Si9q5dZufZk" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/Si9q5dZufZk/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">橙ゲノム (Orange Genome) PV</span><span class="music-artist">Hatsune Miku</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=dir5nFkhpcc" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/dir5nFkhpcc/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">橙ゲノム (Ado cover)</span><span class="music-artist">Ado</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/katagiri/sendan-life" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-000657950320-bxf3fr-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">センダンライフ (かたぎり Bootleg)</span><span class="music-artist">katagiri</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/inoqx6/burden" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-JKOkJCWTWbmmyIZd-Q4qWQA-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">BURDEN</span><span class="music-artist">inoqx</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/fnafboi48-reupload/burn-up-reupload" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-zQ3gjVm64q3FkBVU-OOUDig-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">burn up</span><span class="music-artist">fnafboi48</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/spring-on-the-avenue" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/avatars-EX9pGC1yobc4YgQF-cdVExA-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Mending Elytra</span><span class="music-artist">Spring On The Avenue</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/come-in" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-Yq4HzwiQZqygy4PK-I9pMFg-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">come in!</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/fourteen" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-mBbZgh8BWgtPd0WA-5ZjcHA-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">halloween day</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/thirteen" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-kHcIKB3tVOBS82p7-zTpv7Q-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">i lied</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/account-migration" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-bGHWDupcgCGYsJqX-DrosBQ-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">account migration</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/eight" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-QlPHkuSEEARsnIAd-LKLaJw-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">blaze rods</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/seven" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-gqXr52DzvcqRaZa2-wytAsg-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">loading terrain</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/four" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-oNXvCXyzR33gPXZz-BsinuA-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">deepslate sucks</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/crafter2011/three" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-yAaxhYLao8Km05sB-NAaKkw-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">fall damage</span><span class="music-artist">crafter2011</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/agony7th/agony-nequ-die-for-you-6" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-Dzmxqz1bjA50LvJU-JlN2ng-t500x500.png" alt="" />
+            <div class="music-info"><span class="music-title">Die for You</span><span class="music-artist">AGONY & nequ</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/agony7th/agony-4get-sinner-3" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-Dzmxqz1bjA50LvJU-JlN2ng-t500x500.png" alt="" />
+            <div class="music-info"><span class="music-title">Sinner</span><span class="music-artist">AGONY & 4GET</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=K1T_Qsybe_c" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/K1T_Qsybe_c/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Dissapointed</span><span class="music-artist">AGONY & 4GET</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/assertivef/more-one-night-assertive-hardcore-bootleg-long-ver" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-000273608438-87y80h-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">More One Night (Assertive Hardcore Bootleg)</span><span class="music-artist">Assertive</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=9P6QzUGDY8w" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/9P6QzUGDY8w/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">ReI</span><span class="music-artist">THE ORAL CIGARETTES</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=FRtibo63q8A" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/FRtibo63q8A/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Mouiikai?</span><span class="music-artist">THE ORAL CIGARETTES</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/user-483951846/my-mother-wants-me-dead" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-pX4YjAX1iJO3CaTn-iM6YuA-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">my mother wants me dead</span><span class="music-artist">ily</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/jiandroo/new-jeans-jersey" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-DMRQoxWESYZV8MW0-XuXvEg-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">New Jeans Jersey Remix</span><span class="music-artist">Jiandro x Dxrkaii</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/katagiri/start" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-cXUv2eKWUwIomI55-3k9lgw-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">StaRt (かたぎり Remix)</span><span class="music-artist">katagiri</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=2qFweBRL_kw" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/2qFweBRL_kw/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">tp na ame</span><span class="music-artist">ZERATch</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=4I6G8DK0dFE" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/4I6G8DK0dFE/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">You're Too Good For Me</span><span class="music-artist">AGONY & 4GET</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=LJpCSafn5Ig" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/LJpCSafn5Ig/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Werkin</span><span class="music-artist">OsamaSon</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=0xt50ADbjsg" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/0xt50ADbjsg/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Last Friday Night (Hardstyle Remix)</span><span class="music-artist">Katy Perry / WHIPPA</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/kyotobetray/za-kazdym-razem2-sped-up?in=kyotobetray/sets/za-kazdym-razem-frenchcore-remix" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-UEIlrzJuKspyuy2y-IPN0gg-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">za każdym razem (sped up)</span><span class="music-artist">kyotobetray</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="yt" href="https://www.youtube.com/watch?v=qaA4Sr_xn7E" target="_blank" rel="noopener">
+            <img src="https://i.ytimg.com/vi/qaA4Sr_xn7E/mqdefault.jpg" alt="" />
+            <div class="music-info"><span class="music-title">пепел (Hardstyle Frenchcore)</span><span class="music-artist">hxvvxn, frailty</span><span class="music-src yt">YouTube</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/hxvvxndamnenby/gryaz" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-flDIu6Ax7A56-0-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">Грязь</span><span class="music-artist">hxvvxn, damnenby</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/damnenby/kholodnoe-dykhanie-hxvvxn-damnenby" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-20PjzLmFqnea6uZ6-Gsm0KQ-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">холодное дыхание</span><span class="music-artist">hxvvxn, damnenby</span><span class="music-src sc">SoundCloud</span></div>
+          </a>
+          <a class="music-card" data-src="sc" href="https://soundcloud.com/damnenby/sneg-hxvvxn-damnenby" target="_blank" rel="noopener">
+            <img src="https://i1.sndcdn.com/artworks-fzeiPumgSVEDIw6u-1Kh8JQ-t500x500.jpg" alt="" />
+            <div class="music-info"><span class="music-title">снег ❤</span><span class="music-artist">hxvvxn, damnenby</span><span class="music-src sc">SoundCloud</span></div>
           </a>
         </div>
       </div>

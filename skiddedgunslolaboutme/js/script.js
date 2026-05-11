@@ -259,3 +259,43 @@ const imageUrls = [
     animate();
   }
 })();
+
+(function () {
+  let activeFilter = 'all';
+  let activeSort = 'default';
+  const list = document.getElementById('musicList');
+  if (!list) return;
+  const originalOrder = Array.from(list.querySelectorAll('.music-card'));
+
+  function applyFilterSort() {
+    const cards = Array.from(list.querySelectorAll('.music-card'));
+    let visible = originalOrder.filter(c => activeFilter === 'all' || c.dataset.src === activeFilter);
+
+    if (activeSort === 'asc') {
+      visible.sort((a, b) => a.querySelector('.music-title').textContent.localeCompare(b.querySelector('.music-title').textContent));
+    } else if (activeSort === 'desc') {
+      visible.sort((a, b) => b.querySelector('.music-title').textContent.localeCompare(a.querySelector('.music-title').textContent));
+    }
+
+    cards.forEach(c => c.style.display = 'none');
+    visible.forEach(c => { c.style.display = ''; list.appendChild(c); });
+  }
+
+  document.querySelectorAll('.mf-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mf-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      applyFilterSort();
+    });
+  });
+
+  document.querySelectorAll('.mf-sort').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mf-sort').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeSort = btn.dataset.sort;
+      applyFilterSort();
+    });
+  });
+})();

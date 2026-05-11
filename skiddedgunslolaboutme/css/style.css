@@ -354,6 +354,12 @@ html, body {
 .drawer-text { font-family: 'Shippori Mincho', serif; font-size: 13.5px; line-height: 1.75; color: var(--text); }
 
 .music-list { display: flex; flex-direction: column; gap: 8px; }
+.music-filters { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.mf-group { display: flex; gap: 4px; }
+.mf-btn, .mf-sort { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-family: 'Shippori Mincho', serif; font-size: 11px; color: var(--muted); cursor: pointer; transition: color 0.2s, border-color 0.2s, background 0.2s; }
+.mf-btn:hover, .mf-sort:hover { color: var(--text); border-color: var(--border-h); }
+.mf-btn.active, .mf-sort.active { color: var(--accent); border-color: var(--accent); background: rgba(130,70,150,0.12); }
+.music-art-fallback { width: 46px; height: 46px; border-radius: 6px; flex-shrink: 0; background: linear-gradient(135deg, rgba(130,70,150,0.3), rgba(60,30,80,0.5)); border: 1px solid var(--border); }
 .music-card {
   display: flex; align-items: center; gap: 12px; padding: 8px;
   background: rgba(255,255,255,0.03); border: 1px solid var(--border);
