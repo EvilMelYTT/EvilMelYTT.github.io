@@ -3,7 +3,7 @@
 ## Main Projects
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
 <h2 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerv15">PikaNetwork Color Picker v15</a></h2>
-<small>Color Picker and Rename Index for <a href="https://pika-network.net">PikaNetwork</a>'s OpLifesteal and by extension its other gamemodes with /rename</small>
+<small>Color Picker and Rename Index for <a href="https://pika-network.net">PikaNetwork</a>'s OpLifesteal, and by extension, its other gamemodes with /rename</small>
 </div>
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #238636;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/PikanetworkColorPickerv15Lite">PikaNetwork Color Picker v15Lite</a></h3>
@@ -30,7 +30,7 @@
 </div>
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #5000a0; margin-bottom: 15px;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/mc-enchant-tracker.html">Minecraft Enchantment Tracker</a></h3>
-<small>Tracks vanilla and custom server enchants per gear slot. Texture pack support, <a href="https://modrinth.com/mod/yoinkgui">YoinkGUI</a> inventory import, progress bars, auto-saved.</small>
+<small>Tracks vanilla and custom server enchants per gear slot. Texture pack support, <a href="https://modrinth.com/mod/yoinkgui">YoinkGUI</a>, and by extension, <a href="https://github.com/EvilMelYTT/yoinkgui-plus">YoinkGUI+</a> inventory import, progress bars, auto-saved.</small>
 </div>
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #8957e5; margin-bottom: 15px;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/pika-wrapped.html">PikaNetwork Wrapped</a></h3>
@@ -42,7 +42,7 @@
 </div>
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #d0d7de; margin-bottom: 15px;">
 <h3 style="margin-top: 0;"><a href="https://evilmelytt.github.io/YoinkGUI2GUI.html">YoinkGUI2GUI</a></h3>
-<small>Turns <a href="https://modrinth.com/mod/yoinkgui">YoinkGui</a> output files into readable previews and rename's</small>
+<small>Turns <a href="https://modrinth.com/mod/yoinkgui">YoinkGui</a>, and by extension, <a href="https://github.com/EvilMelYTT/yoinkgui-plus">YoinkGUI+</a> output files into readable previews and rename's</small>
 </div>
 <div style="background: #f6f8fa; padding: 15px; border-radius: 8px; border-left: 4px solid #d0d7de; margin-bottom: 15px;">
 <h3 style="margin-top: 0;"><a href="https://github.com/EvilMelYTT/item-rename-scruffed">item-rename-scruffed</a></h3>
