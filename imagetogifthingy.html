@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>buggy fanclub emoji thing</title>
+<style>
+body { font-family: system-ui, sans-serif; background: #1e1f24; color: #eee; display: flex; justify-content: center; padding: 40px 16px; }
+.card { background: #2a2b32; border-radius: 12px; padding: 28px; width: 380px; }
+h1 { font-size: 18px; margin: 0 0 18px; }
+label { display: block; font-size: 13px; margin: 14px 0 6px; color: #bbb; }
+input[type=file] { width: 100%; }
+select, input[type=number] { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid #444; background: #1e1f24; color: #eee; }
+.row { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+.row input[type=checkbox] { width: 16px; height: 16px; }
+button { width: 100%; margin-top: 20px; padding: 10px; border: none; border-radius: 8px; background: #5865f2; color: #fff; font-size: 14px; cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+.preview { margin-top: 20px; text-align: center; }
+.preview img { max-width: 100%; border-radius: 8px; image-rendering: pixelated; }
+.info { font-size: 12px; color: #999; margin-top: 8px; text-align: center; }
+a.download { display: block; text-align: center; margin-top: 12px; color: #8ea1ff; text-decoration: none; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="card">
+<h1>buggy fanclub emoji thing</h1>
+<label>Source image</label>
+<input type="file" id="fileInput" accept="image/*">
+
+<div class="row">
+<input type="checkbox" id="resizeToggle" checked>
+<label style="margin:0;">Resize to max dimension</label>
+</div>
+<input type="number" id="resizeValue" value="128" min="16" max="1024" style="margin-top:6px;">
+
+<div class="row">
+<input type="checkbox" id="compressToggle">
+<label style="margin:0;">Reduce color palette</label>
+</div>
+<select id="colorCount" disabled>
+<option value="128">128 colors</option>
+<option value="64">64 colors</option>
+<option value="32">32 colors</option>
+</select>
+
+<button id="convertBtn" disabled>Convert to GIF</button>
+
+<div class="preview" id="preview" style="display:none;">
+<img id="previewImg">
+<div class="info" id="infoText"></div>
+<a class="download" id="downloadLink" download="emoji.gif">Download GIF</a>
+</div>
+</div>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const resizeToggle = document.getElementById('resizeToggle');
+const resizeValue = document.getElementById('resizeValue');
+const compressToggle = document.getElementById('compressToggle');
+const colorCount = document.getElementById('colorCount');
+const convertBtn = document.getElementById('convertBtn');
+const preview = document.getElementById('preview');
+const previewImg = document.getElementById('previewImg');
+const infoText = document.getElementById('infoText');
+const downloadLink = document.getElementById('downloadLink');
+
+let sourceImage = null;
+let lastUrl = null;
+
+compressToggle.addEventListener('change', () => { colorCount.disabled = !compressToggle.checked; });
+
+fileInput.addEventListener('change', () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+  const img = new Image();
+  img.onload = () => { sourceImage = img; convertBtn.disabled = false; };
+  img.src = URL.createObjectURL(file);
+});
+
+function channelRange(bucket, c) {
+  let min = 255, max = 0;
+  for (const p of bucket) { if (p[c] < min) min = p[c]; if (p[c] > max) max = p[c]; }
+  return max - min;
+}
+
+function widestChannel(bucket) {
+  const r = channelRange(bucket, 0), g = channelRange(bucket, 1), b = channelRange(bucket, 2);
+  if (r >= g && r >= b) return 0;
+  return g >= b ? 1 : 2;
+}
+
+function bucketRange(bucket) {
+  return Math.max(channelRange(bucket, 0), channelRange(bucket, 1), channelRange(bucket, 2));
+}
+
+function average(bucket) {
+  let r = 0, g = 0, b = 0;
+  for (const p of bucket) { r += p[0]; g += p[1]; b += p[2]; }
+  const n = bucket.length;
+  return [Math.round(r / n), Math.round(g / n), Math.round(b / n)];
+}
+
+function quantize(colors, maxColors) {
+  let buckets = [colors];
+  while (buckets.length < maxColors) {
+    buckets.sort((a, b) => bucketRange(b) - bucketRange(a));
+    const bucket = buckets.shift();
+    if (bucket.length < 2 || bucketRange(bucket) === 0) { buckets.unshift(bucket); break; }
+    const channel = widestChannel(bucket);
+    bucket.sort((a, b) => a[channel] - b[channel]);
+    const mid = bucket.length >> 1;
+    buckets.push(bucket.slice(0, mid), bucket.slice(mid));
+  }
+  return buckets.map(average);
+}
+
+function nearestIndex(palette, r, g, b) {
+  let best = 0, bestDist = Infinity;
+  for (let i = 0; i < palette.length; i++) {
+    const p = palette[i];
+    const dr = p[0] - r, dg = p[1] - g, db = p[2] - b;
+    const dist = dr * dr + dg * dg + db * db;
+    if (dist < bestDist) { bestDist = dist; best = i; }
+  }
+  return best;
+}
+
+function sampleColors(colors, limit) {
+  if (colors.length <= limit) return colors;
+  const step = colors.length / limit;
+  const sampled = [];
+  for (let i = 0; i < limit; i++) sampled.push(colors[Math.floor(i * step)]);
+  return sampled;
+}
+
+function buildLut(palette) {
+  const lut = new Uint8Array(32768);
+  for (let r = 0; r < 32; r++) {
+    for (let g = 0; g < 32; g++) {
+      for (let b = 0; b < 32; b++) {
+        lut[(r << 10) | (g << 5) | b] = nearestIndex(palette, r * 8, g * 8, b * 8);
+      }
+    }
+  }
+  return lut;
+}
+
+function buildIndexedFrame(imageData, maxColors) {
+  const data = imageData.data;
+  const opaqueColors = [];
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] >= 128) opaqueColors.push([data[i], data[i + 1], data[i + 2]]);
+  }
+  if (opaqueColors.length === 0) opaqueColors.push([0, 0, 0]);
+  const palette = quantize(sampleColors(opaqueColors, 20000), Math.min(maxColors, 255));
+  const lut = buildLut(palette);
+  const indices = new Uint8Array(data.length / 4);
+  for (let i = 0, p = 0; i < data.length; i += 4, p++) {
+    if (data[i + 3] < 128) { indices[p] = 255; continue; }
+    const key = ((data[i] >> 3) << 10) | ((data[i + 1] >> 3) << 5) | (data[i + 2] >> 3);
+    indices[p] = lut[key];
+  }
+  const flatPalette = new Uint8Array(768);
+  for (let i = 0; i < palette.length; i++) {
+    flatPalette[i * 3] = palette[i][0];
+    flatPalette[i * 3 + 1] = palette[i][1];
+    flatPalette[i * 3 + 2] = palette[i][2];
+  }
+  return { indices, palette: flatPalette };
+}
+
+function lzwEncode(minCodeSize, indices) {
+  const clearCode = 1 << minCodeSize;
+  const eoiCode = clearCode + 1;
+  let codeSize, dict, nextCode;
+  const bytes = [];
+  let bitBuf = 0, bitLen = 0;
+
+  function write(code) {
+    bitBuf |= code << bitLen;
+    bitLen += codeSize;
+    while (bitLen >= 8) { bytes.push(bitBuf & 255); bitBuf >>= 8; bitLen -= 8; }
+  }
+
+  function reset() {
+    dict = new Map();
+    for (let i = 0; i < clearCode; i++) dict.set(String.fromCharCode(i), i);
+    nextCode = eoiCode + 1;
+    codeSize = minCodeSize + 1;
+  }
+
+  reset();
+  write(clearCode);
+  let w = String.fromCharCode(indices[0]);
+  for (let i = 1; i < indices.length; i++) {
+    const c = String.fromCharCode(indices[i]);
+    const wc = w + c;
+    if (dict.has(wc)) {
+      w = wc;
+      continue;
+    }
+    write(dict.get(w));
+    if (nextCode < 4096) {
+      dict.set(wc, nextCode++);
+      if (nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
+    } else {
+      write(clearCode);
+      reset();
+    }
+    w = c;
+  }
+  write(dict.get(w));
+  write(eoiCode);
+  if (bitLen > 0) bytes.push(bitBuf & 255);
+  return bytes;
+}
+
+function blockify(bytes) {
+  const out = [];
+  let i = 0;
+  while (i < bytes.length) {
+    const len = Math.min(255, bytes.length - i);
+    out.push(len, ...bytes.slice(i, i + len));
+    i += len;
+  }
+  out.push(0);
+  return out;
+}
+
+function pushAll(target, source) {
+  for (let i = 0; i < source.length; i++) target.push(source[i]);
+}
+
+function buildGif(width, height, indices, palette) {
+  const bytes = [];
+  const pushStr = s => { for (let i = 0; i < s.length; i++) bytes.push(s.charCodeAt(i)); };
+
+  pushStr('GIF89a');
+  bytes.push(width & 255, width >> 8, height & 255, height >> 8, 0x80 | 7, 0, 0);
+  pushAll(bytes, palette);
+  bytes.push(0x21, 0xFF, 0x0B);
+  pushStr('NETSCAPE2.0');
+  bytes.push(3, 1, 0, 0, 0);
+
+  const lzwData = blockify(lzwEncode(8, indices));
+
+  for (let frame = 0; frame < 2; frame++) {
+    bytes.push(0x21, 0xF9, 4, 5, 10, 0, 255, 0);
+    bytes.push(0x2C, 0, 0, 0, 0, width & 255, width >> 8, height & 255, height >> 8, 0);
+    bytes.push(8);
+    pushAll(bytes, lzwData);
+  }
+
+  bytes.push(0x3B);
+  return new Uint8Array(bytes);
+}
+
+const HARD_CAP = 1024;
+
+convertBtn.addEventListener('click', () => {
+  convertBtn.disabled = true;
+  convertBtn.textContent = 'Converting…';
+  setTimeout(runConversion, 20);
+});
+
+function runConversion() {
+  let { width, height } = sourceImage;
+  const requestedMax = resizeToggle.checked ? Number(resizeValue.value) : Math.max(width, height);
+  const maxDim = Math.min(requestedMax, HARD_CAP);
+  if (Math.max(width, height) > maxDim) {
+    const scale = maxDim / Math.max(width, height);
+    width = Math.max(1, Math.round(width * scale));
+    height = Math.max(1, Math.round(height * scale));
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(sourceImage, 0, 0, width, height);
+  const imageData = ctx.getImageData(0, 0, width, height);
+
+  const maxColors = compressToggle.checked ? Number(colorCount.value) : 255;
+  const { indices, palette } = buildIndexedFrame(imageData, maxColors);
+  const gifBytes = buildGif(width, height, indices, palette);
+
+  if (lastUrl) URL.revokeObjectURL(lastUrl);
+  const blob = new Blob([gifBytes], { type: 'image/gif' });
+  lastUrl = URL.createObjectURL(blob);
+
+  previewImg.src = lastUrl;
+  downloadLink.href = lastUrl;
+  infoText.textContent = `${width}x${height} — ${(blob.size / 1024).toFixed(1)} KB`;
+  preview.style.display = 'block';
+
+  convertBtn.disabled = false;
+  convertBtn.textContent = 'Convert to GIF';
+}
+</script>
+</body>
+</html>
