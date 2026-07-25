@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Essentials Command Disabler</title>
+<style>
+body { font-family: system-ui, -apple-system, sans-serif; background: #1e1f24; color: #eee; display: flex; justify-content: center; padding: 40px 16px; }
+.card { background: #2a2b32; border-radius: 12px; padding: 28px; width: 440px; box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+h1 { font-size: 18px; margin: 0 0 6px; color: #fff; }
+p.sub { font-size: 12px; color: #aaa; margin-bottom: 18px; line-height: 1.4; }
+label { display: block; font-size: 13px; margin: 14px 0 6px; color: #bbb; }
+input[type=text] { width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid #444; background: #1e1f24; color: #eee; font-size: 13px; box-sizing: border-box; outline: none; }
+input[type=text]:focus { border-color: #5865f2; }
+.cmd-box { background: #1e1f24; border: 1px solid #444; border-radius: 6px; max-height: 320px; overflow-y: auto; margin-top: 10px; padding: 6px; }
+.cmd-item { padding: 8px 10px; border-bottom: 1px solid #2a2b32; }
+.cmd-item:last-child { border-bottom: none; }
+.cmd-row { display: flex; align-items: flex-start; gap: 10px; }
+.cmd-row input[type=checkbox] { margin-top: 3px; cursor: pointer; accent-color: #5865f2; width: 15px; height: 15px; }
+.cmd-info { flex: 1; }
+.cmd-head { font-size: 14px; font-weight: 600; font-family: monospace; color: #5865f2; cursor: pointer; }
+.cmd-aliases { font-size: 10px; color: #8ea1ff; font-family: monospace; margin-top: 2px; line-height: 1.3; word-break: break-word; }
+.cmd-desc { font-size: 12px; color: #ccc; margin-top: 3px; }
+.cmd-sub { font-size: 11px; color: #aaa; margin-top: 4px; line-height: 1.3; }
+.sub-tag { background: #2a2b32; padding: 1px 5px; border-radius: 3px; font-family: monospace; color: #e1e1e1; font-size: 10px; margin-right: 3px; margin-bottom: 2px; display: inline-block; }
+button { width: 100%; margin-top: 20px; padding: 10px; border: none; border-radius: 8px; background: #5865f2; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+button:hover { background: #4752c4; }
+.preview { margin-top: 20px; }
+textarea { width: 100%; height: 160px; background: #1e1f24; border: 1px solid #444; border-radius: 6px; padding: 10px; color: #57f287; font-family: monospace; font-size: 12px; box-sizing: border-box; resize: vertical; }
+.info { font-size: 12px; color: #999; margin-top: 8px; text-align: center; }
+a.download { display: block; text-align: center; margin-top: 10px; color: #8ea1ff; text-decoration: none; font-size: 13px; cursor: pointer; }
+a.download:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Essentials Command Disabler</h1>
+  <p class="sub">Select commands to globally disable in Essentials config.yml.</p>
+
+  <label>Search commands</label>
+  <input type="text" id="searchInput" placeholder="Type to search commands, aliases, usage...">
+
+  <label>Command List (153 Official Commands)</label>
+  <div class="cmd-box" id="cmdBox"></div>
+
+  <button id="generateBtn">Download disabled-commands.yml</button>
+
+  <div class="preview" id="preview" style="display:none;">
+    <label>disabled-commands snippet</label>
+    <textarea id="yamlOutput" readonly></textarea>
+    <div class="info" id="infoText">0 commands selected</div>
+    <a class="download" id="copyLink">Copy YAML to Clipboard</a>
+    <a class="download" id="downloadLink">Direct Download disabled-commands.yml</a>
+  </div>
+</div>
+
+<script>
+const commands = [
+  {
+    "name": "afk",
+    "desc": "Marks you as away-from-keyboard.",
+    "aliases": [
+      "eafk",
+      "away",
+      "eaway"
+    ],
+    "sub": [
+      "[player/message...]"
+    ]
+  },
+  {
+    "name": "antioch",
+    "desc": "A little surprise for operators.",
+    "aliases": [
+      "eantioch",
+      "grenade",
+      "egrenade",
+      "tnt",
+      "etnt"
+    ],
+    "sub": [
+      "[message]"
+    ]
+  },
+  {
+    "name": "anvil",
+    "desc": "Opens up an Anvil.",
+    "aliases": [
+      "eanvil"
+    ],
+    "sub": []
+  },
+  {
+    "name": "back",
+    "desc": "Teleports you to your location prior to tp/spawn/warp.",
+    "aliases": [
+      "eback",
+      "return",
+      "ereturn"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "backup",
+    "desc": "Runs the backup if configured.",
+    "aliases": [
+      "ebackup"
+    ],
+    "sub": []
+  },
+  {
+    "name": "balance",
+    "desc": "States the current balance of a player.",
+    "aliases": [
+      "bal",
+      "ebal",
+      "ebalance",
+      "money",
+      "emoney"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "balancetop",
+    "desc": "Gets the top balance values.",
+    "aliases": [
+      "ebalancetop",
+      "baltop",
+      "ebaltop"
+    ],
+    "sub": [
+      "[page]"
+    ]
+  },
+  {
+    "name": "ban",
+    "desc": "Bans a player.",
+    "aliases": [
+      "eban"
+    ],
+    "sub": [
+      "<player> [reason]"
+    ]
+  },
+  {
+    "name": "banip",
+    "desc": "Bans an IP address.",
+    "aliases": [
+      "ebanip"
+    ],
+    "sub": [
+      "<address> [reason]"
+    ]
+  },
+  {
+    "name": "beezooka",
+    "desc": "Throw an exploding bee at your opponent.",
+    "aliases": [
+      "ebeezooka",
+      "beecannon",
+      "ebeecannon"
+    ],
+    "sub": []
+  },
+  {
+    "name": "book",
+    "desc": "Allows reopening and editing of sealed books.",
+    "aliases": [
+      "ebook"
+    ],
+    "sub": [
+      "[title | author [name]]"
+    ]
+  },
+  {
+    "name": "bottom",
+    "desc": "Teleport to the lowest block at your current position.",
+    "aliases": [
+      "ebottom"
+    ],
+    "sub": []
+  },
+  {
+    "name": "break",
+    "desc": "Breaks the block you are looking at.",
+    "aliases": [
+      "ebreak"
+    ],
+    "sub": []
+  },
+  {
+    "name": "broadcast",
+    "desc": "Broadcasts a message to the entire server.",
+    "aliases": [
+      "bc",
+      "ebc",
+      "bcast",
+      "ebcast",
+      "ebroadcast",
+      "shout",
+      "eshout"
+    ],
+    "sub": [
+      "<msg>"
+    ]
+  },
+  {
+    "name": "broadcastworld",
+    "desc": "Broadcasts a message to a world.",
+    "aliases": [
+      "bcw",
+      "ebcw",
+      "bcastw",
+      "ebcastw",
+      "ebroadcastworld",
+      "shoutworld",
+      "eshoutworld"
+    ],
+    "sub": [
+      "<world> <msg>"
+    ]
+  },
+  {
+    "name": "bigtree",
+    "desc": "Spawn a big tree where you are looking.",
+    "aliases": [
+      "ebigtree",
+      "largetree",
+      "elargetree"
+    ],
+    "sub": [
+      "<tree | redwood | jungle | darkoak>"
+    ]
+  },
+  {
+    "name": "burn",
+    "desc": "Set a player on fire.",
+    "aliases": [
+      "eburn"
+    ],
+    "sub": [
+      "<player> <seconds>"
+    ]
+  },
+  {
+    "name": "cartographytable",
+    "desc": "Opens up a cartography table.",
+    "aliases": [
+      "ecartographytable",
+      "carttable",
+      "ecarttable"
+    ],
+    "sub": []
+  },
+  {
+    "name": "clearinventory",
+    "desc": "Clear all items in your inventory.",
+    "aliases": [
+      "ci",
+      "eci",
+      "clean",
+      "eclean",
+      "clear",
+      "eclear",
+      "clearinvent",
+      "eclearinvent",
+      "eclearinventory"
+    ],
+    "sub": [
+      "[player | *] [item[:<data>] | * | **] [amount]"
+    ]
+  },
+  {
+    "name": "clearinventoryconfirmtoggle",
+    "desc": "Toggles whether you are prompted to confirm inventory clears.",
+    "aliases": [
+      "eclearinventoryconfirmtoggle",
+      "clearinventoryconfirmoff",
+      "eclearinventoryconfirmoff",
+      "clearconfirmoff",
+      "eclearconfirmoff",
+      "clearconfirmon",
+      "eclearconfirmon",
+      "clearconfirm",
+      "eclearconfirm"
+    ],
+    "sub": []
+  },
+  {
+    "name": "condense",
+    "desc": "Condenses items into a more compact blocks.",
+    "aliases": [
+      "econdense",
+      "compact",
+      "ecompact",
+      "blocks",
+      "eblocks",
+      "toblocks",
+      "etoblocks"
+    ],
+    "sub": [
+      "[itemname]"
+    ]
+  },
+  {
+    "name": "compass",
+    "desc": "Describes your current bearing.",
+    "aliases": [
+      "ecompass",
+      "direction",
+      "edirection"
+    ],
+    "sub": []
+  },
+  {
+    "name": "createkit",
+    "desc": "Create a kit in game!",
+    "aliases": [
+      "kitcreate",
+      "createk",
+      "kc",
+      "ck"
+    ],
+    "sub": [
+      "<kitname> <delay>"
+    ]
+  },
+  {
+    "name": "customtext",
+    "desc": "Allows you to create custom text commands.",
+    "aliases": [],
+    "sub": [
+      "/<alias> - Define in bukkit.yml"
+    ]
+  },
+  {
+    "name": "delhome",
+    "desc": "Removes a home.",
+    "aliases": [
+      "edelhome",
+      "remhome",
+      "eremhome",
+      "rmhome",
+      "ermhome"
+    ],
+    "sub": [
+      "[player:]<name>"
+    ]
+  },
+  {
+    "name": "deljail",
+    "desc": "Removes a jail.",
+    "aliases": [
+      "edeljail",
+      "remjail",
+      "eremjail",
+      "rmjail",
+      "ermjail"
+    ],
+    "sub": [
+      "<jailname>"
+    ]
+  },
+  {
+    "name": "delkit",
+    "desc": "Deletes the specified kit.",
+    "aliases": [
+      "edelkit",
+      "remkit",
+      "eremkit",
+      "rmkit",
+      "ermkit",
+      "deletekit",
+      "edeletekit"
+    ],
+    "sub": [
+      "<kit>"
+    ]
+  },
+  {
+    "name": "delwarp",
+    "desc": "Deletes the specified warp.",
+    "aliases": [
+      "edelwarp",
+      "remwarp",
+      "eremwarp",
+      "rmwarp",
+      "ermwarp"
+    ],
+    "sub": [
+      "<warp>"
+    ]
+  },
+  {
+    "name": "depth",
+    "desc": "States current depth, relative to sea level.",
+    "aliases": [
+      "edepth",
+      "height",
+      "eheight"
+    ],
+    "sub": []
+  },
+  {
+    "name": "disposal",
+    "desc": "Opens a portable disposal menu.",
+    "aliases": [
+      "edisposal",
+      "trash",
+      "etrash"
+    ],
+    "sub": []
+  },
+  {
+    "name": "eco",
+    "desc": "Manages the server economy.",
+    "aliases": [
+      "eeco",
+      "economy",
+      "eeconomy"
+    ],
+    "sub": [
+      "give <player> <amount>",
+      "take <player> <amount>",
+      "set <player> <amount>",
+      "reset <player>"
+    ]
+  },
+  {
+    "name": "enchant",
+    "desc": "Enchants the item the user is holding.",
+    "aliases": [
+      "eenchant",
+      "enchantment",
+      "eenchantment"
+    ],
+    "sub": [
+      "<enchantmentname> [level]"
+    ]
+  },
+  {
+    "name": "enderchest",
+    "desc": "Lets you see inside an enderchest.",
+    "aliases": [
+      "echest",
+      "eechest",
+      "eenderchest",
+      "endersee",
+      "eendersee",
+      "ec",
+      "eec"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "essentials",
+    "desc": "Reloads essentials.",
+    "aliases": [
+      "eessentials",
+      "ess",
+      "eess",
+      "essversion"
+    ],
+    "sub": []
+  },
+  {
+    "name": "exp",
+    "desc": "Give, set, reset, or look at a players experience.",
+    "aliases": [
+      "eexp",
+      "xp"
+    ],
+    "sub": [
+      "[reset | show | set | give] [playername [amount]]"
+    ]
+  },
+  {
+    "name": "ext",
+    "desc": "Extinguish players.",
+    "aliases": [
+      "eext",
+      "extinguish",
+      "eextinguish"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "feed",
+    "desc": "Satisfy the hunger.",
+    "aliases": [
+      "eat",
+      "eeat",
+      "efeed"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "fly",
+    "desc": "Take off, and soar!",
+    "aliases": [
+      "efly"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "fireball",
+    "desc": "Throw a fireball or other assorted projectiles.",
+    "aliases": [
+      "efireball",
+      "fireentity",
+      "efireentity",
+      "fireskull",
+      "efireskull"
+    ],
+    "sub": [
+      "[fireball | small | large | arrow | skull | egg | snowball | expbottle | dragon | splashpotion | lingeringpotion | trident] [speed]"
+    ]
+  },
+  {
+    "name": "firework",
+    "desc": "Allows you to modify a stack of fireworks.",
+    "aliases": [
+      "efirework"
+    ],
+    "sub": [
+      "<<meta param> | power [amount] | clear | fire [amount]>"
+    ]
+  },
+  {
+    "name": "gamemode",
+    "desc": "Change player gamemode.",
+    "aliases": [
+      "adventure",
+      "eadventure",
+      "adventuremode",
+      "eadventuremode",
+      "creative",
+      "ecreative",
+      "eecreative",
+      "creativemode",
+      "ecreativemode",
+      "egamemode",
+      "gm",
+      "egm",
+      "gma",
+      "egma",
+      "gmc",
+      "egmc",
+      "gms",
+      "egms",
+      "gmt",
+      "egmt",
+      "survival",
+      "esurvival",
+      "survivalmode",
+      "esurvivalmode",
+      "gmsp",
+      "sp",
+      "egmsp",
+      "spec",
+      "spectator"
+    ],
+    "sub": [
+      "<survival | creative | adventure | spectator> [player]"
+    ]
+  },
+  {
+    "name": "gc",
+    "desc": "Reports memory, uptime and tick info.",
+    "aliases": [
+      "lag",
+      "elag",
+      "egc",
+      "mem",
+      "emem",
+      "memory",
+      "ememory",
+      "uptime",
+      "euptime",
+      "tps",
+      "etps",
+      "entities",
+      "eentities"
+    ],
+    "sub": []
+  },
+  {
+    "name": "getpos",
+    "desc": "Get your current coordinates or those of a player.",
+    "aliases": [
+      "coords",
+      "egetpos",
+      "position",
+      "eposition",
+      "whereami",
+      "ewhereami",
+      "getlocation",
+      "egetlocation",
+      "getloc",
+      "egetloc"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "give",
+    "desc": "Give a player an item.",
+    "aliases": [
+      "egive"
+    ],
+    "sub": [
+      "<player> <item | numeric> [amount [itemmeta...]]"
+    ]
+  },
+  {
+    "name": "god",
+    "desc": "Enables your godly powers.",
+    "aliases": [
+      "egod",
+      "godmode",
+      "egodmode",
+      "tgm",
+      "etgm"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "grindstone",
+    "desc": "Opens up a grindstone.",
+    "aliases": [
+      "egrindstone"
+    ],
+    "sub": []
+  },
+  {
+    "name": "hat",
+    "desc": "Get some cool new headgear.",
+    "aliases": [
+      "ehat",
+      "head",
+      "ehead"
+    ],
+    "sub": [
+      "[remove]"
+    ]
+  },
+  {
+    "name": "heal",
+    "desc": "Heals you or the given player.",
+    "aliases": [
+      "eheal"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "help",
+    "desc": "Views a list of available commands.",
+    "aliases": [
+      "ehelp"
+    ],
+    "sub": [
+      "[search term] [page]"
+    ]
+  },
+  {
+    "name": "helpop",
+    "desc": "Message online admins.",
+    "aliases": [
+      "ac",
+      "eac",
+      "amsg",
+      "eamsg",
+      "ehelpop"
+    ],
+    "sub": [
+      "<message>"
+    ]
+  },
+  {
+    "name": "home",
+    "desc": "Teleport to your home.",
+    "aliases": [
+      "ehome",
+      "homes",
+      "ehomes"
+    ],
+    "sub": [
+      "[player:][name]"
+    ]
+  },
+  {
+    "name": "ice",
+    "desc": "Cools a player off.",
+    "aliases": [
+      "eice",
+      "efreeze"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "ignore",
+    "desc": "Ignore or unignore other players.",
+    "aliases": [
+      "eignore",
+      "unignore",
+      "eunignore",
+      "delignore",
+      "edelignore",
+      "remignore",
+      "eremignore",
+      "rmignore",
+      "ermignore"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "info",
+    "desc": "Shows information set by the server owner.",
+    "aliases": [
+      "about",
+      "eabout",
+      "ifo",
+      "eifo",
+      "einfo",
+      "inform",
+      "einform",
+      "news",
+      "enews"
+    ],
+    "sub": [
+      "[chapter] [page]"
+    ]
+  },
+  {
+    "name": "invsee",
+    "desc": "See the inventory of other players.",
+    "aliases": [
+      "einvsee"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "item",
+    "desc": "Spawn an item.",
+    "aliases": [
+      "i",
+      "eitem",
+      "ei"
+    ],
+    "sub": [
+      "<item | numeric> [amount [itemmeta...]]"
+    ]
+  },
+  {
+    "name": "itemdb",
+    "desc": "Searches for an item.",
+    "aliases": [
+      "dura",
+      "edura",
+      "durability",
+      "edurability",
+      "eitemdb",
+      "itemno",
+      "eitemno"
+    ],
+    "sub": [
+      "<item>"
+    ]
+  },
+  {
+    "name": "itemlore",
+    "desc": "Edit the lore of an item.",
+    "aliases": [
+      "lore",
+      "elore",
+      "ilore",
+      "eilore",
+      "eitemlore"
+    ],
+    "sub": [
+      "add <text>",
+      "set <line> <text>",
+      "delete <line>",
+      "insert <line> <text>",
+      "clear"
+    ]
+  },
+  {
+    "name": "itemname",
+    "desc": "Names an item.",
+    "aliases": [
+      "iname",
+      "einame",
+      "eitemname",
+      "itemrename",
+      "irename",
+      "eitemrename",
+      "eirename"
+    ],
+    "sub": [
+      "[name]"
+    ]
+  },
+  {
+    "name": "jailedplayers",
+    "desc": "List all jailed players.",
+    "aliases": [
+      "ejailedplayers",
+      "ejailed",
+      "ejp"
+    ],
+    "sub": []
+  },
+  {
+    "name": "jails",
+    "desc": "List all jails.",
+    "aliases": [
+      "ejails"
+    ],
+    "sub": []
+  },
+  {
+    "name": "jump",
+    "desc": "Jumps to the nearest block in the line of sight.",
+    "aliases": [
+      "j",
+      "ej",
+      "ejump",
+      "jumpto",
+      "ejumpto"
+    ],
+    "sub": []
+  },
+  {
+    "name": "kick",
+    "desc": "Kicks a specified player with a reason.",
+    "aliases": [
+      "ekick"
+    ],
+    "sub": [
+      "<player> [reason]"
+    ]
+  },
+  {
+    "name": "kickall",
+    "desc": "Kicks all players off the server except the issuer.",
+    "aliases": [
+      "ekickall"
+    ],
+    "sub": [
+      "[reason]"
+    ]
+  },
+  {
+    "name": "kill",
+    "desc": "Kills specified player.",
+    "aliases": [
+      "ekill"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "kit",
+    "desc": "Obtains the specified kit or views all available kits.",
+    "aliases": [
+      "ekit",
+      "kits",
+      "ekits"
+    ],
+    "sub": [
+      "[kit] [player]"
+    ]
+  },
+  {
+    "name": "kitreset",
+    "desc": "Resets the cooldown on the specified kit.",
+    "aliases": [
+      "ekitreset",
+      "kitr",
+      "ekitr",
+      "resetkit",
+      "eresetkit"
+    ],
+    "sub": [
+      "<kit> [player]"
+    ]
+  },
+  {
+    "name": "kittycannon",
+    "desc": "Throw an exploding kitten at your opponent.",
+    "aliases": [
+      "ekittycannon"
+    ],
+    "sub": []
+  },
+  {
+    "name": "lightning",
+    "desc": "The power of Thor. Strike at cursor or player.",
+    "aliases": [
+      "elightning",
+      "shock",
+      "eshock",
+      "smite",
+      "esmite",
+      "strike",
+      "estrike",
+      "thor",
+      "ethor"
+    ],
+    "sub": [
+      "[player] [power]"
+    ]
+  },
+  {
+    "name": "list",
+    "desc": "List all online players.",
+    "aliases": [
+      "elist",
+      "online",
+      "eonline",
+      "playerlist",
+      "eplayerlist",
+      "plist",
+      "eplist",
+      "who",
+      "ewho"
+    ],
+    "sub": [
+      "[group]"
+    ]
+  },
+  {
+    "name": "loom",
+    "desc": "Opens up a loom.",
+    "aliases": [
+      "eloom"
+    ],
+    "sub": []
+  },
+  {
+    "name": "mail",
+    "desc": "Manages inter-player, intra-server mail.",
+    "aliases": [
+      "email",
+      "eemail",
+      "memo",
+      "ememo"
+    ],
+    "sub": [
+      "read",
+      "send <player> <text>",
+      "sendall <text>",
+      "clear"
+    ]
+  },
+  {
+    "name": "me",
+    "desc": "Describes an action in the context of the player.",
+    "aliases": [
+      "action",
+      "eaction",
+      "describe",
+      "edescribe",
+      "eme"
+    ],
+    "sub": [
+      "<description>"
+    ]
+  },
+  {
+    "name": "more",
+    "desc": "Fills the item stack in hand to specified amount, or to maximum size if none is specified.",
+    "aliases": [
+      "emore"
+    ],
+    "sub": [
+      "[amount]"
+    ]
+  },
+  {
+    "name": "motd",
+    "desc": "Views the Message Of The Day.",
+    "aliases": [
+      "emotd"
+    ],
+    "sub": [
+      "[chapter] [page]"
+    ]
+  },
+  {
+    "name": "msg",
+    "desc": "Sends a private message to the specified player.",
+    "aliases": [
+      "w",
+      "m",
+      "t",
+      "pm",
+      "emsg",
+      "epm",
+      "tell",
+      "etell",
+      "whisper",
+      "ewhisper"
+    ],
+    "sub": [
+      "<to> <message>"
+    ]
+  },
+  {
+    "name": "msgtoggle",
+    "desc": "Blocks receiving all private messages.",
+    "aliases": [
+      "emsgtoggle"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "mute",
+    "desc": "Mutes or unmutes a player.",
+    "aliases": [
+      "emute",
+      "silence",
+      "esilence",
+      "unmute",
+      "eunmute"
+    ],
+    "sub": [
+      "<player> [datediff] [reason]"
+    ]
+  },
+  {
+    "name": "near",
+    "desc": "Lists the players near by or around a player.",
+    "aliases": [
+      "enear",
+      "nearby",
+      "enearby"
+    ],
+    "sub": [
+      "[playername] [radius]"
+    ]
+  },
+  {
+    "name": "nick",
+    "desc": "Change your nickname or that of another player.",
+    "aliases": [
+      "enick",
+      "nickname",
+      "enickname"
+    ],
+    "sub": [
+      "[player] <nickname | off>"
+    ]
+  },
+  {
+    "name": "nuke",
+    "desc": "May death rain upon them.",
+    "aliases": [
+      "enuke"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "tpoffline",
+    "desc": "Teleport to a player's last known logout location",
+    "aliases": [
+      "otp",
+      "offlinetp",
+      "tpoff",
+      "tpoffline",
+      "etpoffline"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "pay",
+    "desc": "Pays another player from your balance.",
+    "aliases": [
+      "epay"
+    ],
+    "sub": [
+      "<player> <amount>"
+    ]
+  },
+  {
+    "name": "paytoggle",
+    "desc": "Toggles whether you are accepting payments.",
+    "aliases": [
+      "epaytoggle",
+      "payoff",
+      "epayoff",
+      "payon",
+      "epayon"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "payconfirmtoggle",
+    "desc": "Toggles whether you are prompted to confirm payments.",
+    "aliases": [
+      "epayconfirmtoggle",
+      "payconfirmoff",
+      "epayconfirmoff",
+      "payconfirmon",
+      "epayconfirmon",
+      "payconfirm",
+      "epayconfirm"
+    ],
+    "sub": []
+  },
+  {
+    "name": "ping",
+    "desc": "Pong!",
+    "aliases": [
+      "echo",
+      "eecho",
+      "eping",
+      "pong",
+      "epong"
+    ],
+    "sub": []
+  },
+  {
+    "name": "playtime",
+    "desc": "Shows a player's time played in game",
+    "aliases": [
+      "eplaytime"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "potion",
+    "desc": "Adds custom potion effects to a potion.",
+    "aliases": [
+      "epotion",
+      "elixer",
+      "eelixer"
+    ],
+    "sub": [
+      "<clear | apply | effect:<effect> power:<power> duration:<duration>>"
+    ]
+  },
+  {
+    "name": "powertool",
+    "desc": "Assigns a command to the item in hand.",
+    "aliases": [
+      "epowertool",
+      "pt",
+      "ept"
+    ],
+    "sub": [
+      "[l: | a: | r: | c: | d:][command] [arguments] - {player} can be replaced by name of a clicked player."
+    ]
+  },
+  {
+    "name": "powertoollist",
+    "desc": "Lists all current powertools.",
+    "aliases": [
+      "epowertoollist",
+      "ptlist",
+      "eptlist"
+    ],
+    "sub": []
+  },
+  {
+    "name": "powertooltoggle",
+    "desc": "Enables or disables all current powertools.",
+    "aliases": [
+      "epowertooltoggle",
+      "ptt",
+      "eptt",
+      "pttoggle",
+      "epttoggle"
+    ],
+    "sub": []
+  },
+  {
+    "name": "ptime",
+    "desc": "Adjust player's client time. Add @ prefix to fix.",
+    "aliases": [
+      "playertime",
+      "eplayertime",
+      "eptime"
+    ],
+    "sub": [
+      "[list | reset | day | night | dawn | 17:30 | 4pm | 4000ticks] [player | *]"
+    ]
+  },
+  {
+    "name": "pweather",
+    "desc": "Adjust a player's weather",
+    "aliases": [
+      "playerweather",
+      "eplayerweather",
+      "epweather"
+    ],
+    "sub": [
+      "[list | reset | storm | sun | clear] [player | *]"
+    ]
+  },
+  {
+    "name": "r",
+    "desc": "Quickly reply to the last player to message you.",
+    "aliases": [
+      "er",
+      "reply",
+      "ereply"
+    ],
+    "sub": [
+      "<message>"
+    ]
+  },
+  {
+    "name": "rtoggle",
+    "desc": "Change whether the recipient of the reply is last recipient or last sender",
+    "aliases": [
+      "ertoggle",
+      "replytoggle",
+      "ereplytoggle"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "realname",
+    "desc": "Displays the username of a user based on nick.",
+    "aliases": [
+      "erealname"
+    ],
+    "sub": [
+      "<nickname>"
+    ]
+  },
+  {
+    "name": "recipe",
+    "desc": "Displays how to craft items.",
+    "aliases": [
+      "formula",
+      "eformula",
+      "method",
+      "emethod",
+      "erecipe",
+      "recipes",
+      "erecipes"
+    ],
+    "sub": [
+      "<item> [number]"
+    ]
+  },
+  {
+    "name": "remove",
+    "desc": "Removes entities in your world.",
+    "aliases": [
+      "eremove",
+      "butcher",
+      "ebutcher",
+      "killall",
+      "ekillall",
+      "mobkill",
+      "emobkill"
+    ],
+    "sub": [
+      "<all | tamed | named | drops | arrows | boats | minecarts | xp | paintings | itemframes | endercrystals | monsters | animals | ambient | mobs | [mobType]> [radius | world]"
+    ]
+  },
+  {
+    "name": "renamehome",
+    "desc": "Renames a home.",
+    "aliases": [
+      "erenamehome"
+    ],
+    "sub": [
+      "<[player:]name> <new name>"
+    ]
+  },
+  {
+    "name": "repair",
+    "desc": "Repairs the durability of one or all items.",
+    "aliases": [
+      "fix",
+      "efix",
+      "erepair"
+    ],
+    "sub": [
+      "hand",
+      "all"
+    ]
+  },
+  {
+    "name": "rest",
+    "desc": "Rests you or the given player.",
+    "aliases": [
+      "erest"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "rules",
+    "desc": "Views the server rules.",
+    "aliases": [
+      "erules"
+    ],
+    "sub": [
+      "[chapter] [page]"
+    ]
+  },
+  {
+    "name": "seen",
+    "desc": "Shows the last logout time of a player.",
+    "aliases": [
+      "eseen",
+      "ealts",
+      "alts"
+    ],
+    "sub": [
+      "<playername>"
+    ]
+  },
+  {
+    "name": "sell",
+    "desc": "Sells the item currently in your hand.",
+    "aliases": [
+      "esell"
+    ],
+    "sub": [
+      "hand [amount]",
+      "inventory",
+      "blocks"
+    ]
+  },
+  {
+    "name": "sethome",
+    "desc": "Set your home to your current location.",
+    "aliases": [
+      "esethome",
+      "createhome",
+      "ecreatehome"
+    ],
+    "sub": [
+      "[[player:]name]"
+    ]
+  },
+  {
+    "name": "setjail",
+    "desc": "Creates a jail where you specified named [jailname].",
+    "aliases": [
+      "esetjail",
+      "createjail",
+      "ecreatejail"
+    ],
+    "sub": [
+      "<jailname>"
+    ]
+  },
+  {
+    "name": "settpr",
+    "desc": "Set the random teleport location and parameters.",
+    "aliases": [
+      "esettpr",
+      "settprandom",
+      "esettprandom"
+    ],
+    "sub": [
+      "[center | minrange | maxrange] [value]"
+    ]
+  },
+  {
+    "name": "setwarp",
+    "desc": "Creates a new warp.",
+    "aliases": [
+      "createwarp",
+      "ecreatewarp",
+      "esetwarp"
+    ],
+    "sub": [
+      "<warp>"
+    ]
+  },
+  {
+    "name": "setworth",
+    "desc": "Set the sell value of an item.",
+    "aliases": [
+      "esetworth"
+    ],
+    "sub": [
+      "[itemname | id] <price>"
+    ]
+  },
+  {
+    "name": "showkit",
+    "desc": "Show contents of a kit.",
+    "aliases": [
+      "kitpreview",
+      "preview",
+      "kitshow"
+    ],
+    "sub": [
+      "<kitname>"
+    ]
+  },
+  {
+    "name": "editsign",
+    "desc": "Edits a sign in the world.",
+    "aliases": [
+      "sign",
+      "esign",
+      "eeditsign"
+    ],
+    "sub": [
+      "<set/clear/copy/paste> [line number] [text]"
+    ]
+  },
+  {
+    "name": "skull",
+    "desc": "Set the owner of a player skull",
+    "aliases": [
+      "eskull",
+      "playerskull",
+      "eplayerskull",
+      "head",
+      "ehead"
+    ],
+    "sub": [
+      "[owner] [player]"
+    ]
+  },
+  {
+    "name": "smithingtable",
+    "desc": "Opens up a smithing table.",
+    "aliases": [
+      "esmithingtable",
+      "smithtable",
+      "esmithtable"
+    ],
+    "sub": []
+  },
+  {
+    "name": "socialspy",
+    "desc": "Toggles if you can see msg/mail commands in chat.",
+    "aliases": [
+      "esocialspy"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "spawner",
+    "desc": "Change the mob type of a spawner.",
+    "aliases": [
+      "changems",
+      "echangems",
+      "espawner",
+      "mobspawner",
+      "emobspawner"
+    ],
+    "sub": [
+      "<mob> [delay]"
+    ]
+  },
+  {
+    "name": "spawnmob",
+    "desc": "Spawns a mob.",
+    "aliases": [
+      "mob",
+      "emob",
+      "spawnentity",
+      "espawnentity",
+      "espawnmob"
+    ],
+    "sub": [
+      "<mob>[:data][,<mount>[:data]] [amount] [player]"
+    ]
+  },
+  {
+    "name": "speed",
+    "desc": "Change your speed limits.",
+    "aliases": [
+      "flyspeed",
+      "eflyspeed",
+      "fspeed",
+      "efspeed",
+      "espeed",
+      "walkspeed",
+      "ewalkspeed",
+      "wspeed",
+      "ewspeed"
+    ],
+    "sub": [
+      "walk <1-10> [player]",
+      "fly <1-10> [player]",
+      "reset [player]"
+    ]
+  },
+  {
+    "name": "stonecutter",
+    "desc": "Opens up a stonecutter.",
+    "aliases": [
+      "estonecutter"
+    ],
+    "sub": []
+  },
+  {
+    "name": "sudo",
+    "desc": "Make another user perform a command.",
+    "aliases": [
+      "esudo"
+    ],
+    "sub": [
+      "<player> <command [args]>"
+    ]
+  },
+  {
+    "name": "suicide",
+    "desc": "Causes you to perish.",
+    "aliases": [
+      "esuicide"
+    ],
+    "sub": []
+  },
+  {
+    "name": "tempban",
+    "desc": "Temporary ban a user.",
+    "aliases": [
+      "etempban"
+    ],
+    "sub": [
+      "<playername> <datediff> [reason]"
+    ]
+  },
+  {
+    "name": "tempbanip",
+    "desc": "Temporarily ban an IP Address.",
+    "aliases": [
+      "etempbanip"
+    ],
+    "sub": [
+      "<playername> <datediff> [reason]"
+    ]
+  },
+  {
+    "name": "thunder",
+    "desc": "Enable/disable thunder.",
+    "aliases": [
+      "ethunder"
+    ],
+    "sub": [
+      "<true/false> [duration]"
+    ]
+  },
+  {
+    "name": "time",
+    "desc": "Display/Change the world time. Defaults to current world.",
+    "aliases": [
+      "day",
+      "eday",
+      "night",
+      "enight",
+      "etime"
+    ],
+    "sub": [
+      "day [world]",
+      "night [world]",
+      "set <time> [world]",
+      "add <ticks> [world]"
+    ]
+  },
+  {
+    "name": "togglejail",
+    "desc": "Jails/Unjails a player, TPs them to the jail specified.",
+    "aliases": [
+      "jail",
+      "ejail",
+      "tjail",
+      "etjail",
+      "etogglejail",
+      "unjail",
+      "eunjail"
+    ],
+    "sub": [
+      "<player> <jailname> [datediff]"
+    ]
+  },
+  {
+    "name": "top",
+    "desc": "Teleport to the highest block at your current position.",
+    "aliases": [
+      "etop"
+    ],
+    "sub": []
+  },
+  {
+    "name": "tp",
+    "desc": "Teleport to a player.",
+    "aliases": [
+      "tele",
+      "etele",
+      "teleport",
+      "eteleport",
+      "etp",
+      "tp2p",
+      "etp2p"
+    ],
+    "sub": [
+      "<player> [otherplayer]"
+    ]
+  },
+  {
+    "name": "tpa",
+    "desc": "Request to teleport to the specified player.",
+    "aliases": [
+      "call",
+      "ecall",
+      "etpa",
+      "tpask",
+      "etpask"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "tpaall",
+    "desc": "Requests all players online to teleport to you.",
+    "aliases": [
+      "etpaall"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "tpaccept",
+    "desc": "Accepts teleport requests.",
+    "aliases": [
+      "etpaccept",
+      "tpyes",
+      "etpyes"
+    ],
+    "sub": [
+      "[player | *]"
+    ]
+  },
+  {
+    "name": "tpahere",
+    "desc": "Request that the specified player teleport to you.",
+    "aliases": [
+      "etpahere"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "tpall",
+    "desc": "Teleport all online players to another player.",
+    "aliases": [
+      "etpall"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "tpauto",
+    "desc": "Automatically accept teleportation requests.",
+    "aliases": [
+      "etpauto"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "tpacancel",
+    "desc": "Cancel all outstanding teleport requests. Specify [player] to cancel requests with them.",
+    "aliases": [
+      "etpacancel"
+    ],
+    "sub": [
+      "[player]"
+    ]
+  },
+  {
+    "name": "tpdeny",
+    "desc": "Rejects teleport requests.",
+    "aliases": [
+      "etpdeny",
+      "tpno",
+      "etpno"
+    ],
+    "sub": [
+      "[player | *]"
+    ]
+  },
+  {
+    "name": "tphere",
+    "desc": "Teleport a player to you.",
+    "aliases": [
+      "s",
+      "etphere"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "tpo",
+    "desc": "Teleport override for tptoggle.",
+    "aliases": [
+      "etpo"
+    ],
+    "sub": [
+      "<player> [otherplayer]"
+    ]
+  },
+  {
+    "name": "tpohere",
+    "desc": "Teleport here override for tptoggle.",
+    "aliases": [
+      "etpohere"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "tppos",
+    "desc": "Teleport to coordinates.",
+    "aliases": [
+      "etppos"
+    ],
+    "sub": [
+      "<x> <y> <z> [yaw] [pitch] [world]"
+    ]
+  },
+  {
+    "name": "tpr",
+    "desc": "Teleport randomly.",
+    "aliases": [
+      "etpr",
+      "tprandom",
+      "etprandom"
+    ],
+    "sub": []
+  },
+  {
+    "name": "tptoggle",
+    "desc": "Blocks all forms of teleportation.",
+    "aliases": [
+      "etptoggle"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "tree",
+    "desc": "Spawn a tree where you are looking.",
+    "aliases": [
+      "etree"
+    ],
+    "sub": [
+      "<tree | birch | redwood | redmushroom | brownmushroom | jungle | junglebush | swamp>"
+    ]
+  },
+  {
+    "name": "unban",
+    "desc": "Unbans the specified player.",
+    "aliases": [
+      "pardon",
+      "eunban",
+      "epardon"
+    ],
+    "sub": [
+      "<player>"
+    ]
+  },
+  {
+    "name": "unbanip",
+    "desc": "Unbans the specified IP address.",
+    "aliases": [
+      "eunbanip",
+      "pardonip",
+      "epardonip"
+    ],
+    "sub": [
+      "<address>"
+    ]
+  },
+  {
+    "name": "unlimited",
+    "desc": "Allows the unlimited placing of items.",
+    "aliases": [
+      "eunlimited",
+      "ul",
+      "unl",
+      "eul",
+      "eunl"
+    ],
+    "sub": [
+      "<list | item | clear> [player]"
+    ]
+  },
+  {
+    "name": "vanish",
+    "desc": "Hide yourself from other players.",
+    "aliases": [
+      "v",
+      "ev",
+      "evanish"
+    ],
+    "sub": [
+      "[player] [on | off]"
+    ]
+  },
+  {
+    "name": "warp",
+    "desc": "List all warps or warp to the specified location.",
+    "aliases": [
+      "ewarp",
+      "warps",
+      "ewarps"
+    ],
+    "sub": [
+      "<pagenumber | warp> [player]"
+    ]
+  },
+  {
+    "name": "warpinfo",
+    "desc": "Finds location information for a specified warp.",
+    "aliases": [
+      "ewarpinfo"
+    ],
+    "sub": [
+      "<warp>"
+    ]
+  },
+  {
+    "name": "weather",
+    "desc": "Sets the weather.",
+    "aliases": [
+      "rain",
+      "erain",
+      "sky",
+      "esky",
+      "storm",
+      "estorm",
+      "sun",
+      "esun",
+      "eweather"
+    ],
+    "sub": [
+      "sun [duration]",
+      "storm [duration]",
+      "rain [duration]"
+    ]
+  },
+  {
+    "name": "whois",
+    "desc": "Determine basic information about the specified player.",
+    "aliases": [
+      "ewhois"
+    ],
+    "sub": [
+      "<nickname>"
+    ]
+  },
+  {
+    "name": "workbench",
+    "desc": "Opens up a workbench.",
+    "aliases": [
+      "craft",
+      "ecraft",
+      "wb",
+      "ewb",
+      "wbench",
+      "ewbench",
+      "eworkbench"
+    ],
+    "sub": []
+  },
+  {
+    "name": "world",
+    "desc": "Switch between worlds.",
+    "aliases": [
+      "eworld"
+    ],
+    "sub": [
+      "[world]"
+    ]
+  },
+  {
+    "name": "worth",
+    "desc": "Calculates the worth of items in hand or as specified.",
+    "aliases": [
+      "eprice",
+      "price",
+      "eworth"
+    ],
+    "sub": [
+      "<<itemname> | <id> | hand | inventory | blocks> [-][amount]"
+    ]
+  }
+];
+
+const selectedSet = new Set();
+const searchInput = document.getElementById('searchInput');
+const cmdBox = document.getElementById('cmdBox');
+const generateBtn = document.getElementById('generateBtn');
+const preview = document.getElementById('preview');
+const yamlOutput = document.getElementById('yamlOutput');
+const infoText = document.getElementById('infoText');
+const copyLink = document.getElementById('copyLink');
+const downloadLink = document.getElementById('downloadLink');
+
+function render() {
+  const q = searchInput.value.toLowerCase().trim();
+  cmdBox.innerHTML = '';
+  
+  commands.filter(c => {
+    return !q || c.name.includes(q) || c.desc.toLowerCase().includes(q) || c.aliases.some(a => a.includes(q)) || c.sub.some(s => s.toLowerCase().includes(q));
+  }).forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'cmd-item';
+    
+    const isChecked = selectedSet.has(c.name);
+    let aliasStr = c.aliases.length ? `Aliases: ${c.aliases.map(a => '/' + a).join(', ')}` : '';
+    let subStr = c.sub.length ? `Usage: ${c.sub.map(s => `<span class="sub-tag">${s}</span>`).join(' ')}` : '';
+
+    item.innerHTML = `
+      <div class="cmd-row">
+        <input type="checkbox" id="chk_${c.name}" ${isChecked ? 'checked' : ''}>
+        <div class="cmd-info">
+          <label for="chk_${c.name}" class="cmd-head">/${c.name}</label>
+          ${aliasStr ? `<div class="cmd-aliases">${aliasStr}</div>` : ''}
+          <div class="cmd-desc">${c.desc}</div>
+          ${subStr ? `<div class="cmd-sub">${subStr}</div>` : ''}
+        </div>
+      </div>
+    `;
+
+    const chk = item.querySelector('input');
+    chk.addEventListener('change', () => {
+      if (chk.checked) selectedSet.add(c.name);
+      else selectedSet.delete(c.name);
+    });
+
+    cmdBox.appendChild(item);
+  });
+}
+
+function getYamlString() {
+  const list = Array.from(selectedSet).sort();
+  let yaml = 'disabled-commands:\n';
+  if (list.length === 0) {
+    yaml += '  #- nick\n  #- clear';
+  } else {
+    list.forEach(name => {
+      yaml += `  - ${name}\n`;
+    });
+  }
+  return yaml;
+}
+
+function triggerDownload() {
+  const yaml = getYamlString();
+  const blob = new Blob([yaml], { type: 'text/yaml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'disabled-commands.yml';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function generateAndDownload() {
+  const yaml = getYamlString();
+  const list = Array.from(selectedSet);
+  yamlOutput.value = yaml;
+  infoText.innerText = `${list.length} command${list.length === 1 ? '' : 's'} selected to disable`;
+  preview.style.display = 'block';
+  triggerDownload();
+}
+
+copyLink.addEventListener('click', () => {
+  yamlOutput.select();
+  navigator.clipboard.writeText(yamlOutput.value);
+  alert('Copied YAML to clipboard!');
+});
+
+downloadLink.addEventListener('click', () => {
+  triggerDownload();
+});
+
+searchInput.addEventListener('input', render);
+generateBtn.addEventListener('click', generateAndDownload);
+
+render();
+</script>
+</body>
+</html>
